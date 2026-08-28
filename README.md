@@ -1,6 +1,16 @@
 # Scalemaker HR website
 
-A simple professional site for **Scalemaker HR**, with a working **People & Growth Readiness Assessment**.
+A simple professional website for **Scalemaker HR**, including a working **People & Growth Readiness Assessment**.
+
+Pages:
+
+- Home — who we help, problems we address, and the assessment as the primary call to action
+- About — mission, vision, values, and Stacey Kay’s credentials
+- Approach — assessment, complimentary results review, and paid diagnostic
+- Contact — message form and email
+- Assessment — scored survey and results
+
+There is no industry-specific landing page. The main site uses growing-business language.
 
 The assessment follows the company’s Free Assessment spec: business-profile questions, 18 scored statements in six categories, risk and impact questions, lead capture, scored results, critical-attention and business-impact flags, and a complimentary results-review invitation.
 

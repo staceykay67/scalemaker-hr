@@ -4,8 +4,8 @@ import Link from "next/link";
 export function SiteFooter() {
   return (
     <footer className="mt-16 bg-forest text-white">
-      <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 py-10 sm:px-6 md:flex-row md:items-start md:justify-between">
-        <div className="max-w-md">
+      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:px-6 md:grid-cols-3">
+        <div>
           <Image
             src="/logo-horizontal-dark.png"
             alt="Scalemaker HR"
@@ -18,11 +18,31 @@ export function SiteFooter() {
           </p>
         </div>
         <div className="space-y-2 text-sm text-white/85">
+          <p className="font-semibold text-white">Explore</p>
+          <p>
+            <Link href="/about" className="underline-offset-4 hover:underline">
+              About
+            </Link>
+          </p>
+          <p>
+            <Link href="/approach" className="underline-offset-4 hover:underline">
+              Approach
+            </Link>
+          </p>
           <p>
             <Link href="/assessment" className="underline-offset-4 hover:underline">
               People &amp; Growth Readiness Assessment
             </Link>
           </p>
+          <p>
+            <Link href="/contact" className="underline-offset-4 hover:underline">
+              Contact
+            </Link>
+          </p>
+        </div>
+        <div className="space-y-2 text-sm text-white/85">
+          <p className="font-semibold text-white">Scalemaker HR LLC</p>
+          <p>Arizona</p>
           <p>
             <a
               href="mailto:staceykay@scalemakerhr.com"
@@ -31,6 +51,7 @@ export function SiteFooter() {
               staceykay@scalemakerhr.com
             </a>
           </p>
+          <p>Stacey Kay, MHR, SPHR, SHRM-SCP</p>
         </div>
       </div>
       <div className="border-t border-white/15">
@@ -40,11 +61,9 @@ export function SiteFooter() {
             and will not be sold or shared for unrelated marketing purposes.
           </p>
           <p>
-            This assessment provides general educational information. It is not
-            legal advice, a compliance certification or a substitute for review
-            by qualified legal counsel. Results are based solely on the
-            information provided and are intended to identify areas that may
-            warrant additional evaluation.
+            This website and assessment provide general educational information.
+            They are not legal advice, a compliance certification, or a
+            substitute for review by qualified legal counsel.
           </p>
         </div>
       </div>
