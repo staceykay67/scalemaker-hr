@@ -1,5 +1,3 @@
-import { CONTACT_EMAIL } from "./site-contact";
-
 export const LIKERT_OPTIONS = [
   { value: "strongly_disagree", label: "Strongly disagree", points: 1 },
   { value: "disagree", label: "Disagree", points: 2 },
@@ -392,8 +390,8 @@ export const RESULT_COPY: Record<
     ],
     support:
       "Your business may benefit from a targeted HR project, periodic advisory support or strategic workforce planning rather than extensive ongoing support.",
-    cta: "Schedule a Complimentary Results Review",
-    ctaLabel: "Schedule a complimentary results review",
+    cta: "Schedule a 30-Minute Results Review",
+    ctaLabel: "Schedule a 30-minute results review",
   },
   developing: {
     name: "Developing",
@@ -407,8 +405,8 @@ export const RESULT_COPY: Record<
     ],
     support:
       "Your business may benefit from internal HR development, a focused HR project or limited fractional HR support.",
-    cta: "Schedule a Complimentary Results Review",
-    ctaLabel: "Schedule a complimentary results review",
+    cta: "Schedule a 30-Minute Results Review",
+    ctaLabel: "Schedule a 30-minute results review",
   },
   "growth-constrained": {
     name: "Growth Constrained",
@@ -422,8 +420,8 @@ export const RESULT_COPY: Record<
     ],
     support:
       "Your business may benefit from an ongoing fractional HR partnership that provides both strategic guidance and practical implementation support.",
-    cta: "Schedule a Complimentary Results Review",
-    ctaLabel: "Schedule a complimentary results review",
+    cta: "Schedule a 30-Minute Results Review",
+    ctaLabel: "Schedule a 30-minute results review",
   },
   "foundation-at-risk": {
     name: "Foundation at Risk",
@@ -441,12 +439,6 @@ export const RESULT_COPY: Record<
     ctaLabel: "Schedule a confidential results review",
   },
 };
-
-export const SCHEDULE_MAILTO = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
-  "People & Growth Results Review"
-)}&body=${encodeURIComponent(
-  "I completed the People & Growth Readiness Assessment and would like to schedule a complimentary 30-minute results review."
-)}`;
 
 export const TOTAL_POSSIBLE = 90;
 export const CATEGORY_POSSIBLE = 15;

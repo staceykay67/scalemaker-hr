@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { BookingCta, BookingSoonerNote } from "@/components/booking-cta";
 import { ContactDetails } from "@/components/contact-details";
 import { ContactForm } from "@/components/contact-form";
 import { CtaBand } from "@/components/cta-band";
@@ -18,10 +19,12 @@ export default function ContactPage() {
         Start a conversation
       </h1>
       <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground">
-        The fastest way to get a useful conversation is to complete the
-        assessment first. If you already know what you want to discuss, send a
-        message below.
+        Book a complimentary 30-minute results review, or send a message if you
+        already know what you want to discuss. The fastest way to make that
+        conversation useful is to complete the assessment first.
       </p>
+      <BookingCta className="mt-6">Book a complimentary results review</BookingCta>
+      <BookingSoonerNote className="mt-3 max-w-2xl" />
 
       <div className="mt-10 grid gap-10 lg:grid-cols-[1.2fr_0.8fr]">
         <ContactForm />

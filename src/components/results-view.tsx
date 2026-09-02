@@ -2,14 +2,11 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { BookingCta, BookingSoonerNote } from "@/components/booking-cta";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  OUTCOME_OPTIONS,
-  SCHEDULE_MAILTO,
-  TIMELINE_OPTIONS,
-} from "@/lib/assessment-data";
+import { OUTCOME_OPTIONS, TIMELINE_OPTIONS } from "@/lib/assessment-data";
 import { resultCopy, scoreAssessment } from "@/lib/scoring";
 import {
   clearProgress,
@@ -134,15 +131,9 @@ export function ResultsView() {
               Please do not submit employee names, medical information or
               confidential details through this assessment.
             </p>
-            <a
-              href={SCHEDULE_MAILTO}
-              className={cn(
-                buttonVariants(),
-                "mt-2 inline-flex h-11 px-5 font-semibold"
-              )}
-            >
+            <BookingCta className="mt-2">
               Schedule a confidential conversation
-            </a>
+            </BookingCta>
           </CardContent>
         </Card>
       )}
@@ -277,15 +268,8 @@ export function ResultsView() {
             </li>
           </ul>
           <p>There is no obligation to purchase services.</p>
-          <a
-            href={SCHEDULE_MAILTO}
-            className={cn(
-              buttonVariants(),
-              "mt-2 inline-flex h-11 px-5 font-semibold"
-            )}
-          >
-            {copy.ctaLabel}
-          </a>
+          <BookingCta className="mt-2">{copy.ctaLabel}</BookingCta>
+          <BookingSoonerNote className="mt-3" />
         </CardContent>
       </Card>
 

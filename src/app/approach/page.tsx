@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { BookingLink } from "@/components/booking-cta";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CtaBand } from "@/components/cta-band";
@@ -86,6 +87,13 @@ export default function ApproachPage() {
             <p>12–20 minutes: Explore sticking points and consequences</p>
             <p>20–25 minutes: Define desired outcomes</p>
             <p>25–30 minutes: Recommend the next step</p>
+            <p className="pt-2">
+              Already completed the assessment?{" "}
+              <BookingLink className="text-forest underline-offset-4 hover:underline">
+                Book a complimentary results review
+              </BookingLink>
+              .
+            </p>
           </CardContent>
         </Card>
       </section>
