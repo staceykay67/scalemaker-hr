@@ -1,3 +1,5 @@
+import { CONTACT_EMAIL } from "./site-contact";
+
 export const LIKERT_OPTIONS = [
   { value: "strongly_disagree", label: "Strongly disagree", points: 1 },
   { value: "disagree", label: "Disagree", points: 2 },
@@ -440,7 +442,6 @@ export const RESULT_COPY: Record<
   },
 };
 
-export const CONTACT_EMAIL = "staceykay@scalemakerhr.com";
 export const SCHEDULE_MAILTO = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
   "People & Growth Results Review"
 )}&body=${encodeURIComponent(

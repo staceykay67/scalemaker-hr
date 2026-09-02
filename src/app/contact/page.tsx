@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ContactDetails } from "@/components/contact-details";
 import { ContactForm } from "@/components/contact-form";
 import { CtaBand } from "@/components/cta-band";
 
@@ -24,19 +25,11 @@ export default function ContactPage() {
 
       <div className="mt-10 grid gap-10 lg:grid-cols-[1.2fr_0.8fr]">
         <ContactForm />
-        <div className="space-y-3 text-sm leading-relaxed text-muted-foreground">
-          <p className="font-medium text-foreground">Scalemaker HR LLC</p>
-          <p>Arizona</p>
-          <p>
-            <a
-              className="text-forest underline-offset-4 hover:underline"
-              href="mailto:staceykay@scalemakerhr.com"
-            >
-              staceykay@scalemakerhr.com
-            </a>
-          </p>
-          <p>Stacey Kay, MHR, SPHR, SHRM-SCP</p>
-        </div>
+        <ContactDetails
+          className="space-y-3 text-sm leading-relaxed text-muted-foreground"
+          headingClassName="font-medium text-foreground"
+          linkClassName="text-forest underline-offset-4 hover:underline"
+        />
       </div>
     </div>
       <CtaBand

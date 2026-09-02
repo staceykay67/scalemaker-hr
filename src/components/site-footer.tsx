@@ -1,5 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
+import { ContactDetails } from "@/components/contact-details";
+import { OrganizationJsonLd } from "@/components/organization-json-ld";
 
 export function SiteFooter() {
   return (
@@ -40,19 +42,11 @@ export function SiteFooter() {
             </Link>
           </p>
         </div>
-        <div className="space-y-2 text-sm text-white/85">
-          <p className="font-semibold text-white">Scalemaker HR LLC</p>
-          <p>Arizona</p>
-          <p>
-            <a
-              href="mailto:staceykay@scalemakerhr.com"
-              className="underline-offset-4 hover:underline"
-            >
-              staceykay@scalemakerhr.com
-            </a>
-          </p>
-          <p>Stacey Kay, MHR, SPHR, SHRM-SCP</p>
-        </div>
+        <ContactDetails
+          className="space-y-2 text-sm text-white/85"
+          headingClassName="font-semibold text-white"
+          linkClassName="underline-offset-4 hover:underline"
+        />
       </div>
       <div className="border-t border-white/15">
         <div className="mx-auto max-w-6xl space-y-3 px-4 py-6 text-xs leading-relaxed text-white/70 sm:px-6">
@@ -67,6 +61,7 @@ export function SiteFooter() {
           </p>
         </div>
       </div>
+      <OrganizationJsonLd />
     </footer>
   );
 }
