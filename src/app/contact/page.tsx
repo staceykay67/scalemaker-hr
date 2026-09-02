@@ -23,7 +23,7 @@ export default function ContactPage() {
         already know what you want to discuss. The fastest way to make that
         conversation useful is to complete the assessment first.
       </p>
-      <BookingCta className="mt-6">Book a complimentary results review</BookingCta>
+      <BookingCta className="mt-6" />
       <BookingSoonerNote className="mt-3 max-w-2xl" />
 
       <div className="mt-10 grid gap-10 lg:grid-cols-[1.2fr_0.8fr]">

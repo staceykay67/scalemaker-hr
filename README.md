@@ -24,7 +24,7 @@ The assessment follows the company’s Free Assessment spec: business-profile qu
   - 65–79% Developing
   - 45–64% Growth Constrained
   - Below 45% Foundation at Risk
-- Schedule a complimentary 30-minute results review from the results page or contact page
+- Schedule a 30-minute results review from the results page or contact page
 
 This is the assessment experience itself. It does not replace ScoreApp’s email automations, CRM, or PDF reports. Results are calculated in the browser. Progress and results are also saved in the visitor’s browser so they can return to the results page.
 
