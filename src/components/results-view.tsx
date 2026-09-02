@@ -6,7 +6,13 @@ import { BookingCta, BookingSoonerNote } from "@/components/booking-cta";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
-import { OUTCOME_OPTIONS, TIMELINE_OPTIONS } from "@/lib/assessment-data";
+import { Input } from "@/components/ui/input";
+import {
+  OTHER_OUTCOME,
+  OUTCOME_OPTIONS,
+  TIMELINE_OPTIONS,
+} from "@/lib/assessment-data";
+import { formatWhatMatters } from "@/lib/form-payloads";
 import { resultCopy, scoreAssessment } from "@/lib/scoring";
 import {
   clearProgress,
@@ -74,15 +80,20 @@ export function ResultsView() {
     saveResults(next);
   }
 
-  function toggleOutcome(label: string) {
+  function setOutcome(label: string, nextChecked: boolean) {
     if (!record) return;
     const selected = new Set(record.outcomes);
-    if (selected.has(label)) {
-      selected.delete(label);
-    } else if (selected.size < 3) {
+    if (nextChecked) {
+      if (selected.has(label) || selected.size >= 3) return;
       selected.add(label);
+    } else {
+      selected.delete(label);
     }
-    persist({ ...record, outcomes: Array.from(selected) });
+    persist({
+      ...record,
+      outcomes: Array.from(selected),
+      outcomeOther: selected.has(OTHER_OUTCOME) ? record.outcomeOther : "",
+    });
     if (priorityStatus !== "sending") {
       setPriorityStatus("idle");
       setPriorityError("");
@@ -96,6 +107,11 @@ export function ResultsView() {
     if (record.outcomes.length === 0) {
       setPriorityStatus("error");
       setPriorityError("Please select at least one outcome that matters most.");
+      return;
+    }
+    if (record.outcomes.includes(OTHER_OUTCOME) && !record.outcomeOther.trim()) {
+      setPriorityStatus("error");
+      setPriorityError("Please describe the other outcome that matters most.");
       return;
     }
     if (!record.timeline.trim()) {
@@ -118,6 +134,7 @@ export function ResultsView() {
           risks: record.risks,
           impact: record.impact,
           outcomes: record.outcomes,
+          outcomeOther: record.outcomeOther,
           timeline: record.timeline,
           completedAt: record.completedAt,
         }),
@@ -279,7 +296,7 @@ export function ResultsView() {
           <div className="mt-4 space-y-4 rounded-xl border bg-white p-5">
             <p className="font-medium text-forest">Thank you. We received your priorities.</p>
             <p className="text-sm leading-relaxed text-muted-foreground">
-              {record.outcomes.join(" · ")}
+              {formatWhatMatters(record.outcomes, record.outcomeOther)}
               {record.timeline ? ` · ${record.timeline}` : ""}
             </p>
             <p className="text-sm leading-relaxed text-muted-foreground">
@@ -300,17 +317,44 @@ export function ResultsView() {
               {OUTCOME_OPTIONS.map((option) => {
                 const checked = record.outcomes.includes(option);
                 return (
-                  <label
-                    key={option}
-                    className="flex cursor-pointer items-start gap-3 rounded-lg border bg-white p-3 text-sm"
-                  >
-                    <Checkbox
-                      checked={checked}
-                      onCheckedChange={() => toggleOutcome(option)}
-                      className="mt-0.5"
-                    />
-                    {option}
-                  </label>
+                  <div key={option} className="space-y-2">
+                    <div
+                      className="flex cursor-pointer items-start gap-3 rounded-lg border bg-white p-3 text-sm"
+                      onClick={() => setOutcome(option, !checked)}
+                    >
+                      <Checkbox
+                        checked={checked}
+                        onCheckedChange={(value) =>
+                          setOutcome(option, value === true)
+                        }
+                        onClick={(event) => event.stopPropagation()}
+                        className="mt-0.5"
+                      />
+                      {option}
+                    </div>
+                    {option === OTHER_OUTCOME && checked && (
+                      <label className="block space-y-2 text-sm font-medium">
+                        What else matters most?
+                        <Input
+                          value={record.outcomeOther}
+                          onChange={(event) => {
+                            persist({
+                              ...record,
+                              outcomeOther: event.target.value,
+                            });
+                            if (priorityStatus !== "sending") {
+                              setPriorityStatus("idle");
+                              setPriorityError("");
+                            }
+                          }}
+                          placeholder="Describe the outcome that matters most"
+                          className="h-11"
+                          maxLength={300}
+                          autoComplete="off"
+                        />
+                      </label>
+                    )}
+                  </div>
                 );
               })}
             </div>

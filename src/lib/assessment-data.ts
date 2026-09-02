@@ -353,6 +353,8 @@ export const OUTCOME_OPTIONS = [
   "Other",
 ];
 
+export const OTHER_OUTCOME = "Other";
+
 export const TIMELINE_OPTIONS = [
   "Immediately",
   "Within the next 30 days",

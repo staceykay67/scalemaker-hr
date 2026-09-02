@@ -31,6 +31,32 @@ describe("assessment lead payload", () => {
     assert.match(payload.message, /Ideal start timeline: Within the next 30 days/);
   });
 
+  it("includes Other free-text with the selected outcomes", () => {
+    const payload = buildAssessmentFormspreePayload({
+      contact,
+      outcomes: ["Reduce turnover", "Other"],
+      outcomeOther: "Need a handbook rewrite before we open a second site",
+      timeline: "Immediately",
+    });
+
+    assert.equal(
+      payload.outcomes,
+      "Reduce turnover; Other: Need a handbook rewrite before we open a second site"
+    );
+    assert.equal(
+      payload.outcomeOther,
+      "Need a handbook rewrite before we open a second site"
+    );
+    assert.match(
+      payload.message,
+      /What matters most: Reduce turnover; Other: Need a handbook rewrite before we open a second site/
+    );
+    assert.match(
+      payload.message,
+      /Other outcome detail: Need a handbook rewrite before we open a second site/
+    );
+  });
+
   it("keeps the original subject when priorities have not been collected yet", () => {
     const payload = buildAssessmentFormspreePayload({
       contact,

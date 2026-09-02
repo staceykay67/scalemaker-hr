@@ -157,6 +157,7 @@ export function AssessmentWizard() {
           risks: completed.risks,
           impact: completed.impact,
           outcomes: completed.outcomes,
+          outcomeOther: completed.outcomeOther,
           timeline: completed.timeline,
           completedAt: completed.completedAt,
         }),

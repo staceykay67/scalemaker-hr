@@ -3,6 +3,7 @@ import {
   LIKERT_OPTIONS,
   PROFILE_QUESTIONS,
   RISK_OPTIONS,
+  OTHER_OUTCOME,
   SCHEDULE_OPTIONS,
   SCORED_QUESTIONS,
   type LikertValue,
@@ -32,9 +33,24 @@ export type AssessmentLeadInput = {
   risks?: string[];
   impact?: Record<string, string>;
   outcomes?: string[];
+  outcomeOther?: string;
   timeline?: string;
   completedAt?: string | null;
 };
+
+export function formatWhatMatters(
+  outcomes: string[] | undefined,
+  outcomeOther?: string
+): string {
+  const other = compact(outcomeOther);
+  return (outcomes ?? [])
+    .map(compact)
+    .filter(Boolean)
+    .map((item) =>
+      item === OTHER_OUTCOME && other ? `${OTHER_OUTCOME}: ${other}` : item
+    )
+    .join("; ");
+}
 
 function compact(value: string | undefined): string {
   return (value ?? "").trim();
@@ -89,7 +105,8 @@ export function buildAssessmentFormspreePayload(
   const schedule = scheduleLabel(contact.schedule);
   const likert = (input.likert ?? {}) as Record<string, LikertValue>;
   const risks = input.risks ?? [];
-  const outcomes = (input.outcomes ?? []).map(compact).filter(Boolean);
+  const outcomeOther = compact(input.outcomeOther);
+  const outcomes = formatWhatMatters(input.outcomes, outcomeOther);
   const timeline = compact(input.timeline);
   const scores = scoreAssessment(likert, risks);
   const band = resultCopy(scores.tier);
@@ -124,7 +141,8 @@ export function buildAssessmentFormspreePayload(
     businessName ? `Business: ${businessName}` : null,
     schedule ? `Wants to discuss results: ${schedule}` : null,
     issue ? `Current HR issue: ${issue}` : null,
-    outcomes.length ? `What matters most: ${outcomes.join("; ")}` : null,
+    outcomes ? `What matters most: ${outcomes}` : null,
+    outcomeOther ? `Other outcome detail: ${outcomeOther}` : null,
     timeline ? `Ideal start timeline: ${timeline}` : null,
     input.completedAt ? `Completed at: ${input.completedAt}` : null,
     "",
@@ -152,7 +170,7 @@ export function buildAssessmentFormspreePayload(
   const payload: Record<string, string> = {
     formType: "assessment",
     _subject:
-      outcomes.length || timeline
+      outcomes || timeline
         ? `People & Growth Assessment priorities — ${band.name} (${scores.percent}%)`
         : `People & Growth Assessment — ${band.name} (${scores.percent}%)`,
     name,
@@ -162,7 +180,8 @@ export function buildAssessmentFormspreePayload(
     businessName,
     issue,
     schedule,
-    outcomes: outcomes.join("; "),
+    outcomes,
+    outcomeOther,
     timeline,
     scorePercent: String(scores.percent),
     scoreBand: band.name,
