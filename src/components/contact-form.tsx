@@ -33,7 +33,7 @@ export function ContactForm() {
     } catch {
       setStatus("error");
       setError(
-        "The message could not be sent from this preview. Email staceykay@scalemakerhr.com directly and we will connect the form when the site is live."
+        "The message could not be sent. Please email staceykay@scalemakerhr.com directly and we will follow up."
       );
     }
   }
@@ -56,7 +56,10 @@ export function ContactForm() {
         <Field label="Name" name="name" required />
         <Field label="Work email" name="email" type="email" required />
       </div>
-      <Field label="Business name" name="business" />
+      <div className="grid gap-4 sm:grid-cols-2">
+        <Field label="Business name" name="business" />
+        <Field label="Phone (optional)" name="phone" type="tel" />
+      </div>
       <div className="space-y-2">
         <Label htmlFor="message">How can we help?</Label>
         <Textarea id="message" name="message" required className="min-h-32" />

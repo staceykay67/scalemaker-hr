@@ -26,7 +26,36 @@ The assessment follows the company’s Free Assessment spec: business-profile qu
   - Below 45% Foundation at Risk
 - Ask to schedule a 30-minute results review by email
 
-This is the assessment experience itself. It does not replace ScoreApp’s email automations, CRM, or PDF reports. Results are calculated in the browser. Lead details are stored locally on the visitor’s device until you connect email or a CRM.
+This is the assessment experience itself. It does not replace ScoreApp’s email automations, CRM, or PDF reports. Results are calculated in the browser. Progress and results are also saved in the visitor’s browser so they can return to the results page.
+
+Contact messages and completed assessment lead captures are emailed to **staceykay@scalemakerhr.com** through Formspree. The site posts to `/api/contact` and `/api/leads`, which forward to Formspree using environment variables. Form IDs are not hardcoded in application source.
+
+## Connect Formspree (required for live email)
+
+Until these variables are set in Vercel, the Contact form will show an error and assessment leads will not be emailed (results still appear for the visitor).
+
+Formspree forms already exist and notify `staceykay@scalemakerhr.com`:
+
+- Contact: `https://formspree.io/f/xjyvrwad`
+- Assessment: `https://formspree.io/f/xyeyjwbz`
+
+In the Vercel project **scalemaker-hr** go to **Settings → Environment Variables** (Production and Preview) and add:
+
+| Variable | Value | Used for |
+| --- | --- | --- |
+| `FORMSPREE_CONTACT_ID` | `xjyvrwad` | Contact page (`/api/contact`) |
+| `FORMSPREE_ASSESSMENT_ID` | `xyeyjwbz` | Assessment completion (`/api/leads`) |
+
+`NEXT_PUBLIC_FORMSPREE_CONTACT` and `NEXT_PUBLIC_FORMSPREE_ASSESSMENT` are also accepted if you prefer public names. Optional: `FORMSPREE_FORM_ID` (or `NEXT_PUBLIC_FORMSPREE_FORM`) for one shared form; submissions include `formType` = `contact` or `assessment`.
+
+Redeploy after saving. These are read by the server API routes, so you do not need `NEXT_PUBLIC_` unless you want the IDs in the browser bundle.
+
+Local development: copy `.env.example` to `.env.local` and restart `npm run dev`.
+
+What Stacey receives:
+
+- **Contact:** name, email, phone (if provided), business name (if provided), and message.
+- **Assessment:** name, email, phone (if provided), business, discussion preference, optional HR issue, overall score and band (Scale Ready / Developing / Growth Constrained / Foundation at Risk), category scores, risk/impact flags, profile answers, and scored-statement answers when they are already in the submitted record.
 
 ## Run locally
 
