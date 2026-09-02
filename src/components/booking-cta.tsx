@@ -23,7 +23,7 @@ export function BookingCta({
       rel="noopener noreferrer"
       className={cn(
         buttonVariants(),
-        "inline-flex h-11 px-5 font-semibold",
+        "inline-flex h-auto min-h-11 whitespace-normal px-5 py-2.5 text-center font-semibold",
         className
       )}
     >

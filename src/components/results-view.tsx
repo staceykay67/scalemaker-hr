@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { BookingCta, BookingSoonerNote } from "@/components/booking-cta";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -20,6 +20,10 @@ import { cn } from "@/lib/utils";
 export function ResultsView() {
   const [record, setRecord] = useState<AssessmentRecord | null>(null);
   const [ready, setReady] = useState(false);
+  const [priorityStatus, setPriorityStatus] = useState<
+    "idle" | "sending" | "sent" | "error"
+  >("idle");
+  const [priorityError, setPriorityError] = useState("");
 
   useEffect(() => {
     setRecord(loadResults());
@@ -79,6 +83,65 @@ export function ResultsView() {
       selected.add(label);
     }
     persist({ ...record, outcomes: Array.from(selected) });
+    if (priorityStatus !== "sending") {
+      setPriorityStatus("idle");
+      setPriorityError("");
+    }
+  }
+
+  async function submitPriorities(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!record) return;
+
+    if (record.outcomes.length === 0) {
+      setPriorityStatus("error");
+      setPriorityError("Please select at least one outcome that matters most.");
+      return;
+    }
+    if (!record.timeline.trim()) {
+      setPriorityStatus("error");
+      setPriorityError("Please tell us when you would ideally begin.");
+      return;
+    }
+
+    setPriorityError("");
+    setPriorityStatus("sending");
+
+    try {
+      const response = await fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contact: record.contact,
+          profile: record.profile,
+          likert: record.likert,
+          risks: record.risks,
+          impact: record.impact,
+          outcomes: record.outcomes,
+          timeline: record.timeline,
+          completedAt: record.completedAt,
+        }),
+      });
+      const data = (await response.json().catch(() => null)) as {
+        error?: string;
+      } | null;
+      if (!response.ok) {
+        throw new Error(
+          response.status === 503
+            ? "We could not send your priorities just now. Please email staceykay@scalemakerhr.com or use the scheduling link below."
+            : data?.error ||
+                "Your priorities could not be sent. Please try again or email staceykay@scalemakerhr.com."
+        );
+      }
+      setPriorityStatus("sent");
+    } catch (error) {
+      setPriorityStatus("error");
+      setPriorityError(
+        error instanceof Error && error.message
+          ? error.message
+          : "Your priorities could not be sent. Please email staceykay@scalemakerhr.com or use the scheduling link below."
+      );
+    }
   }
 
   return (
@@ -212,45 +275,85 @@ export function ResultsView() {
         <h2 className="font-heading text-xl font-semibold text-forest">
           Tell us what matters most
         </h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Select up to three outcomes that would be most valuable to your
-          business. This helps tailor a conversation if you schedule a review.
-        </p>
-        <div className="mt-4 space-y-2">
-          {OUTCOME_OPTIONS.map((option) => {
-            const checked = record.outcomes.includes(option);
-            return (
-              <label
-                key={option}
-                className="flex cursor-pointer items-start gap-3 rounded-lg border bg-white p-3 text-sm"
+        {priorityStatus === "sent" ? (
+          <div className="mt-4 space-y-4 rounded-xl border bg-white p-5">
+            <p className="font-medium text-forest">Thank you. We received your priorities.</p>
+            <p className="text-sm leading-relaxed text-muted-foreground">
+              {record.outcomes.join(" · ")}
+              {record.timeline ? ` · ${record.timeline}` : ""}
+            </p>
+            <p className="text-sm leading-relaxed text-muted-foreground">
+              Schedule a complimentary 30-minute results review to talk through
+              these outcomes.
+            </p>
+            <BookingCta>Schedule a complimentary 30-minute results review</BookingCta>
+            <BookingSoonerNote />
+          </div>
+        ) : (
+          <form onSubmit={submitPriorities} className="mt-2">
+            <p className="text-sm text-muted-foreground">
+              Select up to three outcomes that would be most valuable to your
+              business, then submit so we can tailor a conversation if you
+              schedule a review.
+            </p>
+            <div className="mt-4 space-y-2">
+              {OUTCOME_OPTIONS.map((option) => {
+                const checked = record.outcomes.includes(option);
+                return (
+                  <label
+                    key={option}
+                    className="flex cursor-pointer items-start gap-3 rounded-lg border bg-white p-3 text-sm"
+                  >
+                    <Checkbox
+                      checked={checked}
+                      onCheckedChange={() => toggleOutcome(option)}
+                      className="mt-0.5"
+                    />
+                    {option}
+                  </label>
+                );
+              })}
+            </div>
+            <label className="mt-6 block space-y-2 text-sm font-medium">
+              When would you ideally begin addressing these needs?
+              <select
+                className="mt-2 h-11 w-full rounded-lg border border-input bg-white px-3 text-sm font-normal"
+                value={record.timeline}
+                onChange={(event) => {
+                  persist({ ...record, timeline: event.target.value });
+                  if (priorityStatus !== "sending") {
+                    setPriorityStatus("idle");
+                    setPriorityError("");
+                  }
+                }}
               >
-                <Checkbox
-                  checked={checked}
-                  onCheckedChange={() => toggleOutcome(option)}
-                  className="mt-0.5"
-                />
-                {option}
-              </label>
-            );
-          })}
-        </div>
-        <label className="mt-6 block space-y-2 text-sm font-medium">
-          When would you ideally begin addressing these needs?
-          <select
-            className="mt-2 h-11 w-full rounded-lg border border-input bg-white px-3 text-sm font-normal"
-            value={record.timeline}
-            onChange={(event) =>
-              persist({ ...record, timeline: event.target.value })
-            }
-          >
-            <option value="">Select an option</option>
-            {TIMELINE_OPTIONS.map((option) => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
-        </label>
+                <option value="">Select an option</option>
+                {TIMELINE_OPTIONS.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+            </label>
+            {priorityError && (
+              <p
+                role="alert"
+                className="mt-4 rounded-lg border border-destructive/30 bg-white px-4 py-3 text-sm text-destructive"
+              >
+                {priorityError}
+              </p>
+            )}
+            <Button
+              type="submit"
+              className="mt-6 h-11 px-5 font-semibold"
+              disabled={priorityStatus === "sending"}
+            >
+              {priorityStatus === "sending"
+                ? "Sending…"
+                : "Submit what matters most"}
+            </Button>
+          </form>
+        )}
       </section>
 
       <Card className="mt-10">
