@@ -153,10 +153,14 @@ export function AssessmentWizard() {
         body: JSON.stringify({
           contact: completed.contact,
           profile: completed.profile,
+          likert: completed.likert,
+          risks: completed.risks,
+          impact: completed.impact,
+          completedAt: completed.completedAt,
         }),
       });
     } catch {
-      // Results still display from local storage if the lead save fails.
+      // Results still display from local storage if email delivery fails.
     }
 
     router.push("/assessment/results");
