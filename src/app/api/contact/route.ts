@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
         {
           ok: false,
           error:
-            "Contact email is not connected yet. Set NEXT_PUBLIC_FORMSPREE_CONTACT (or NEXT_PUBLIC_FORMSPREE_FORM) in the hosting environment.",
+            "Contact email is not connected yet. Set FORMSPREE_CONTACT_ID or NEXT_PUBLIC_FORMSPREE_CONTACT in the hosting environment.",
         },
         { status: 503 }
       );

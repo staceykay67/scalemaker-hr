@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
         {
           ok: false,
           error:
-            "Assessment email is not connected yet. Set NEXT_PUBLIC_FORMSPREE_ASSESSMENT (or NEXT_PUBLIC_FORMSPREE_FORM) in the hosting environment.",
+            "Assessment email is not connected yet. Set FORMSPREE_ASSESSMENT_ID or NEXT_PUBLIC_FORMSPREE_ASSESSMENT in the hosting environment.",
         },
         { status: 503 }
       );

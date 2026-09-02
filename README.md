@@ -28,34 +28,29 @@ The assessment follows the company’s Free Assessment spec: business-profile qu
 
 This is the assessment experience itself. It does not replace ScoreApp’s email automations, CRM, or PDF reports. Results are calculated in the browser. Progress and results are also saved in the visitor’s browser so they can return to the results page.
 
-Contact messages and completed assessment lead captures are emailed to **staceykay@scalemakerhr.com** through Formspree. The site posts to `/api/contact` and `/api/leads`, which forward to Formspree using environment variables. Form IDs are not committed to the repo.
+Contact messages and completed assessment lead captures are emailed to **staceykay@scalemakerhr.com** through Formspree. The site posts to `/api/contact` and `/api/leads`, which forward to Formspree using environment variables. Form IDs are not hardcoded in application source.
 
 ## Connect Formspree (required for live email)
 
 Until these variables are set in Vercel, the Contact form will show an error and assessment leads will not be emailed (results still appear for the visitor).
 
-1. Create a free [Formspree](https://formspree.io/) account.
-2. Create **one or two** forms whose notification email is `staceykay@scalemakerhr.com`.
-   - Two forms (recommended): one for website Contact, one for assessment leads.
-   - One form: submissions include a `formType` field (`contact` or `assessment`) so you can tell them apart.
-3. Copy each form ID from the Formspree endpoint. Example: `https://formspree.io/f/abcdxyz` → ID is `abcdxyz`.
-4. In the Vercel project **scalemaker-hr** go to **Settings → Environment Variables** and add:
+Formspree forms already exist and notify `staceykay@scalemakerhr.com`:
 
-| Variable | Production value | Used for |
+- Contact: `https://formspree.io/f/xjyvrwad`
+- Assessment: `https://formspree.io/f/xyeyjwbz`
+
+In the Vercel project **scalemaker-hr** go to **Settings → Environment Variables** (Production and Preview) and add:
+
+| Variable | Value | Used for |
 | --- | --- | --- |
-| `NEXT_PUBLIC_FORMSPREE_CONTACT` | Form ID or full `https://formspree.io/f/...` URL | Contact page |
-| `NEXT_PUBLIC_FORMSPREE_ASSESSMENT` | Form ID or full `https://formspree.io/f/...` URL | Assessment completion |
+| `FORMSPREE_CONTACT_ID` | `xjyvrwad` | Contact page (`/api/contact`) |
+| `FORMSPREE_ASSESSMENT_ID` | `xyeyjwbz` | Assessment completion (`/api/leads`) |
 
-Optional instead of the two variables above:
+`NEXT_PUBLIC_FORMSPREE_CONTACT` and `NEXT_PUBLIC_FORMSPREE_ASSESSMENT` are also accepted if you prefer public names. Optional: `FORMSPREE_FORM_ID` (or `NEXT_PUBLIC_FORMSPREE_FORM`) for one shared form; submissions include `formType` = `contact` or `assessment`.
 
-| Variable | Production value | Used for |
-| --- | --- | --- |
-| `NEXT_PUBLIC_FORMSPREE_FORM` | Form ID or full URL | Both Contact and assessment, when the specific variable is empty |
+Redeploy after saving. These are read by the server API routes, so you do not need `NEXT_PUBLIC_` unless you want the IDs in the browser bundle.
 
-5. Redeploy the Vercel project after saving the variables. Next.js inlines `NEXT_PUBLIC_*` values at build time.
-6. Submit each form once, then confirm Formspree’s first-submission email if prompted (required on the free plan).
-
-Local development: copy `.env.example` to `.env.local` and paste the same IDs. Restart `npm run dev`.
+Local development: copy `.env.example` to `.env.local` and restart `npm run dev`.
 
 What Stacey receives:
 

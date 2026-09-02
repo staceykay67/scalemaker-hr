@@ -17,6 +17,7 @@ export function resolveFormspreeEndpoint(value: string | undefined): string | nu
 
 export function getFormspreeEndpoint(kind: FormKind): string | null {
   const shared = firstDefined(
+    process.env.FORMSPREE_FORM_ID,
     process.env.NEXT_PUBLIC_FORMSPREE_FORM,
     process.env.FORMSPREE_FORM
   );
@@ -24,6 +25,7 @@ export function getFormspreeEndpoint(kind: FormKind): string | null {
   if (kind === "contact") {
     return resolveFormspreeEndpoint(
       firstDefined(
+        process.env.FORMSPREE_CONTACT_ID,
         process.env.NEXT_PUBLIC_FORMSPREE_CONTACT,
         process.env.FORMSPREE_CONTACT,
         shared
@@ -33,6 +35,7 @@ export function getFormspreeEndpoint(kind: FormKind): string | null {
 
   return resolveFormspreeEndpoint(
     firstDefined(
+      process.env.FORMSPREE_ASSESSMENT_ID,
       process.env.NEXT_PUBLIC_FORMSPREE_ASSESSMENT,
       process.env.FORMSPREE_ASSESSMENT,
       shared
