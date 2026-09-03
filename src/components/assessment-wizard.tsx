@@ -20,6 +20,7 @@ import {
   type LikertValue,
 } from "@/lib/assessment-data";
 import { AssessmentRateLimitNotice } from "@/components/assessment-rate-limit-notice";
+import { assessmentLeadBody } from "@/lib/assessment-lead";
 import { isAssessmentRateLimitedResponse } from "@/lib/assessment-rate-limit";
 import {
   clearProgress,
@@ -171,17 +172,7 @@ export function AssessmentWizard() {
         const response = await fetch("/api/leads", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            contact: completed.contact,
-            profile: completed.profile,
-            likert: completed.likert,
-            risks: completed.risks,
-            impact: completed.impact,
-            outcomes: completed.outcomes,
-            outcomeOther: completed.outcomeOther,
-            timeline: completed.timeline,
-            completedAt: completed.completedAt,
-          }),
+          body: JSON.stringify(assessmentLeadBody(completed)),
         });
         const data = await response.json().catch(() => null);
         if (isAssessmentRateLimitedResponse(response.status, data)) {

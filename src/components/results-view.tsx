@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { AssessmentRateLimitNotice } from "@/components/assessment-rate-limit-notice";
 import { BookingCta, BookingSoonerNote } from "@/components/booking-cta";
@@ -13,7 +13,12 @@ import {
   OUTCOME_OPTIONS,
   TIMELINE_OPTIONS,
 } from "@/lib/assessment-data";
-import { isAssessmentRateLimitedResponse } from "@/lib/assessment-rate-limit";
+import {
+  alreadySentPriorities,
+  hasPriorities,
+  postAssessmentLead,
+  prioritiesFingerprint,
+} from "@/lib/assessment-lead";
 import { formatWhatMatters } from "@/lib/form-payloads";
 import { resultCopy, scoreAssessment } from "@/lib/scoring";
 import {
@@ -33,11 +38,19 @@ export function ResultsView({ rateLimited = false }: { rateLimited?: boolean }) 
   >(rateLimited ? "limited" : "idle");
   const [priorityError, setPriorityError] = useState("");
   const [leadLimited, setLeadLimited] = useState(rateLimited);
+  const sendingFingerprint = useRef<string | null>(null);
 
   useEffect(() => {
-    setRecord(loadResults());
+    const loaded = loadResults();
+    setRecord(loaded);
+    if (rateLimited) {
+      setLeadLimited(true);
+      setPriorityStatus(loaded?.prioritiesSubmittedAt ? "sent" : "limited");
+    } else if (loaded?.prioritiesSubmittedAt) {
+      setPriorityStatus("sent");
+    }
     setReady(true);
-  }, []);
+  }, [rateLimited]);
 
   const scores = useMemo(() => {
     if (!record?.completedAt) return null;
@@ -97,77 +110,100 @@ export function ResultsView({ rateLimited = false }: { rateLimited?: boolean }) 
       outcomes: Array.from(selected),
       outcomeOther: selected.has(OTHER_OUTCOME) ? record.outcomeOther : "",
     });
-    if (priorityStatus !== "sending") {
+    if (
+      priorityStatus !== "sending" &&
+      priorityStatus !== "sent" &&
+      priorityStatus !== "limited"
+    ) {
       setPriorityStatus("idle");
       setPriorityError("");
     }
   }
 
-  async function submitPriorities(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    if (!record) return;
+  function validatePriorities(current: AssessmentRecord): string | null {
+    if (current.outcomes.length === 0) {
+      return "Please select at least one outcome that matters most.";
+    }
+    if (current.outcomes.includes(OTHER_OUTCOME) && !current.outcomeOther.trim()) {
+      return "Please describe the other outcome that matters most.";
+    }
+    if (!current.timeline.trim()) {
+      return "Please tell us when you would ideally begin.";
+    }
+    return null;
+  }
 
-    if (record.outcomes.length === 0) {
-      setPriorityStatus("error");
-      setPriorityError("Please select at least one outcome that matters most.");
-      return;
+  async function savePriorities(
+    current: AssessmentRecord,
+    options: { requireComplete: boolean; closeForm: boolean }
+  ) {
+    if (leadLimited || priorityStatus === "limited") {
+      setLeadLimited(true);
+      setPriorityStatus("limited");
+      return false;
     }
-    if (record.outcomes.includes(OTHER_OUTCOME) && !record.outcomeOther.trim()) {
-      setPriorityStatus("error");
-      setPriorityError("Please describe the other outcome that matters most.");
-      return;
+
+    if (options.requireComplete) {
+      const message = validatePriorities(current);
+      if (message) {
+        setPriorityStatus("error");
+        setPriorityError(message);
+        return false;
+      }
+    } else if (!hasPriorities(current)) {
+      return true;
     }
-    if (!record.timeline.trim()) {
-      setPriorityStatus("error");
-      setPriorityError("Please tell us when you would ideally begin.");
-      return;
+
+    const fingerprint = prioritiesFingerprint(current);
+    if (
+      alreadySentPriorities(current) ||
+      sendingFingerprint.current === fingerprint
+    ) {
+      if (options.closeForm) setPriorityStatus("sent");
+      return true;
     }
 
     setPriorityError("");
-    setPriorityStatus("sending");
+    if (options.closeForm) setPriorityStatus("sending");
+    sendingFingerprint.current = fingerprint;
 
-    try {
-      const response = await fetch("/api/leads", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          contact: record.contact,
-          profile: record.profile,
-          likert: record.likert,
-          risks: record.risks,
-          impact: record.impact,
-          outcomes: record.outcomes,
-          outcomeOther: record.outcomeOther,
-          timeline: record.timeline,
-          completedAt: record.completedAt,
-        }),
-      });
-      const data = (await response.json().catch(() => null)) as {
-        error?: string;
-        code?: string;
-      } | null;
-      if (isAssessmentRateLimitedResponse(response.status, data)) {
+    const result = await postAssessmentLead(current);
+    if (!result.ok) {
+      sendingFingerprint.current = null;
+      if (result.rateLimited) {
         setLeadLimited(true);
         setPriorityStatus("limited");
-        return;
+        return false;
       }
-      if (!response.ok) {
-        throw new Error(
-          response.status === 503
-            ? "We could not send your priorities just now. Please email staceykay@scalemakerhr.com or use the scheduling link below."
-            : data?.error ||
-                "Your priorities could not be sent. Please try again or email staceykay@scalemakerhr.com."
-        );
-      }
-      setPriorityStatus("sent");
-    } catch (error) {
       setPriorityStatus("error");
       setPriorityError(
-        error instanceof Error && error.message
-          ? error.message
-          : "Your priorities could not be sent. Please email staceykay@scalemakerhr.com or use the scheduling link below."
+        result.error ||
+          "Your priorities could not be sent. Please try again or email staceykay@scalemakerhr.com."
       );
+      return false;
     }
+
+    persist({
+      ...current,
+      prioritiesSubmittedAt: new Date().toISOString(),
+      prioritiesFingerprint: fingerprint,
+    });
+    setPriorityStatus("sent");
+    return true;
+  }
+
+  async function submitPriorities(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!record) return;
+    await savePriorities(record, { requireComplete: true, closeForm: true });
+  }
+
+  function onScheduleClick() {
+    if (!record) return;
+    if (leadLimited || priorityStatus === "limited") return;
+    if (!hasPriorities(record) && !alreadySentPriorities(record)) return;
+    setPriorityStatus("sending");
+    void savePriorities(record, { requireComplete: false, closeForm: true });
   }
 
   return (
@@ -221,9 +257,7 @@ export function ResultsView({ rateLimited = false }: { rateLimited?: boolean }) 
               Please do not submit employee names, medical information or
               confidential details through this assessment.
             </p>
-            <BookingCta className="mt-2">
-              Schedule a confidential conversation
-            </BookingCta>
+            <BookingCta className="mt-2" onClick={onScheduleClick} />
           </CardContent>
         </Card>
       )}
@@ -306,26 +340,27 @@ export function ResultsView({ rateLimited = false }: { rateLimited?: boolean }) 
           <div className="mt-4">
             <AssessmentRateLimitNotice />
           </div>
-        ) : priorityStatus === "sent" ? (
+        ) : priorityStatus === "sending" || priorityStatus === "sent" ? (
           <div className="mt-4 space-y-4 rounded-xl border bg-white p-5">
-            <p className="font-medium text-forest">Thank you. We received your priorities.</p>
+            <p className="font-medium text-forest">
+              {priorityStatus === "sending"
+                ? "Saving your priorities…"
+                : "Thank you. We received your priorities."}
+            </p>
             <p className="text-sm leading-relaxed text-muted-foreground">
-              {formatWhatMatters(record.outcomes, record.outcomeOther)}
+              {formatWhatMatters(record.outcomes, record.outcomeOther) ||
+                "No additional outcomes selected."}
               {record.timeline ? ` · ${record.timeline}` : ""}
             </p>
-            <p className="text-sm leading-relaxed text-muted-foreground">
-              Schedule a complimentary 30-minute results review to talk through
-              these outcomes.
-            </p>
-            <BookingCta>Schedule a complimentary 30-minute results review</BookingCta>
+            <BookingCta onClick={onScheduleClick} />
             <BookingSoonerNote />
           </div>
         ) : (
           <form onSubmit={submitPriorities} className="mt-2">
             <p className="text-sm text-muted-foreground">
               Select up to three outcomes that would be most valuable to your
-              business, then submit so we can tailor a conversation if you
-              schedule a review.
+              business. Scheduling a review also saves these answers — you do
+              not need a separate submit first.
             </p>
             <div className="mt-4 space-y-2">
               {OUTCOME_OPTIONS.map((option) => {
@@ -356,10 +391,8 @@ export function ResultsView({ rateLimited = false }: { rateLimited?: boolean }) 
                               ...record,
                               outcomeOther: event.target.value,
                             });
-                            if (priorityStatus !== "sending") {
-                              setPriorityStatus("idle");
-                              setPriorityError("");
-                            }
+                            setPriorityStatus("idle");
+                            setPriorityError("");
                           }}
                           placeholder="Describe the outcome that matters most"
                           className="h-11"
@@ -379,10 +412,8 @@ export function ResultsView({ rateLimited = false }: { rateLimited?: boolean }) 
                 value={record.timeline}
                 onChange={(event) => {
                   persist({ ...record, timeline: event.target.value });
-                  if (priorityStatus !== "sending") {
-                    setPriorityStatus("idle");
-                    setPriorityError("");
-                  }
+                  setPriorityStatus("idle");
+                  setPriorityError("");
                 }}
               >
                 <option value="">Select an option</option>
@@ -401,14 +432,8 @@ export function ResultsView({ rateLimited = false }: { rateLimited?: boolean }) 
                 {priorityError}
               </p>
             )}
-            <Button
-              type="submit"
-              className="mt-6 h-11 px-5 font-semibold"
-              disabled={priorityStatus === "sending"}
-            >
-              {priorityStatus === "sending"
-                ? "Sending…"
-                : "Submit what matters most"}
+            <Button type="submit" className="mt-6 h-11 px-5 font-semibold">
+              Submit what matters most
             </Button>
           </form>
         )}
@@ -429,7 +454,7 @@ export function ResultsView({ rateLimited = false }: { rateLimited?: boolean }) 
             </li>
           </ul>
           <p>There is no obligation to purchase services.</p>
-          <BookingCta className="mt-2">{copy.ctaLabel}</BookingCta>
+          <BookingCta className="mt-2" onClick={onScheduleClick} />
           <BookingSoonerNote className="mt-3" />
         </CardContent>
       </Card>
