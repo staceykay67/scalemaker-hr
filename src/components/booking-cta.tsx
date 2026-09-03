@@ -12,9 +12,11 @@ import { cn } from "@/lib/utils";
 export function BookingCta({
   children = BOOKING_LABEL,
   className,
+  onClick,
 }: {
   children?: ReactNode;
   className?: string;
+  onClick?: () => void;
 }) {
   return (
     <a
@@ -26,6 +28,7 @@ export function BookingCta({
         "inline-flex h-auto min-h-11 whitespace-normal px-5 py-2.5 text-center font-semibold",
         className
       )}
+      onClick={onClick}
     >
       {children}
     </a>

@@ -27,6 +27,7 @@ import {
   saveResults,
   type AssessmentRecord,
 } from "@/lib/storage";
+import { buildAssessmentLeadBody } from "@/lib/what-matters";
 import { cn } from "@/lib/utils";
 
 const STEPS = [
@@ -150,17 +151,7 @@ export function AssessmentWizard() {
       await fetch("/api/leads", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          contact: completed.contact,
-          profile: completed.profile,
-          likert: completed.likert,
-          risks: completed.risks,
-          impact: completed.impact,
-          outcomes: completed.outcomes,
-          outcomeOther: completed.outcomeOther,
-          timeline: completed.timeline,
-          completedAt: completed.completedAt,
-        }),
+        body: JSON.stringify(buildAssessmentLeadBody(completed)),
       });
     } catch {
       // Results still display from local storage if email delivery fails.

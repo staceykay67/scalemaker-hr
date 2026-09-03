@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { BOOKING_URL } from "@/lib/site-contact";
+import { BOOKING_LABEL, BOOKING_URL } from "@/lib/site-contact";
 import { buildAssessmentFormspreePayload } from "@/lib/form-payloads";
 
 const contact = {
@@ -74,10 +74,11 @@ describe("assessment lead payload", () => {
 });
 
 describe("booking URL", () => {
-  it("uses the Google Appointment scheduling link", () => {
+  it("uses the Google Appointment scheduling link and exact CTA label", () => {
     assert.equal(
       BOOKING_URL,
       "https://calendar.app.google/ZFCQCVsqrkq9RUTp6"
     );
+    assert.equal(BOOKING_LABEL, "Schedule a 30-minute results review");
   });
 });

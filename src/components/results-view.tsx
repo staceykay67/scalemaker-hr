@@ -13,6 +13,7 @@ import {
   TIMELINE_OPTIONS,
 } from "@/lib/assessment-data";
 import { formatWhatMatters } from "@/lib/form-payloads";
+import { BOOKING_LABEL } from "@/lib/site-contact";
 import { resultCopy, scoreAssessment } from "@/lib/scoring";
 import {
   clearProgress,
@@ -22,17 +23,28 @@ import {
   type AssessmentRecord,
 } from "@/lib/storage";
 import { cn } from "@/lib/utils";
+import {
+  buildAssessmentLeadBody,
+  shouldSendWhatMattersOnSchedule,
+  validateWhatMatters,
+  type PrioritySendStatus,
+} from "@/lib/what-matters";
 
 export function ResultsView() {
   const [record, setRecord] = useState<AssessmentRecord | null>(null);
   const [ready, setReady] = useState(false);
-  const [priorityStatus, setPriorityStatus] = useState<
-    "idle" | "sending" | "sent" | "error"
-  >("idle");
+  const [priorityStatus, setPriorityStatus] =
+    useState<PrioritySendStatus>("idle");
   const [priorityError, setPriorityError] = useState("");
+  const [whatMattersClosed, setWhatMattersClosed] = useState(false);
 
   useEffect(() => {
-    setRecord(loadResults());
+    const loaded = loadResults();
+    setRecord(loaded);
+    if (loaded?.prioritiesSubmittedAt) {
+      setWhatMattersClosed(true);
+      setPriorityStatus("sent");
+    }
     setReady(true);
   }, []);
 
@@ -100,26 +112,7 @@ export function ResultsView() {
     }
   }
 
-  async function submitPriorities(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    if (!record) return;
-
-    if (record.outcomes.length === 0) {
-      setPriorityStatus("error");
-      setPriorityError("Please select at least one outcome that matters most.");
-      return;
-    }
-    if (record.outcomes.includes(OTHER_OUTCOME) && !record.outcomeOther.trim()) {
-      setPriorityStatus("error");
-      setPriorityError("Please describe the other outcome that matters most.");
-      return;
-    }
-    if (!record.timeline.trim()) {
-      setPriorityStatus("error");
-      setPriorityError("Please tell us when you would ideally begin.");
-      return;
-    }
-
+  async function sendPriorities(current: AssessmentRecord) {
     setPriorityError("");
     setPriorityStatus("sending");
 
@@ -127,17 +120,7 @@ export function ResultsView() {
       const response = await fetch("/api/leads", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          contact: record.contact,
-          profile: record.profile,
-          likert: record.likert,
-          risks: record.risks,
-          impact: record.impact,
-          outcomes: record.outcomes,
-          outcomeOther: record.outcomeOther,
-          timeline: record.timeline,
-          completedAt: record.completedAt,
-        }),
+        body: JSON.stringify(buildAssessmentLeadBody(current)),
       });
       const data = (await response.json().catch(() => null)) as {
         error?: string;
@@ -150,7 +133,13 @@ export function ResultsView() {
                 "Your priorities could not be sent. Please try again or email staceykay@scalemakerhr.com."
         );
       }
+      persist({
+        ...current,
+        prioritiesSubmittedAt: new Date().toISOString(),
+      });
       setPriorityStatus("sent");
+      setWhatMattersClosed(true);
+      return true;
     } catch (error) {
       setPriorityStatus("error");
       setPriorityError(
@@ -158,7 +147,29 @@ export function ResultsView() {
           ? error.message
           : "Your priorities could not be sent. Please email staceykay@scalemakerhr.com or use the scheduling link below."
       );
+      return false;
     }
+  }
+
+  async function submitPriorities(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!record) return;
+
+    const validationError = validateWhatMatters(record);
+    if (validationError) {
+      setPriorityStatus("error");
+      setPriorityError(validationError);
+      return;
+    }
+
+    await sendPriorities(record);
+  }
+
+  function onScheduleClick() {
+    setWhatMattersClosed(true);
+    if (!record) return;
+    if (!shouldSendWhatMattersOnSchedule(record, priorityStatus)) return;
+    void sendPriorities(record);
   }
 
   return (
@@ -211,7 +222,7 @@ export function ResultsView() {
               Please do not submit employee names, medical information or
               confidential details through this assessment.
             </p>
-            <BookingCta className="mt-2">
+            <BookingCta className="mt-2" onClick={onScheduleClick}>
               Schedule a confidential conversation
             </BookingCta>
           </CardContent>
@@ -292,26 +303,43 @@ export function ResultsView() {
         <h2 className="font-heading text-xl font-semibold text-forest">
           Tell us what matters most
         </h2>
-        {priorityStatus === "sent" ? (
+        {whatMattersClosed || priorityStatus === "sent" ? (
           <div className="mt-4 space-y-4 rounded-xl border bg-white p-5">
-            <p className="font-medium text-forest">Thank you. We received your priorities.</p>
-            <p className="text-sm leading-relaxed text-muted-foreground">
-              {formatWhatMatters(record.outcomes, record.outcomeOther)}
-              {record.timeline ? ` · ${record.timeline}` : ""}
+            <p className="font-medium text-forest">
+              {priorityStatus === "sent"
+                ? "Thank you. We received your priorities."
+                : priorityStatus === "sending"
+                  ? "Saving your priorities…"
+                  : "You’re all set."}
             </p>
+            {(record.outcomes.length > 0 ||
+              record.outcomeOther.trim() ||
+              record.timeline.trim()) && (
+              <p className="text-sm leading-relaxed text-muted-foreground">
+                {formatWhatMatters(record.outcomes, record.outcomeOther)}
+                {record.timeline ? ` · ${record.timeline}` : ""}
+              </p>
+            )}
             <p className="text-sm leading-relaxed text-muted-foreground">
-              Schedule a complimentary 30-minute results review to talk through
-              these outcomes.
+              Schedule a 30-minute results review to talk through these outcomes.
             </p>
-            <BookingCta>Schedule a complimentary 30-minute results review</BookingCta>
+            {priorityError && (
+              <p
+                role="alert"
+                className="rounded-lg border border-destructive/30 bg-white px-4 py-3 text-sm text-destructive"
+              >
+                {priorityError}
+              </p>
+            )}
+            <BookingCta onClick={onScheduleClick}>{BOOKING_LABEL}</BookingCta>
             <BookingSoonerNote />
           </div>
         ) : (
           <form onSubmit={submitPriorities} className="mt-2">
             <p className="text-sm text-muted-foreground">
               Select up to three outcomes that would be most valuable to your
-              business, then submit so we can tailor a conversation if you
-              schedule a review.
+              business. Submit here, or choose Schedule a 30-minute results
+              review — either one sends your priorities.
             </p>
             <div className="mt-4 space-y-2">
               {OUTCOME_OPTIONS.map((option) => {
@@ -415,7 +443,9 @@ export function ResultsView() {
             </li>
           </ul>
           <p>There is no obligation to purchase services.</p>
-          <BookingCta className="mt-2">{copy.ctaLabel}</BookingCta>
+          <BookingCta className="mt-2" onClick={onScheduleClick}>
+            {BOOKING_LABEL}
+          </BookingCta>
           <BookingSoonerNote className="mt-3" />
         </CardContent>
       </Card>

@@ -437,8 +437,8 @@ export const RESULT_COPY: Record<
     ],
     support:
       "Your business may benefit from immediate fractional HR leadership or a comprehensive HR diagnostic followed by hands-on implementation support.",
-    cta: "Schedule a Confidential Results Review",
-    ctaLabel: "Schedule a confidential results review",
+    cta: "Schedule a 30-Minute Results Review",
+    ctaLabel: "Schedule a 30-minute results review",
   },
 };
 
