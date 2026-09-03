@@ -89,9 +89,7 @@ export default function ApproachPage() {
             <p>25–30 minutes: Recommend the next step</p>
             <p className="pt-2">
               Already completed the assessment?{" "}
-              <BookingLink className="text-forest underline-offset-4 hover:underline">
-                Book a complimentary results review
-              </BookingLink>
+              <BookingLink className="text-forest underline-offset-4 hover:underline" />
               .
             </p>
           </CardContent>

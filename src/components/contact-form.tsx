@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { BookingLink } from "@/components/booking-cta";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -45,12 +44,7 @@ export function ContactForm() {
         <p className="font-medium text-forest">Thank you.</p>
         <p className="mt-2 text-muted-foreground">
           Your message was received. If you also completed the assessment, you
-          can mention that so the conversation can start from your results. You
-          can also{" "}
-          <BookingLink className="text-forest underline-offset-4 hover:underline">
-            book a complimentary 30-minute results review
-          </BookingLink>
-          .
+          can mention that so the conversation can start from your results.
         </p>
       </div>
     );

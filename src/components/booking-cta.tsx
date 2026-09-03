@@ -1,4 +1,4 @@
-import type { MouseEvent, ReactNode } from "react";
+import type { MouseEvent } from "react";
 import { buttonVariants } from "@/components/ui/button";
 import {
   BOOKING_LABEL,
@@ -10,11 +10,9 @@ import {
 import { cn } from "@/lib/utils";
 
 export function BookingCta({
-  children = BOOKING_LABEL,
   className,
   onClick,
 }: {
-  children?: ReactNode;
   className?: string;
   onClick?: (event: MouseEvent<HTMLAnchorElement>) => void;
 }) {
@@ -30,18 +28,12 @@ export function BookingCta({
         className
       )}
     >
-      {children}
+      {BOOKING_LABEL}
     </a>
   );
 }
 
-export function BookingLink({
-  children = BOOKING_LABEL,
-  className,
-}: {
-  children?: ReactNode;
-  className?: string;
-}) {
+export function BookingLink({ className }: { className?: string }) {
   return (
     <a
       href={BOOKING_URL}
@@ -49,7 +41,7 @@ export function BookingLink({
       rel="noopener noreferrer"
       className={className}
     >
-      {children}
+      {BOOKING_LABEL}
     </a>
   );
 }

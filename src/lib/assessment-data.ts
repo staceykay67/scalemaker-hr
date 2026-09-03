@@ -330,7 +330,7 @@ export const IMPACT_QUESTIONS = [
 export const SCHEDULE_OPTIONS = [
   {
     value: "yes",
-    label: "Yes, I would like to schedule a complimentary results review",
+    label: "Yes, I would like to schedule a 30-minute results review",
   },
   { value: "possibly", label: "Possibly—please send me more information" },
   { value: "no", label: "Not at this time" },
@@ -392,7 +392,7 @@ export const RESULT_COPY: Record<
     ],
     support:
       "Your business may benefit from a targeted HR project, periodic advisory support or strategic workforce planning rather than extensive ongoing support.",
-    cta: "Schedule a 30-Minute Results Review",
+    cta: "Schedule a 30-minute results review",
     ctaLabel: "Schedule a 30-minute results review",
   },
   developing: {
@@ -407,7 +407,7 @@ export const RESULT_COPY: Record<
     ],
     support:
       "Your business may benefit from internal HR development, a focused HR project or limited fractional HR support.",
-    cta: "Schedule a 30-Minute Results Review",
+    cta: "Schedule a 30-minute results review",
     ctaLabel: "Schedule a 30-minute results review",
   },
   "growth-constrained": {
@@ -422,7 +422,7 @@ export const RESULT_COPY: Record<
     ],
     support:
       "Your business may benefit from an ongoing fractional HR partnership that provides both strategic guidance and practical implementation support.",
-    cta: "Schedule a 30-Minute Results Review",
+    cta: "Schedule a 30-minute results review",
     ctaLabel: "Schedule a 30-minute results review",
   },
   "foundation-at-risk": {
@@ -437,8 +437,8 @@ export const RESULT_COPY: Record<
     ],
     support:
       "Your business may benefit from immediate fractional HR leadership or a comprehensive HR diagnostic followed by hands-on implementation support.",
-    cta: "Schedule a Confidential Results Review",
-    ctaLabel: "Schedule a confidential results review",
+    cta: "Schedule a 30-minute results review",
+    ctaLabel: "Schedule a 30-minute results review",
   },
 };
 
