@@ -55,7 +55,7 @@ Local development: copy `.env.example` to `.env.local` and restart `npm run dev`
 What Stacey receives:
 
 - **Contact:** name, email, phone (if provided), business name (if provided), and message.
-- **Assessment:** name, email, phone (if provided), business, discussion preference, optional HR issue, overall score and band (Scale Ready / Developing / Growth Constrained / Foundation at Risk), category scores, risk/impact flags, profile answers, and scored-statement answers when they are already in the submitted record.
+- **Assessment:** name, email, phone (if provided), business, discussion preference, optional HR issue, overall score and band (Scale Ready / Developing / Growth Constrained / Foundation at Risk), category scores, risk/impact flags, profile answers, and scored-statement answers when they are already in the submitted record. If the visitor submits **Tell us what matters most** on the results page, a follow-up email includes those outcomes, any custom “Other” text, and the ideal start timeline.
 
 ## Run locally
 

@@ -46,6 +46,10 @@ export async function POST(request: NextRequest) {
         likert: body?.likert ?? {},
         risks: Array.isArray(body?.risks) ? body.risks.map(String) : [],
         impact: body?.impact ?? {},
+        outcomes: Array.isArray(body?.outcomes) ? body.outcomes.map(String) : [],
+        outcomeOther:
+          typeof body?.outcomeOther === "string" ? body.outcomeOther : "",
+        timeline: typeof body?.timeline === "string" ? body.timeline : "",
         completedAt: body?.completedAt ?? null,
       })
     );

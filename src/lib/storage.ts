@@ -19,6 +19,7 @@ export type AssessmentRecord = {
     schedule: string;
   };
   outcomes: string[];
+  outcomeOther: string;
   timeline: string;
   completedAt: string | null;
 };
@@ -39,6 +40,7 @@ export const emptyRecord = (): AssessmentRecord => ({
     schedule: "",
   },
   outcomes: [],
+  outcomeOther: "",
   timeline: "",
   completedAt: null,
 });

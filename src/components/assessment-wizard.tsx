@@ -156,6 +156,9 @@ export function AssessmentWizard() {
           likert: completed.likert,
           risks: completed.risks,
           impact: completed.impact,
+          outcomes: completed.outcomes,
+          outcomeOther: completed.outcomeOther,
+          timeline: completed.timeline,
           completedAt: completed.completedAt,
         }),
       });
