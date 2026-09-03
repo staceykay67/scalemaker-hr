@@ -19,8 +19,8 @@ export default function ContactPage() {
         Start a conversation
       </h1>
       <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground">
-        Book a complimentary 30-minute results review, or send a message if you
-        already know what you want to discuss. The fastest way to make that
+        Schedule a 30-minute results review, or send a message if you already
+        know what you want to discuss. The fastest way to make that
         conversation useful is to complete the assessment first.
       </p>
       <BookingCta className="mt-6" />
