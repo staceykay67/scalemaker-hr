@@ -22,6 +22,8 @@ export type AssessmentRecord = {
   outcomeOther: string;
   timeline: string;
   completedAt: string | null;
+  prioritiesSubmittedAt: string | null;
+  prioritiesFingerprint: string | null;
 };
 
 export const emptyRecord = (): AssessmentRecord => ({
@@ -43,6 +45,8 @@ export const emptyRecord = (): AssessmentRecord => ({
   outcomeOther: "",
   timeline: "",
   completedAt: null,
+  prioritiesSubmittedAt: null,
+  prioritiesFingerprint: null,
 });
 
 function read(key: string): AssessmentRecord | null {
