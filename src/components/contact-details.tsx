@@ -1,6 +1,5 @@
 import { BookingLink } from "@/components/booking-cta";
 import {
-  BOOKING_LABEL,
   COMPANY_LOCATION,
   COMPANY_NAME,
   CONTACT_EMAIL,
@@ -33,7 +32,7 @@ export function ContactDetails({
         </a>
       </p>
       <p>
-        <BookingLink className={linkClassName}>{BOOKING_LABEL}</BookingLink>
+        <BookingLink className={linkClassName} />
       </p>
       <p>{CREDENTIALS_LINE}</p>
     </div>

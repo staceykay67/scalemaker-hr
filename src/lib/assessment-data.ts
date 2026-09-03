@@ -330,7 +330,7 @@ export const IMPACT_QUESTIONS = [
 export const SCHEDULE_OPTIONS = [
   {
     value: "yes",
-    label: "Yes, I would like to schedule a complimentary results review",
+    label: "Yes, I would like to schedule a 30-minute results review",
   },
   { value: "possibly", label: "Possibly—please send me more information" },
   { value: "no", label: "Not at this time" },
