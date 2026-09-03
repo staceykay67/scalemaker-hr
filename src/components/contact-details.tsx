@@ -12,10 +12,12 @@ export function ContactDetails({
   className,
   headingClassName,
   linkClassName,
+  showBookingLink = true,
 }: {
   className?: string;
   headingClassName?: string;
   linkClassName?: string;
+  showBookingLink?: boolean;
 }) {
   return (
     <div className={className}>
@@ -31,9 +33,11 @@ export function ContactDetails({
           {CONTACT_EMAIL}
         </a>
       </p>
-      <p>
-        <BookingLink className={linkClassName} />
-      </p>
+      {showBookingLink ? (
+        <p>
+          <BookingLink className={linkClassName} />
+        </p>
+      ) : null}
       <p>{CREDENTIALS_LINE}</p>
     </div>
   );
