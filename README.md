@@ -28,7 +28,7 @@ The assessment follows the company’s Free Assessment spec: business-profile qu
 
 This is the assessment experience itself. It does not replace ScoreApp’s email automations, CRM, or PDF reports. Results are calculated in the browser. Progress and results are also saved in the visitor’s browser so they can return to the results page.
 
-Contact messages and completed assessment lead captures are emailed to **staceykay@scalemakerhr.com** through Formspree. The site posts to `/api/contact` and `/api/leads`, which forward to Formspree using environment variables. Form IDs are not hardcoded in application source.
+Contact messages and completed assessment lead captures are emailed to **staceykay@scalemakerhr.com** through Formspree. The site posts to `/api/contact` and `/api/leads`, which forward to Formspree using environment variables. Form IDs are not hardcoded in application source. Assessment posts to `/api/leads` are rate-limited by IP on the server (see below). Contact posts are not.
 
 ## Connect Formspree (required for live email)
 
@@ -51,6 +51,48 @@ In the Vercel project **scalemaker-hr** go to **Settings → Environment Variabl
 Redeploy after saving. These are read by the server API routes, so you do not need `NEXT_PUBLIC_` unless you want the IDs in the browser bundle.
 
 Local development: copy `.env.example` to `.env.local` and restart `npm run dev`.
+
+## Assessment rate limit (protects Formspree)
+
+`/api/leads` allows **3 assessment submissions per visitor IP**, then cools down for **24 hours**. The limit is enforced on the server before Formspree is called, so changing emails or refreshing the page does not bypass it. `/api/contact` is a separate route and is **not** included in this limit.
+
+After the limit, visitors can still see locally calculated results. The site shows a friendly message and invites them to reach Stacey on `/contact` instead of sending another assessment.
+
+### Required for reliable limits on Vercel
+
+In-memory counting is used automatically for local development. It does **not** work well on Vercel: each serverless instance has its own memory, and instances are replaced often. For production, add a free [Upstash Redis](https://upstash.com/) database (or the Vercel KV / Upstash Redis integration) and set:
+
+| Variable | Used for |
+| --- | --- |
+| `UPSTASH_REDIS_REST_URL` | Upstash Redis REST URL |
+| `UPSTASH_REDIS_REST_TOKEN` | Upstash Redis REST token |
+
+Vercel KV names `KV_REST_API_URL` and `KV_REST_API_TOKEN` are also accepted.
+
+### Optional limit settings
+
+| Variable | Default | Meaning |
+| --- | --- | --- |
+| `ASSESSMENT_RATE_LIMIT_MAX` | `3` | Allowed assessment posts per IP per window |
+| `ASSESSMENT_RATE_LIMIT_WINDOW_HOURS` | `24` | Cooldown window after the first counted post |
+| `ASSESSMENT_RATE_LIMIT_STORE` | auto | Set to `memory` to force the local store (tests / laptop) |
+
+Add the Redis variables in Vercel → **scalemaker-hr** → **Settings → Environment Variables** (Production and Preview), then redeploy.
+
+### How to test
+
+```bash
+npm test
+```
+
+That covers the limiter, IP parsing, the 4th `/api/leads` post returning `429`, and confirming `/api/contact` is not blocked.
+
+Manual check against a running app (`npm run dev`):
+
+1. Set `FORMSPREE_ASSESSMENT_ID` (or the public equivalent) and `ASSESSMENT_RATE_LIMIT_STORE=memory` in `.env.local`. For a faster check, also set `ASSESSMENT_RATE_LIMIT_MAX=1`.
+2. `POST /api/leads` with a JSON body that includes `contact.firstName` and `contact.email`. Repeat from the same machine until you exceed the max. The next response should be HTTP `429` with `code: "assessment_rate_limited"` and a `contactPath` of `/contact`. Formspree should not receive that blocked post.
+3. `POST /api/contact` with `name`, `email`, and `message` from the same machine should still succeed.
+4. In the browser, complete an assessment after the limit (or open `/assessment/results?limited=1` with a saved result). You should see the contact-page invitation, not another assessment submit prompt as the next step.
 
 What Stacey receives:
 

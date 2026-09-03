@@ -7,6 +7,11 @@ export const metadata: Metadata = {
     "Your People & Growth Readiness Score, category results, and recommended next steps from Scalemaker HR.",
 };
 
-export default function ResultsPage() {
-  return <ResultsView />;
+export default async function ResultsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ limited?: string }>;
+}) {
+  const params = await searchParams;
+  return <ResultsView rateLimited={params.limited === "1"} />;
 }

@@ -1,6 +1,40 @@
 import { NextRequest, NextResponse } from "next/server";
+
+export const dynamic = "force-dynamic";
+import {
+  assessmentRateLimitedPayload,
+  CONTACT_PATH,
+  consumeAssessmentRateLimit,
+  getClientIp,
+  peekAssessmentRateLimit,
+} from "@/lib/assessment-rate-limit";
 import { buildAssessmentFormspreePayload } from "@/lib/form-payloads";
 import { getFormspreeEndpoint, submitToFormspree } from "@/lib/formspree";
+
+function rateLimitedResponse(decision: Awaited<ReturnType<typeof consumeAssessmentRateLimit>>) {
+  return NextResponse.json(assessmentRateLimitedPayload(decision), {
+    status: 429,
+    headers: {
+      "Cache-Control": "no-store",
+      "Retry-After": String(decision.retryAfterSeconds || 1),
+    },
+  });
+}
+
+export async function GET(request: NextRequest) {
+  const decision = await peekAssessmentRateLimit(getClientIp(request.headers));
+  return NextResponse.json(
+    {
+      ok: true,
+      limited: decision.limited,
+      remaining: decision.remaining,
+      limit: decision.limit,
+      retryAfterSeconds: decision.retryAfterSeconds,
+      contactPath: CONTACT_PATH,
+    },
+    { headers: { "Cache-Control": "no-store" } }
+  );
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -28,6 +62,11 @@ export async function POST(request: NextRequest) {
         },
         { status: 503 }
       );
+    }
+
+    const decision = await consumeAssessmentRateLimit(getClientIp(request.headers));
+    if (decision.limited) {
+      return rateLimitedResponse(decision);
     }
 
     const result = await submitToFormspree(

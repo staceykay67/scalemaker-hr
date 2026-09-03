@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 import Link from "next/link";
+import { AssessmentRateLimitNotice } from "@/components/assessment-rate-limit-notice";
 import { BookingCta, BookingSoonerNote } from "@/components/booking-cta";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -12,6 +13,7 @@ import {
   OUTCOME_OPTIONS,
   TIMELINE_OPTIONS,
 } from "@/lib/assessment-data";
+import { isAssessmentRateLimitedResponse } from "@/lib/assessment-rate-limit";
 import { formatWhatMatters } from "@/lib/form-payloads";
 import { resultCopy, scoreAssessment } from "@/lib/scoring";
 import {
@@ -23,13 +25,14 @@ import {
 } from "@/lib/storage";
 import { cn } from "@/lib/utils";
 
-export function ResultsView() {
+export function ResultsView({ rateLimited = false }: { rateLimited?: boolean }) {
   const [record, setRecord] = useState<AssessmentRecord | null>(null);
   const [ready, setReady] = useState(false);
   const [priorityStatus, setPriorityStatus] = useState<
-    "idle" | "sending" | "sent" | "error"
-  >("idle");
+    "idle" | "sending" | "sent" | "error" | "limited"
+  >(rateLimited ? "limited" : "idle");
   const [priorityError, setPriorityError] = useState("");
+  const [leadLimited, setLeadLimited] = useState(rateLimited);
 
   useEffect(() => {
     setRecord(loadResults());
@@ -141,7 +144,13 @@ export function ResultsView() {
       });
       const data = (await response.json().catch(() => null)) as {
         error?: string;
+        code?: string;
       } | null;
+      if (isAssessmentRateLimitedResponse(response.status, data)) {
+        setLeadLimited(true);
+        setPriorityStatus("limited");
+        return;
+      }
       if (!response.ok) {
         throw new Error(
           response.status === 503
@@ -172,6 +181,7 @@ export function ResultsView() {
       <p className="mt-2 text-muted-foreground">
         {record.contact.businessName}
       </p>
+      {leadLimited && <AssessmentRateLimitNotice className="mt-6 rounded-lg border border-sage/40 bg-white px-4 py-3 text-sm leading-relaxed text-foreground" />}
 
       <Card className="mt-8">
         <CardContent className="space-y-3 pt-2">
@@ -292,7 +302,11 @@ export function ResultsView() {
         <h2 className="font-heading text-xl font-semibold text-forest">
           Tell us what matters most
         </h2>
-        {priorityStatus === "sent" ? (
+        {priorityStatus === "limited" ? (
+          <div className="mt-4">
+            <AssessmentRateLimitNotice />
+          </div>
+        ) : priorityStatus === "sent" ? (
           <div className="mt-4 space-y-4 rounded-xl border bg-white p-5">
             <p className="font-medium text-forest">Thank you. We received your priorities.</p>
             <p className="text-sm leading-relaxed text-muted-foreground">
