@@ -1,3 +1,4 @@
+import { isAssessmentRateLimitedResponse } from "@/lib/assessment-rate-limit";
 import type { AssessmentRecord } from "@/lib/storage";
 
 export type PriorityFields = Pick<
@@ -45,7 +46,12 @@ export function alreadySentPriorities(record: AssessmentRecord): boolean {
 
 export async function postAssessmentLead(
   record: AssessmentRecord
-): Promise<{ ok: boolean; status: number; error?: string }> {
+): Promise<{
+  ok: boolean;
+  status: number;
+  error?: string;
+  rateLimited?: boolean;
+}> {
   const response = await fetch("/api/leads", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -53,7 +59,16 @@ export async function postAssessmentLead(
   });
   const data = (await response.json().catch(() => null)) as {
     error?: string;
+    code?: string;
   } | null;
+  if (isAssessmentRateLimitedResponse(response.status, data)) {
+    return {
+      ok: false,
+      status: response.status,
+      rateLimited: true,
+      error: data?.error,
+    };
+  }
   if (!response.ok) {
     return {
       ok: false,

@@ -19,7 +19,9 @@ import {
   SCORED_QUESTIONS,
   type LikertValue,
 } from "@/lib/assessment-data";
+import { AssessmentRateLimitNotice } from "@/components/assessment-rate-limit-notice";
 import { assessmentLeadBody } from "@/lib/assessment-lead";
+import { isAssessmentRateLimitedResponse } from "@/lib/assessment-rate-limit";
 import {
   clearProgress,
   emptyRecord,
@@ -61,6 +63,7 @@ export function AssessmentWizard() {
   const [ready, setReady] = useState(false);
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [rateLimited, setRateLimited] = useState(false);
 
   useEffect(() => {
     setRecord(loadProgress());
@@ -71,6 +74,22 @@ export function AssessmentWizard() {
     if (!ready) return;
     saveProgress(record);
   }, [record, ready]);
+
+  useEffect(() => {
+    if (!ready || record.step !== STEPS.length - 1) return;
+    let cancelled = false;
+    fetch("/api/leads", { cache: "no-store" })
+      .then((response) => response.json())
+      .then((data: { limited?: boolean }) => {
+        if (!cancelled && data?.limited) setRateLimited(true);
+      })
+      .catch(() => {
+        // Submit still checks the server-side limit.
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [ready, record.step]);
 
   const step = record.step;
   const progressValue = ((step + 1) / STEPS.length) * 100;
@@ -147,17 +166,25 @@ export function AssessmentWizard() {
     saveResults(completed);
     clearProgress();
 
-    try {
-      await fetch("/api/leads", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(assessmentLeadBody(completed)),
-      });
-    } catch {
-      // Results still display from local storage if email delivery fails.
+    let limited = rateLimited;
+    if (!limited) {
+      try {
+        const response = await fetch("/api/leads", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(assessmentLeadBody(completed)),
+        });
+        const data = await response.json().catch(() => null);
+        if (isAssessmentRateLimitedResponse(response.status, data)) {
+          limited = true;
+          setRateLimited(true);
+        }
+      } catch {
+        // Results still display from local storage if email delivery fails.
+      }
     }
 
-    router.push("/assessment/results");
+    router.push(limited ? "/assessment/results?limited=1" : "/assessment/results");
   }
 
   function back() {
@@ -389,6 +416,7 @@ export function AssessmentWizard() {
               Enter your details to view your People &amp; Growth Readiness
               Score, results in six key areas, and recommended next steps.
             </p>
+            {rateLimited && <AssessmentRateLimitNotice />}
             <div className="grid gap-4 sm:grid-cols-2">
               <Field label="First name">
                 <Input
