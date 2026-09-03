@@ -19,6 +19,7 @@ import {
   SCORED_QUESTIONS,
   type LikertValue,
 } from "@/lib/assessment-data";
+import { assessmentLeadBody } from "@/lib/assessment-lead";
 import {
   clearProgress,
   emptyRecord,
@@ -150,17 +151,7 @@ export function AssessmentWizard() {
       await fetch("/api/leads", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          contact: completed.contact,
-          profile: completed.profile,
-          likert: completed.likert,
-          risks: completed.risks,
-          impact: completed.impact,
-          outcomes: completed.outcomes,
-          outcomeOther: completed.outcomeOther,
-          timeline: completed.timeline,
-          completedAt: completed.completedAt,
-        }),
+        body: JSON.stringify(assessmentLeadBody(completed)),
       });
     } catch {
       // Results still display from local storage if email delivery fails.
