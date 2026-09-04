@@ -134,7 +134,7 @@ export default function HomePage() {
             },
             {
               title: "A clear next conversation",
-              body: "Recommended next steps and an invitation to a complimentary 30-minute results review. There is no obligation to purchase services.",
+              body: "Recommended next steps and an invitation to a 30-minute results review. There is no obligation to purchase services.",
             },
           ].map((item) => (
             <Card key={item.title}>

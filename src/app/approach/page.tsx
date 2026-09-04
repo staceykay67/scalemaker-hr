@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 export const metadata: Metadata = {
   title: "Approach",
   description:
-    "Assessment, complimentary results review, and paid diagnostic work—without turning Scalemaker HR into a permanent outsourced HR department.",
+    "Assessment, 30-minute results review, and paid diagnostic work—without turning Scalemaker HR into a permanent outsourced HR department.",
 };
 
 const steps = [
@@ -18,7 +18,7 @@ const steps = [
     body: "The complimentary People & Growth Readiness Assessment identifies strengths, gaps, and the level of HR support that may be useful next. It frames the problem. It does not investigate every detail or design the solution.",
   },
   {
-    title: "2. Complimentary results review",
+    title: "2. 30-minute results review",
     body: "A 30-minute conversation to review important results, explore sticking points, define desired outcomes, and recommend a next step. There is no obligation to purchase services.",
   },
   {
@@ -44,7 +44,7 @@ export default function ApproachPage() {
         Identify the problem. Then decide what support, if any, is appropriate.
       </h1>
       <p className="mt-6 max-w-3xl text-base leading-relaxed text-muted-foreground">
-        The complimentary results review identifies and frames the problem. The
+        The 30-minute results review identifies and frames the problem. The
         paid diagnostic investigates the problem and designs the solution. We
         do not recommend Scalemaker HR in every situation, and we do not begin
         with an exhaustive list of HR tasks.

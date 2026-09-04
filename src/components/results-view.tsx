@@ -441,10 +441,10 @@ export function ResultsView({ rateLimited = false }: { rateLimited?: boolean }) 
 
       <Card className="mt-10">
         <CardHeader>
-          <CardTitle>Complimentary People &amp; Growth Results Review</CardTitle>
+          <CardTitle>People &amp; Growth Results Review</CardTitle>
         </CardHeader>
         <CardContent className="space-y-3 text-sm leading-relaxed text-muted-foreground">
-          <p>Schedule a complimentary 30-minute conversation to:</p>
+          <p>Schedule a 30-minute results review to:</p>
           <ul className="list-disc space-y-1 pl-5">
             <li>Review your assessment results</li>
             <li>Discuss your lowest-scoring areas</li>
