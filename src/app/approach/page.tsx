@@ -105,7 +105,7 @@ export default function ApproachPage() {
     </div>
       <CtaBand
         title="The first step is complimentary."
-        body="Complete the assessment, then decide whether a 30-minute results review would be useful."
+        body="Complete the assessment, then decide whether a complimentary 30-minute results review would be useful."
       />
     </>
   );

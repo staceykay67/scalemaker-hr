@@ -85,7 +85,7 @@ describe("booking URL", () => {
       BOOKING_URL,
       "https://calendar.app.google/ZFCQCVsqrkq9RUTp6"
     );
-    assert.equal(BOOKING_LABEL, "Schedule a 30-minute results review");
+    assert.equal(BOOKING_LABEL, "Schedule a complimentary 30-minute results review");
   });
 });
 

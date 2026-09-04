@@ -35,7 +35,7 @@ export default function ContactPage() {
     </div>
       <CtaBand
         title="Prefer to begin with data?"
-        body="Take the complimentary assessment, then schedule a 30-minute results review if you want to talk through the scores."
+        body="Take the complimentary assessment, then schedule a complimentary 30-minute results review if you want to talk through the scores."
       />
     </>
   );
