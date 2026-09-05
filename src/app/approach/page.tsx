@@ -46,8 +46,9 @@ export default function ApproachPage() {
       <p className="mt-6 max-w-3xl text-base leading-relaxed text-muted-foreground">
         The complimentary results review identifies and frames the problem. The
         paid diagnostic investigates the problem and designs the solution. We
-        do not recommend Scalemaker HR in every situation, and we do not begin
-        with an exhaustive list of HR tasks.
+        do not recommend Scalemaker HR in every situation. We tackle the
+        biggest issues first so you can move forward with confidence—and help
+        that shows up right away.
       </p>
 
       <div className="mt-12 grid gap-4 md:grid-cols-3">
