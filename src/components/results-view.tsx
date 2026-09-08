@@ -73,7 +73,7 @@ export function ResultsView({ rateLimited = false }: { rateLimited?: boolean }) 
         </h1>
         <p className="mt-3 text-muted-foreground">
           Complete the People &amp; Growth Readiness Assessment to see your
-          score, category results, and recommended next steps.
+          score, results in six key areas, and recommended next steps.
         </p>
         <Link
           href="/assessment"

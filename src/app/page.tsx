@@ -126,10 +126,10 @@ export default function HomePage() {
           {[
             {
               title: "Overall readiness score",
-              body: "A People & Growth Readiness Score based on 18 statements across six areas of people practice.",
+              body: "A People & Growth Readiness Score based on 18 statements across six key areas.",
             },
             {
-              title: "Six category results",
+              title: "Six key areas",
               body: "Foundation and compliance, leadership, hiring and retention, employee relations, HR systems, and growth readiness.",
             },
             {

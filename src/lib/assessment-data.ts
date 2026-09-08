@@ -388,7 +388,7 @@ export const RESULT_COPY: Record<
     summary:
       "Your business appears to have a strong people and HR foundation. Responsibilities are generally clear, core processes are in place and the organization is reasonably prepared to support continued growth.\n\nBeing scale ready does not mean there is nothing left to improve. Your greatest opportunity is likely to strengthen selected systems, develop leadership capability and ensure that your current practices remain effective as the organization becomes larger or more complex.",
     nextSteps: [
-      "Review your lowest-scoring category for targeted improvement.",
+      "Review your lowest-scoring area for targeted improvement.",
       "Confirm that your workforce and leadership plans align with anticipated growth.",
       "Consider periodic strategic HR guidance or a defined improvement project.",
     ],
@@ -402,7 +402,7 @@ export const RESULT_COPY: Record<
     summary:
       "Your business has several important people practices in place, but they may not be sufficiently consistent, documented or scalable. Informal processes may still work today, but they are likely to become less reliable as you add employees or locations.\n\nAddressing the weaker areas now can reduce management frustration, improve consistency and prevent manageable gaps from becoming larger problems.",
     nextSteps: [
-      "Identify the two lowest-scoring categories.",
+      "Identify the two lowest-scoring areas.",
       "Establish a written 90-day improvement plan.",
       "Clarify who owns HR responsibilities within the business.",
       "Give the internal HR contact appropriate tools, training and professional support.",
