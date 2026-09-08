@@ -5,7 +5,7 @@ A simple professional website for **Scalemaker HR**, including a working **Peopl
 Pages:
 
 - Home — who we help, problems we address, and the assessment as the primary call to action
-- About — mission, vision, values, and Stacey Kay’s credentials
+- About — founder narrative, how Scalemaker HR works with growing businesses, and Stacey Kay’s credentials
 - Approach — assessment, complimentary results review, and paid diagnostic
 - Contact — message form and email
 - Assessment — scored survey and results

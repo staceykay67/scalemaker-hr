@@ -4,7 +4,7 @@ export const ASSESSMENT_RATE_LIMITED_CODE = "assessment_rate_limited";
 export const CONTACT_PATH = "/contact";
 
 export const ASSESSMENT_RATE_LIMIT_MESSAGE =
-  "We've received several assessments from this connection recently. To keep follow-up personal, additional assessment submissions are paused for a little while. Please reach Stacey through the contact page — she'll be glad to help.";
+  "We've received several assessments from this connection recently. To keep follow-up personal, additional assessment submissions are paused for a little while. Please reach Stacey through the contact page — he'll be glad to help.";
 
 const DEFAULT_MAX = 3;
 const DEFAULT_WINDOW_HOURS = 24;
