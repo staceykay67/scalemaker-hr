@@ -59,35 +59,40 @@ export default function AboutPage() {
           </h2>
           <div className="mt-6 space-y-5 text-base leading-relaxed text-muted-foreground">
             <p>
-              Stacey brings more than 20 years of senior HR leadership
-              experience in growing, multi-site organizations. He has built HR
-              functions from the ground up, led People Operations for
-              organizations with hundreds of employees, developed HR teams and
-              leaders, implemented HR technology, and managed the people
-              challenges that come with rapid growth and organizational change.
+              Stacey brings more than 20 years of senior HR leadership in
+              growing, multi-site organizations—building HR from the ground up,
+              leading People Operations, developing HR teams and leaders,
+              implementing HR systems, and leading through the people issues
+              that show up when headcount and locations multiply.
             </p>
             <p>
-              His experience spans the core people practices growing
-              organizations actually run—from recruiting and employee relations
-              to compliance, leadership development, and HR systems—under
-              multi-site and multi-state conditions. He holds a Master of Human
-              Resources and the SPHR and SHRM-SCP certifications.
-            </p>
-            <p className="font-heading text-lg font-semibold text-forest">
-              That experience shapes how we work today.
+              He has run these functions across multi-site and multi-state
+              environments with hundreds of employees. That gives him a
+              practical read on what works as organizations grow—and where
+              informal HR begins to break down.
             </p>
             <p>
-              Growing businesses rarely need more HR noise. They need practical
-              processes, capable managers, and systems that make work easier as
-              the company scales.
-            </p>
-            <p>
-              We want your employees to know what’s expected of them, your
-              managers equipped to lead them, and your HR systems and processes
-              built to support the business as it grows.
+              Stacey holds a Master of Human Resources and the SPHR and SHRM-SCP
+              certifications.
             </p>
           </div>
         </section>
+
+        <div className="mt-12 max-w-3xl space-y-5 text-base leading-relaxed text-muted-foreground">
+          <p className="font-heading text-lg font-semibold text-forest">
+            That experience shapes how we work today.
+          </p>
+          <p>
+            Growing businesses rarely need more HR noise. They need practical
+            processes, capable managers, and systems that make work easier as
+            the company scales.
+          </p>
+          <p>
+            We want your employees to know what’s expected of them, your
+            managers equipped to lead them, and your HR systems and processes
+            built to support the business as it grows.
+          </p>
+        </div>
 
         <p className="mt-12 max-w-3xl font-heading text-2xl font-bold text-forest sm:text-3xl">
           Building better organizations for what comes next.
