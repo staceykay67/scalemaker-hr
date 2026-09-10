@@ -257,7 +257,9 @@ export function ResultsView({ rateLimited = false }: { rateLimited?: boolean }) 
               Please do not submit employee names, medical information or
               confidential details through this assessment.
             </p>
-            <BookingCta className="mt-2" onClick={onScheduleClick} />
+            {priorityStatus !== "sending" && priorityStatus !== "sent" && (
+              <BookingCta className="mt-2" onClick={onScheduleClick} />
+            )}
           </CardContent>
         </Card>
       )}
