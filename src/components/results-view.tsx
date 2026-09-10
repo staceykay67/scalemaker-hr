@@ -352,8 +352,6 @@ export function ResultsView({ rateLimited = false }: { rateLimited?: boolean }) 
                 "No additional outcomes selected."}
               {record.timeline ? ` · ${record.timeline}` : ""}
             </p>
-            <BookingCta onClick={onScheduleClick} />
-            <BookingSoonerNote />
           </div>
         ) : (
           <form onSubmit={submitPriorities} className="mt-2">
