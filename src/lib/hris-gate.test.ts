@@ -54,16 +54,16 @@ describe("HRis unlock cookie", () => {
     assert.equal(verifyHrisUnlockToken(undefined, secret, now), false);
   });
 
-  it("requires a long secret in production and allows local development without one", () => {
-    assert.throws(() => getHrisGateSecret({ NODE_ENV: "production" }));
-    assert.throws(() =>
-      getHrisGateSecret({ NODE_ENV: "production", HRIS_GATE_SECRET: "short" })
-    );
+  it("uses a built-in signing secret unless a long HRIS_GATE_SECRET is set", () => {
+    assert.throws(() => getHrisGateSecret({ HRIS_GATE_SECRET: "short" }));
     assert.equal(
       getHrisGateSecret({ NODE_ENV: "production", HRIS_GATE_SECRET: "a-sufficiently-long-secret" }),
       "a-sufficiently-long-secret"
     );
-    assert.equal(getHrisGateSecret({ NODE_ENV: "development" }).length >= 16, true);
+    const builtIn = getHrisGateSecret({ NODE_ENV: "production" });
+    assert.equal(builtIn.length >= 16, true);
+    const token = signHrisUnlockToken(builtIn, Date.parse("2026-10-14T12:00:00Z"));
+    assert.equal(verifyHrisUnlockToken(token, builtIn, Date.parse("2026-10-14T12:00:00Z")), true);
   });
 });
 

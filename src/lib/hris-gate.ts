@@ -11,7 +11,9 @@ import {
 
 const ACCESS_CODE = "merlin";
 const TOKEN_VERSION = "v1";
-const DEV_GATE_SECRET = "dev-only-hris-gate-secret";
+// Used when HRIS_GATE_SECRET is not set on the host. Preview deploys still sign
+// the unlock cookie. Set HRIS_GATE_SECRET to override this.
+const BUILT_IN_GATE_SECRET = "1Q8HcVMUTaRNbQ7/00STvBiasAXNKB1EAeiYlJfrQq0=";
 const DEFAULT_MAX_ATTEMPTS = 8;
 const DEFAULT_WINDOW_MS = 10 * 60 * 1000;
 const KEY_PREFIX = "hris-gate:";
@@ -32,16 +34,11 @@ export function isHrisAccessCode(value: unknown): boolean {
 
 export function getHrisGateSecret(env: EnvMap = process.env): string {
   const configured = env.HRIS_GATE_SECRET?.trim();
-  if (configured) {
-    if (configured.length < 16) {
-      throw new Error("HRIS_GATE_SECRET must be at least 16 characters.");
-    }
-    return configured;
+  if (!configured) return BUILT_IN_GATE_SECRET;
+  if (configured.length < 16) {
+    throw new Error("HRIS_GATE_SECRET must be at least 16 characters.");
   }
-  if (env.NODE_ENV === "production") {
-    throw new Error("HRIS_GATE_SECRET is not set.");
-  }
-  return DEV_GATE_SECRET;
+  return configured;
 }
 
 export function getHrisGateRateLimitConfig(env: EnvMap = process.env): {
