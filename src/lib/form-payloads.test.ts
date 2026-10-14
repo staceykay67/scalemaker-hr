@@ -76,6 +76,25 @@ describe("assessment lead payload", () => {
       true
     );
     assert.equal(payload.message.includes("What matters most:"), false);
+    assert.equal(payload.hrisInterest, "No");
+    assert.match(payload.message, /HRis interest: No/);
+  });
+
+  it("includes HRis interest in the lead payload", () => {
+    const interested = buildAssessmentFormspreePayload({
+      contact,
+      hrisInterest: true,
+      completedAt: "2026-10-14T12:00:00.000Z",
+    });
+    assert.equal(interested.hrisInterest, "Yes");
+    assert.match(interested.message, /HRis interest: Yes/);
+
+    const declined = buildAssessmentFormspreePayload({
+      contact,
+      hrisInterest: false,
+    });
+    assert.equal(declined.hrisInterest, "No");
+    assert.match(declined.message, /HRis interest: No/);
   });
 });
 

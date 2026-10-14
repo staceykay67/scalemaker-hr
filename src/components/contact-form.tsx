@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
-export function ContactForm() {
+export function ContactForm({ initialMessage = "" }: { initialMessage?: string }) {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">(
     "idle"
   );
@@ -62,7 +62,13 @@ export function ContactForm() {
       </div>
       <div className="space-y-2">
         <Label htmlFor="message">How can we help?</Label>
-        <Textarea id="message" name="message" required className="min-h-32" />
+        <Textarea
+          id="message"
+          name="message"
+          required
+          className="min-h-32"
+          defaultValue={initialMessage}
+        />
       </div>
       {error && <p className="text-sm text-destructive">{error}</p>}
       <Button type="submit" className="h-11 px-5 font-semibold" disabled={status === "sending"}>

@@ -35,6 +35,7 @@ export function assessmentLeadBody(record: AssessmentRecord) {
     outcomes: record.outcomes,
     outcomeOther: record.outcomeOther,
     timeline: record.timeline,
+    hrisInterest: record.hrisInterest === true,
     completedAt: record.completedAt,
   };
 }

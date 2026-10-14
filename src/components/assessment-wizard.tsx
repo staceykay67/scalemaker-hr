@@ -21,6 +21,7 @@ import {
 } from "@/lib/assessment-data";
 import { AssessmentRateLimitNotice } from "@/components/assessment-rate-limit-notice";
 import { assessmentLeadBody } from "@/lib/assessment-lead";
+import { HRIS_INTEREST_HELP, HRIS_INTEREST_LABEL } from "@/lib/hris-interest";
 import { isAssessmentRateLimitedResponse } from "@/lib/assessment-rate-limit";
 import {
   clearProgress,
@@ -519,6 +520,28 @@ export function AssessmentWizard() {
                 </label>
               ))}
             </fieldset>
+            <div
+              className="flex cursor-pointer items-start gap-3 rounded-lg border bg-white p-3"
+              onClick={() => update({ hrisInterest: !record.hrisInterest })}
+            >
+              <Checkbox
+                checked={record.hrisInterest}
+                onCheckedChange={(value) => update({ hrisInterest: value === true })}
+                onClick={(event) => event.stopPropagation()}
+                aria-label={HRIS_INTEREST_LABEL}
+                aria-describedby="hris-interest-help"
+                className="mt-0.5"
+              />
+              <span className="text-sm">
+                <span className="font-medium">{HRIS_INTEREST_LABEL}</span>
+                <span
+                  id="hris-interest-help"
+                  className="mt-1 block leading-relaxed text-muted-foreground"
+                >
+                  {HRIS_INTEREST_HELP}
+                </span>
+              </span>
+            </div>
           </div>
         )}
       </div>

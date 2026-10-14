@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ContactDetails } from "@/components/contact-details";
 import { ContactForm } from "@/components/contact-form";
 import { CtaBand } from "@/components/cta-band";
+import { HRIS_PILOT_CONTACT_MESSAGE, HRIS_PILOT_INTEREST } from "@/lib/hris-interest";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -9,7 +10,15 @@ export const metadata: Metadata = {
     "Contact Scalemaker HR to discuss assessment results or whether a conversation would be useful.",
 };
 
-export default function ContactPage() {
+export default async function ContactPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ interest?: string }>;
+}) {
+  const params = await searchParams;
+  const initialMessage =
+    params.interest === HRIS_PILOT_INTEREST ? HRIS_PILOT_CONTACT_MESSAGE : "";
+
   return (
     <>
     <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
@@ -24,7 +33,7 @@ export default function ContactPage() {
       </p>
 
       <div className="mt-10 grid gap-10 lg:grid-cols-[1.2fr_0.8fr]">
-        <ContactForm />
+        <ContactForm key={initialMessage || "blank"} initialMessage={initialMessage} />
         <ContactDetails
           className="space-y-3 text-sm leading-relaxed text-muted-foreground"
           headingClassName="font-medium text-foreground"

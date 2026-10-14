@@ -8,6 +8,7 @@ import {
   SCORED_QUESTIONS,
   type LikertValue,
 } from "@/lib/assessment-data";
+import { hrisInterestLabel } from "@/lib/hris-interest";
 import { resultCopy, scoreAssessment } from "@/lib/scoring";
 
 export type ContactPayloadInput = {
@@ -35,6 +36,7 @@ export type AssessmentLeadInput = {
   outcomes?: string[];
   outcomeOther?: string;
   timeline?: string;
+  hrisInterest?: boolean;
   completedAt?: string | null;
 };
 
@@ -108,6 +110,7 @@ export function buildAssessmentFormspreePayload(
   const outcomeOther = compact(input.outcomeOther);
   const outcomes = formatWhatMatters(input.outcomes, outcomeOther);
   const timeline = compact(input.timeline);
+  const hrisInterest = hrisInterestLabel(input.hrisInterest);
   const scores = scoreAssessment(likert, risks);
   const band = resultCopy(scores.tier);
   const categoryScores = scores.categories
@@ -140,6 +143,7 @@ export function buildAssessmentFormspreePayload(
     phone ? `Phone: ${phone}` : null,
     businessName ? `Business: ${businessName}` : null,
     schedule ? `Wants to discuss results: ${schedule}` : null,
+    `HRis interest: ${hrisInterest}`,
     issue ? `Current HR issue: ${issue}` : null,
     outcomes ? `What matters most: ${outcomes}` : null,
     outcomeOther ? `Other outcome detail: ${outcomeOther}` : null,
@@ -183,6 +187,7 @@ export function buildAssessmentFormspreePayload(
     outcomes,
     outcomeOther,
     timeline,
+    hrisInterest,
     scorePercent: String(scores.percent),
     scoreBand: band.name,
     categoryScores: categoryScores || "not yet scored",

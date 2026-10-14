@@ -9,6 +9,7 @@ import {
   peekAssessmentRateLimit,
 } from "@/lib/assessment-rate-limit";
 import { buildAssessmentFormspreePayload } from "@/lib/form-payloads";
+import { readHrisInterest } from "@/lib/hris-interest";
 import { getFormspreeEndpoint, submitToFormspree } from "@/lib/formspree";
 
 function rateLimitedResponse(decision: Awaited<ReturnType<typeof consumeAssessmentRateLimit>>) {
@@ -89,6 +90,7 @@ export async function POST(request: NextRequest) {
         outcomeOther:
           typeof body?.outcomeOther === "string" ? body.outcomeOther : "",
         timeline: typeof body?.timeline === "string" ? body.timeline : "",
+        hrisInterest: readHrisInterest(body?.hrisInterest),
         completedAt: body?.completedAt ?? null,
       })
     );

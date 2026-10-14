@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { AssessmentRateLimitNotice } from "@/components/assessment-rate-limit-notice";
+import { HrisTailoredSlot } from "@/components/hris-tailored-slot";
 import { BookingCta, BookingSoonerNote } from "@/components/booking-cta";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -230,6 +231,8 @@ export function ResultsView({ rateLimited = false }: { rateLimited?: boolean }) 
           </p>
         </CardContent>
       </Card>
+
+      <HrisTailoredSlot record={record} />
 
       {scores.criticalAttention && (
         <Card className="mt-6 ring-destructive/30">

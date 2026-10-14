@@ -21,6 +21,7 @@ export type AssessmentRecord = {
   outcomes: string[];
   outcomeOther: string;
   timeline: string;
+  hrisInterest: boolean;
   completedAt: string | null;
   prioritiesSubmittedAt: string | null;
   prioritiesFingerprint: string | null;
@@ -44,6 +45,7 @@ export const emptyRecord = (): AssessmentRecord => ({
   outcomes: [],
   outcomeOther: "",
   timeline: "",
+  hrisInterest: false,
   completedAt: null,
   prioritiesSubmittedAt: null,
   prioritiesFingerprint: null,

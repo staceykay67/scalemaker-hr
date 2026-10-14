@@ -134,6 +134,30 @@ describe("/api/leads assessment rate limit", () => {
     assert.equal((await POST(leadRequest(ip))).status, 200);
   });
 
+  it("forwards HRis interest on the assessment lead", async () => {
+    const ip = "203.0.113.210";
+    const sent: { body?: Record<string, string> } = {};
+    globalThis.fetch = (async (_input, init) => {
+      sent.body = JSON.parse(String(init?.body)) as Record<string, string>;
+      return new Response(JSON.stringify({ ok: true }), { status: 200 });
+    }) as typeof fetch;
+
+    const response = await POST(
+      leadRequest(ip, {
+        contact: {
+          firstName: "Jordan",
+          lastName: "Lee",
+          businessName: "Example Co",
+          email: "jordan@example.com",
+        },
+        hrisInterest: true,
+      })
+    );
+    assert.equal(response.status, 200);
+    assert.equal(sent.body?.hrisInterest, "Yes");
+    assert.match(sent.body?.message ?? "", /HRis interest: Yes/);
+  });
+
   it("reports remaining quota on GET without consuming it", async () => {
     const ip = "203.0.113.203";
     process.env.ASSESSMENT_RATE_LIMIT_MAX = "2";
