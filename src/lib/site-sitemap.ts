@@ -4,6 +4,7 @@ export const PUBLIC_SITEMAP_PATHS = [
   "/",
   "/about",
   "/approach",
+  "/hris",
   "/contact",
   "/assessment",
 ] as const;

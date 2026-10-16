@@ -536,7 +536,7 @@ export function AssessmentWizard() {
                 <span className="font-medium">{HRIS_INTEREST_LABEL}</span>
                 <span
                   id="hris-interest-help"
-                  className="mt-1 block leading-relaxed text-muted-foreground"
+                  className="mt-1 block text-xs leading-relaxed text-muted-foreground"
                 >
                   {HRIS_INTEREST_HELP}
                 </span>

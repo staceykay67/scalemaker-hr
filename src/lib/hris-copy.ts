@@ -1,4 +1,7 @@
-export const EARLY_ACCESS_LABEL = "available in early access";
+export const STEADY_PARTNER =
+  "We work with established small businesses that want a steady HR partner for years, and with growing ones we help scale and then hand off when their needs outgrow our focus. Either way, the goal is the same: people systems that work without depending on us.";
+
+export const GRADUATE_LINE = "Stay as long as we fit. Graduate when you outgrow us.";
 
 export const hrisHero = {
   eyebrow: "Early access pilot",
@@ -28,7 +31,7 @@ export const hrisRelationship = {
     },
     {
       title: "You stay in control.",
-      body: "Our goal is a company that can run its own people processes, not one that depends on us. When you outgrow HRis, you can export your data and take it with you.",
+      body: `${STEADY_PARTNER} If you ever move on, you can export your data and take it with you.`,
     },
   ],
 };
@@ -46,52 +49,90 @@ export const hrisModes = [
 
 export type HrisFeature = {
   title: string;
-  body: string;
-  earlyAccess?: boolean;
+  body?: string;
 };
+
+export const hrisAvailableHeading = "Available in early access";
 
 export const hrisPilotFeatures: HrisFeature[] = [
   {
-    title: "One employee roster.",
-    body: "Names, employee IDs, jobs, departments, managers, locations, and status, all in one place.",
+    title: "People records and roster.",
+    body: "Every employee in one place, with job, pay, and manager history, departments, a company directory, and an org chart you can update as your structure changes.",
+  },
+  {
+    title: "Roles and permissions.",
+    body: "Each person sees only what their role allows. Multi-factor sign-in is required for every user.",
   },
   {
     title: "License and certification tracking.",
-    body: "Track the credential type, number, and expiration date so renewals don't slip.",
+    body: "Track credentials and expiration dates, with notices before anything lapses.",
   },
   {
     title: "Guided onboarding.",
-    earlyAccess: true,
-    body: "From offer to first day. A person always makes the hire decision. Then the new hire gets an invite and a guided first-day wizard, with checklist tasks for the employee and the manager.",
+    body: "From offer to first day, with checklists for the new hire and the manager.",
   },
   {
-    title: "Time off.",
-    earlyAccess: true,
-    body: "Employees request time off, managers approve or deny it, and coverage is planned while someone is out.",
-  },
-];
-
-export const hrisComingFeatures: HrisFeature[] = [
-  {
-    title: "Guided setup.",
-    body: "A step-by-step setup we walk through with you, so nothing is skipped.",
+    title: "Time off and leave.",
+    body: "Employees request time off, managers approve it, and company holidays are built in.",
   },
   {
-    title: "State-aware rules.",
-    body: "Employment rules follow the state where each person works.",
+    title: "Timeclock.",
+    body: "Employees clock in and out in the same place they handle everything else.",
   },
   {
-    title: "Exits.",
-    body: "A termination checklist with benefits and continuation steps.",
+    title: "In-app messages.",
+    body: "Reach employees and managers inside HRis.",
   },
   {
-    title: "Benefits and payroll export.",
-    body: "These come with Full file.",
+    title: "Handbook and resources.",
+    body: "Publish your handbook, keep track of versions, and share key documents.",
+  },
+  {
+    title: "Hiring.",
+    body: "A job pipeline, AI-assisted resume entry, interview scheduling through Google Calendar with Meet links, interview panels, and offers. When a candidate accepts, they move straight into onboarding.",
+  },
+  {
+    title: "Exits and offboarding.",
+    body: "A guided checklist so departures are handled the same way every time.",
+  },
+  {
+    title: "Reports.",
+    body: "Standard reports, including EEO-1 counts, plus custom reports you can save and export to CSV.",
+  },
+  {
+    title: "Payroll export.",
+    body: "Send a clean employee file to your payroll provider. HRis doesn't run payroll, so you keep the payroll you already use.",
   },
   {
     title: "HR advisor.",
-    body: "An AI assistant that answers HR questions in plain language. It advises only and never sees sensitive data.",
+    body: "An AI assistant that answers HR questions in plain language and shows you where to find things in HRis. It gives guidance only and doesn't make changes.",
   },
+];
+
+export const hrisComingHeading = "Coming";
+
+export const hrisComingFeatures: HrisFeature[] = [
+  {
+    title: "Guided company setup.",
+    body: "A step-by-step setup we walk through with you, so nothing is skipped.",
+  },
+  {
+    title: "A smarter HR advisor.",
+    body: "It will prepare changes for you to review and confirm.",
+  },
+  {
+    title: "Full file.",
+    body: "Secure storage for sensitive employee data.",
+  },
+  {
+    title: "State-specific rules.",
+    body: "Employment rules that follow the state where each person works.",
+  },
+  { title: "Benefits." },
+  { title: "E-Verify." },
+  { title: "Job board posting." },
+  { title: "Background checks." },
+  { title: "E-signature." },
 ];
 
 export const hrisAudience = [
@@ -104,7 +145,7 @@ export const hrisHonesty = {
   points: [
     "We're onboarding a small first group, set up and supported directly by us.",
     "Walkthroughs use sample companies with made-up data, never real employee records.",
-    "Some features are still being built and are labeled “coming” above.",
+    "Some features are still being built and are labeled \"coming\" above.",
     "We'll tell you plainly what's ready and what isn't before you commit to anything.",
   ],
   note: "Not sure if you need a platform yet? Start with the free assessment. We'll tell you if HRis fits, and if it doesn't.",
@@ -122,9 +163,20 @@ export const hrisFaqs = [
   },
   {
     question: "Can I leave?",
-    answer: "Yes. You can export your data into another system. We built it so you can outgrow it.",
+    answer:
+      "Yes. Stay as long as we fit, and graduate when you outgrow us. You can export your data into another system whenever you need to.",
   },
 ];
+
+export const hrisResultsBlock = {
+  heading: "Your systems may be part of the strain.",
+  paragraphs: [
+    "Some of your answers point to how your people information and processes are handled: records, onboarding, or doing things the same way across managers and locations. Fixing the process comes first. Once it's right, it should be easy to keep right.",
+    "That's why we built Scalemaker HRis (HRIS), our people platform, set up for you as part of the consulting relationship. No HRIS degree needed. It's in an early-access pilot, and we'll tell you honestly whether it fits your company or whether you don't need it.",
+  ],
+  linkLabel: "Learn about HRis",
+  linkHref: "/hris",
+};
 
 export function hrisCopyText(): string {
   return JSON.stringify({
@@ -132,10 +184,15 @@ export function hrisCopyText(): string {
     hrisWhy,
     hrisRelationship,
     hrisModes,
+    hrisAvailableHeading,
     hrisPilotFeatures,
+    hrisComingHeading,
     hrisComingFeatures,
     hrisAudience,
     hrisHonesty,
     hrisFaqs,
+    hrisResultsBlock,
+    STEADY_PARTNER,
+    GRADUATE_LINE,
   });
 }

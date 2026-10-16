@@ -8,7 +8,7 @@ import {
   SCORED_QUESTIONS,
   type LikertValue,
 } from "@/lib/assessment-data";
-import { hrisInterestLabel } from "@/lib/hris-interest";
+import { contactTopicLabel, hrisInterestLabel } from "@/lib/hris-interest";
 import { resultCopy, scoreAssessment } from "@/lib/scoring";
 
 export type ContactPayloadInput = {
@@ -17,6 +17,7 @@ export type ContactPayloadInput = {
   phone?: string;
   business?: string;
   message: string;
+  topic?: string;
 };
 
 export type AssessmentLeadInput = {
@@ -80,14 +81,19 @@ export function buildContactFormspreePayload(
   const phone = compact(input.phone);
   const business = compact(input.business);
   const message = compact(input.message);
+  const topic = contactTopicLabel(input.topic);
 
   const payload: Record<string, string> = {
     formType: "contact",
-    _subject: "Scalemaker HR website contact",
+    _subject: topic
+      ? `Scalemaker HR website contact — ${topic}`
+      : "Scalemaker HR website contact",
     name,
     email,
     message,
   };
+
+  if (topic) payload.topic = topic;
 
   if (phone) payload.phone = phone;
   if (business) payload.business = business;

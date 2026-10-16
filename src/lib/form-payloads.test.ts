@@ -7,7 +7,7 @@ import {
 } from "@/lib/assessment-lead";
 import { emptyRecord } from "@/lib/storage";
 import { BOOKING_LABEL, BOOKING_URL } from "@/lib/site-contact";
-import { buildAssessmentFormspreePayload } from "@/lib/form-payloads";
+import { buildAssessmentFormspreePayload, buildContactFormspreePayload } from "@/lib/form-payloads";
 
 const contact = {
   firstName: "Stacey",
@@ -18,6 +18,32 @@ const contact = {
   issue: "",
   schedule: "yes",
 };
+
+describe("contact form payload", () => {
+  it("preselects the HRis pilot topic in the notification", () => {
+    const payload = buildContactFormspreePayload({
+      name: "Ada Lovelace",
+      email: "ada@example.com",
+      message: "We would like to see the pilot.",
+      topic: "hris-pilot",
+    });
+
+    assert.equal(payload.topic, "HRis pilot");
+    assert.equal(payload._subject, "Scalemaker HR website contact — HRis pilot");
+  });
+
+  it("leaves the topic off a general message", () => {
+    const payload = buildContactFormspreePayload({
+      name: "Ada Lovelace",
+      email: "ada@example.com",
+      message: "Hello.",
+      topic: "",
+    });
+
+    assert.equal(payload.topic, undefined);
+    assert.equal(payload._subject, "Scalemaker HR website contact");
+  });
+});
 
 describe("assessment lead payload", () => {
   it("includes what-matters outcomes and timeline in a follow-up lead", () => {

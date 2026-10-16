@@ -2,9 +2,10 @@ import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { HRIS_PILOT_CONTACT_PATH } from "@/lib/hris-interest";
 import {
-  EARLY_ACCESS_LABEL,
   hrisAudience,
+  hrisAvailableHeading,
   hrisComingFeatures,
+  hrisComingHeading,
   hrisFaqs,
   hrisHero,
   hrisHonesty,
@@ -21,37 +22,28 @@ function FeatureList({ features }: { features: HrisFeature[] }) {
     <ul className="mt-4 space-y-4">
       {features.map((feature) => (
         <li key={feature.title} className="text-base leading-relaxed text-muted-foreground">
-          <span className="font-medium text-foreground">{feature.title}</span>{" "}
-          {feature.earlyAccess && (
-            <span className="font-medium text-sage">{EARLY_ACCESS_LABEL}. </span>
-          )}
-          {feature.body}
+          <span className="font-medium text-foreground">{feature.title}</span>
+          {feature.body ? ` ${feature.body}` : null}
         </li>
       ))}
     </ul>
   );
 }
 
-function PilotCtas() {
+function PilotLink({ className }: { className?: string }) {
   return (
-    <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-      <Link
-        href={HRIS_PILOT_CONTACT_PATH}
-        className={cn(buttonVariants(), "inline-flex h-11 px-5 font-semibold")}
-      >
-        {hrisHero.primaryCta}
-      </Link>
-      <Link
-        href="/assessment"
-        className={cn(buttonVariants({ variant: "outline" }), "inline-flex h-11 px-5 font-semibold")}
-      >
-        {hrisHero.secondaryCta}
-      </Link>
-    </div>
+    <Link
+      href={HRIS_PILOT_CONTACT_PATH}
+      className={cn(buttonVariants(), "inline-flex h-11 px-5 font-semibold", className)}
+    >
+      {hrisHero.primaryCta}
+    </Link>
   );
 }
 
 export function HrisContent() {
+  const [noteBefore, noteAfter] = hrisHonesty.note.split("free assessment");
+
   return (
     <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
       <div className="max-w-3xl">
@@ -60,7 +52,15 @@ export function HrisContent() {
           {hrisHero.headline}
         </h1>
         <p className="mt-4 text-base leading-relaxed text-muted-foreground">{hrisHero.subhead}</p>
-        <PilotCtas />
+        <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+          <PilotLink />
+          <Link
+            href="/assessment"
+            className={cn(buttonVariants({ variant: "outline" }), "inline-flex h-11 px-5 font-semibold")}
+          >
+            {hrisHero.secondaryCta}
+          </Link>
+        </div>
       </div>
 
       <section className="mt-14 max-w-3xl" aria-labelledby="why-hris">
@@ -107,15 +107,15 @@ export function HrisContent() {
         <h2 id="hris-capabilities" className="font-heading text-2xl font-bold text-forest">
           What it does
         </h2>
-        <h3 className="mt-6 font-heading text-lg font-semibold text-forest">Available in the pilot</h3>
+        <h3 className="mt-6 font-heading text-lg font-semibold text-forest">{hrisAvailableHeading}</h3>
         <FeatureList features={hrisPilotFeatures} />
-        <h3 className="mt-8 font-heading text-lg font-semibold text-forest">Coming</h3>
+        <h3 className="mt-8 font-heading text-lg font-semibold text-forest">{hrisComingHeading}</h3>
         <FeatureList features={hrisComingFeatures} />
       </section>
 
       <section className="mt-14 max-w-3xl" aria-labelledby="hris-audience">
         <h2 id="hris-audience" className="font-heading text-2xl font-bold text-forest">
-          Who it’s for
+          Who it&apos;s for
         </h2>
         <div className="mt-4 space-y-4 text-base leading-relaxed text-muted-foreground">
           {hrisAudience.map((paragraph) => (
@@ -134,8 +134,16 @@ export function HrisContent() {
             <li key={point}>{point}</li>
           ))}
         </ul>
-        <PilotCtas />
-        <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{hrisHonesty.note}</p>
+        <div className="mt-6">
+          <PilotLink />
+        </div>
+        <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
+          {noteBefore}
+          <Link href="/assessment" className="font-medium text-forest underline-offset-4 hover:underline">
+            free assessment
+          </Link>
+          {noteAfter}
+        </p>
       </section>
 
       <section className="mt-14 max-w-3xl" aria-labelledby="hris-faq">

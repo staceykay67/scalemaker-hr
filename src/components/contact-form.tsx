@@ -5,8 +5,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { HRIS_PILOT_TOPIC, HRIS_PILOT_TOPIC_LABEL } from "@/lib/hris-interest";
 
-export function ContactForm({ initialMessage = "" }: { initialMessage?: string }) {
+export function ContactForm({ initialTopic = "" }: { initialTopic?: string }) {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">(
     "idle"
   );
@@ -61,13 +62,24 @@ export function ContactForm({ initialMessage = "" }: { initialMessage?: string }
         <Field label="Phone (optional)" name="phone" type="tel" />
       </div>
       <div className="space-y-2">
+        <Label htmlFor="topic">Topic</Label>
+        <select
+          id="topic"
+          name="topic"
+          defaultValue={initialTopic}
+          className="h-11 w-full rounded-lg border border-input bg-white px-3 text-sm"
+        >
+          <option value="">Select a topic</option>
+          <option value={HRIS_PILOT_TOPIC}>{HRIS_PILOT_TOPIC_LABEL}</option>
+        </select>
+      </div>
+      <div className="space-y-2">
         <Label htmlFor="message">How can we help?</Label>
         <Textarea
           id="message"
           name="message"
           required
           className="min-h-32"
-          defaultValue={initialMessage}
         />
       </div>
       {error && <p className="text-sm text-destructive">{error}</p>}

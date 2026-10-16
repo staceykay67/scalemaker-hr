@@ -2,6 +2,7 @@ import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CtaBand } from "@/components/cta-band";
+import { GRADUATE_LINE, STEADY_PARTNER } from "@/lib/hris-copy";
 import { cn } from "@/lib/utils";
 
 export default function HomePage() {
@@ -16,7 +17,10 @@ export default function HomePage() {
             Has your organization reached the point where its current approach
             to people and HR is no longer sufficient?
           </h1>
-          <p className="mt-6 max-w-2xl text-base leading-relaxed text-white/85 sm:text-lg">
+          <p className="mt-4 max-w-3xl text-lg font-medium leading-snug text-white sm:text-xl">
+            {GRADUATE_LINE}
+          </p>
+          <p className="mt-4 max-w-2xl text-base leading-relaxed text-white/85 sm:text-lg">
             Scalemaker HR helps growing businesses build ethical people systems
             and internal leadership capability so the business, its leaders, and
             its employees can succeed together. Start with a complimentary 5–7
@@ -105,7 +109,7 @@ export default function HomePage() {
               <CardContent className="space-y-2 text-sm leading-relaxed text-muted-foreground">
                 <p>HR currently sits with the owner, an office manager, or several people at once.</p>
                 <p>You are adding employees, locations, or services and the informal approach is starting to break.</p>
-                <p>You want practical systems and capable leaders—not a permanent outsourced HR department.</p>
+                <p>{STEADY_PARTNER}</p>
               </CardContent>
             </Card>
           </div>

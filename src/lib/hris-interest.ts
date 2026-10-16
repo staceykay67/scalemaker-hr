@@ -1,12 +1,25 @@
-export const HRIS_PILOT_INTEREST = "hris-pilot";
-export const HRIS_PILOT_CONTACT_PATH = `/contact?interest=${HRIS_PILOT_INTEREST}`;
-export const HRIS_PILOT_CONTACT_MESSAGE =
-  "I'm interested in the Scalemaker HRis early-access pilot.";
+export const HRIS_PILOT_TOPIC = "hris-pilot";
+export const HRIS_PILOT_TOPIC_LABEL = "HRis pilot";
+export const HRIS_PILOT_CONTACT_PATH = `/contact?topic=${HRIS_PILOT_TOPIC}`;
 
-export const HRIS_INTEREST_LABEL = "I'm interested in the Scalemaker HRis platform";
+export const HRIS_INTEREST_LABEL =
+  "I'm also interested in seeing Scalemaker HRis, your HR platform.";
 
 export const HRIS_INTEREST_HELP =
   "HRis is in an early-access pilot. If you check this, we'll include a short walkthrough on sample data in your results review. Unchecked is fine. It doesn't change your results.";
+
+export function contactTopicValue(param: string | undefined): string {
+  return param === HRIS_PILOT_TOPIC ? HRIS_PILOT_TOPIC : "";
+}
+
+export function contactTopicLabel(value: unknown): string | null {
+  if (typeof value !== "string") return null;
+  const normalized = value.trim();
+  if (normalized === HRIS_PILOT_TOPIC || normalized === HRIS_PILOT_TOPIC_LABEL) {
+    return HRIS_PILOT_TOPIC_LABEL;
+  }
+  return null;
+}
 
 export function readHrisInterest(value: unknown): boolean {
   if (value === true) return true;

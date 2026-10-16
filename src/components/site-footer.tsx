@@ -32,6 +32,11 @@ export function SiteFooter() {
             </Link>
           </p>
           <p>
+            <Link href="/hris" className="underline-offset-4 hover:underline">
+              Scalemaker HRis
+            </Link>
+          </p>
+          <p>
             <Link href="/assessment" className="underline-offset-4 hover:underline">
               People &amp; Growth Readiness Assessment
             </Link>
