@@ -92,16 +92,29 @@ describe("HRis interest checkbox", () => {
 describe("positioning lines", () => {
   it("keeps the graduate line and replaces the retired outsourced-department line", () => {
     assert.equal(GRADUATE_LINE, "Stay as long as we fit. Graduate when you outgrow us.");
-    assert.match(STEADY_PARTNER, /steady HR partner for years/);
+    assert.equal(
+      STEADY_PARTNER,
+      "We partner with small businesses that want to get HR right, build stronger teams, and grow with confidence. Whether we're your HR partner for years or help you prepare for the next stage of growth, our commitment is the same: practical solutions, dependable support, and people systems built to last."
+    );
     assert.equal(/outsourced HR department/i.test(STEADY_PARTNER), false);
   });
 
   it("uses the national audience phrase and the one-team band", () => {
     assert.equal(AUDIENCE_PHRASE, "small businesses nationwide, up to about 200 employees");
-    assert.match(ABOUT_LOCATION, new RegExp(AUDIENCE_PHRASE));
-    assert.match(ONE_TEAM_BAND.body, /Scalemaker HRis \(HRIS\)/);
+    assert.equal(
+      ABOUT_LOCATION,
+      "Scalemaker HR LLC is based in Arizona and serves businesses nationwide with up to approximately 200 employees, providing experienced HR leadership and practical people systems through a remote-first model."
+    );
+    assert.equal(
+      ONE_TEAM_BAND.body,
+      "We build practical HR processes around the way your business works, then bring them together in Scalemaker HRis, our early-access HR platform. You get experienced HR leadership, the tools to support it, and systems designed to grow with your business."
+    );
+    assert.equal(ONE_TEAM_BAND.heading, "One team for your people systems.");
     assert.equal(ONE_TEAM_BAND.linkHref, "/hris");
-    assert.match(ABOUT_HRIS_PARAGRAPH, /Scalemaker HRis \(HRIS\)/);
+    assert.equal(
+      ABOUT_HRIS_PARAGRAPH,
+      "Our consulting work is supported by Scalemaker HRis, the HR platform built specifically for growing businesses. We bring your people processes and technology together in one system, designed around how your business actually operates."
+    );
     assert.equal(APPROACH_HRIS_STEP, "Scalemaker HRis set up and run with you (early access).");
     assert.equal(/\$\d|\bpricing\b/i.test(hrisCopyText()), false);
   });

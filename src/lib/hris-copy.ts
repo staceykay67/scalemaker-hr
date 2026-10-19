@@ -1,5 +1,5 @@
 export const STEADY_PARTNER =
-  "We work with established small businesses that want a steady HR partner for years, and with growing ones we help scale and then hand off when their needs outgrow our focus. Either way, the goal is the same: people systems that work without depending on us.";
+  "We partner with small businesses that want to get HR right, build stronger teams, and grow with confidence. Whether we're your HR partner for years or help you prepare for the next stage of growth, our commitment is the same: practical solutions, dependable support, and people systems built to last.";
 
 export const GRADUATE_LINE = "Stay as long as we fit. Graduate when you outgrow us.";
 
@@ -9,16 +9,16 @@ export const AUDIENCE_PHRASE = "small businesses nationwide, up to about 200 emp
 
 export const ONE_TEAM_BAND = {
   heading: "One team for your people systems.",
-  body: "We design how HR should work in your company, then set it up in Scalemaker HRis (HRIS), our early-access HR platform, so it keeps running the same way as you grow.",
+  body: "We build practical HR processes around the way your business works, then bring them together in Scalemaker HRis, our early-access HR platform. You get experienced HR leadership, the tools to support it, and systems designed to grow with your business.",
   linkLabel: "Learn about Scalemaker HRis",
   linkHref: "/hris",
 };
 
 export const ABOUT_HRIS_PARAGRAPH =
-  "We also build Scalemaker HRis (HRIS), our people platform. We design how HR should work in your company, then set it up there so it keeps running the same way as you grow.";
+  "Our consulting work is supported by Scalemaker HRis, the HR platform built specifically for growing businesses. We bring your people processes and technology together in one system, designed around how your business actually operates.";
 
 export const ABOUT_LOCATION =
-  "Scalemaker HR LLC is an Arizona-based company serving small businesses nationwide, up to about 200 employees. We work remotely.";
+  "Scalemaker HR LLC is based in Arizona and serves businesses nationwide with up to approximately 200 employees, providing experienced HR leadership and practical people systems through a remote-first model.";
 
 export const APPROACH_HRIS_STEP = "Scalemaker HRis set up and run with you (early access).";
 

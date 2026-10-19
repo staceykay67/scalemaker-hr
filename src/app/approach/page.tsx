@@ -13,18 +13,46 @@ export const metadata: Metadata = {
     "Assessment, complimentary results review, and a paid diagnostic when that is the right next step.",
 };
 
-const steps = [
+type ApproachStep = {
+  title: string;
+  paragraphs: string[];
+  includes?: string[];
+  closing?: string;
+};
+
+const steps: ApproachStep[] = [
   {
-    title: "1. Assessment",
-    body: "The complimentary People & Growth Readiness Assessment identifies strengths, gaps, and the level of HR support that may be useful next. It frames the problem. It does not investigate every detail or design the solution.",
+    title: "1. Start with a complimentary assessment",
+    paragraphs: [
+      "Our People & Growth Readiness Assessment takes just 5–7 minutes and evaluates 18 statements across six key areas of your business.",
+      "You'll receive an overall readiness score, a breakdown of your results, and recommended next steps.",
+      "It's a starting point, not a comprehensive HR audit. The goal is to help you recognize strengths, spot potential gaps, and decide where to focus your attention.",
+    ],
   },
   {
-    title: "2. Complimentary results review",
-    body: "A 30-minute conversation to review important results, explore sticking points, define desired outcomes, and recommend a next step. There is no obligation to purchase services.",
+    title: "2. Let's talk about your results",
+    paragraphs: [
+      "Schedule a complimentary 30-minute results review to discuss what your assessment revealed.",
+      "We'll explore your biggest challenges, what they're costing your business in time or effort, and what you'd like to improve.",
+      "You'll leave with a clearer understanding of your options and our recommendation for what makes sense next.",
+      "No obligation. No sales pressure. Just a useful conversation.",
+    ],
   },
   {
-    title: "3. Paid diagnostic, when it is the right next step",
-    body: "The People Systems Diagnostic and Growth Roadmap investigates the problem and designs the solution: interviews, document and workflow review, risk prioritization, a written 90-day roadmap, and an executive findings presentation.",
+    title: "3. Take a deeper look, when needed",
+    paragraphs: [
+      "When the challenges warrant a more thorough investigation, we may recommend our paid People Systems Diagnostic and Growth Roadmap.",
+      "This is where we move beyond identifying potential issues to understanding their causes and designing practical solutions.",
+      "Depending on your organization's needs, the diagnostic includes:",
+    ],
+    includes: [
+      "Interviews with key people",
+      "Review of HR documents, systems, and workflows",
+      "Identification and prioritization of risks and opportunities",
+      "A written 90-day action roadmap",
+      "An executive presentation of findings and recommendations",
+    ],
+    closing: "You'll know what needs attention, why it matters, and what to do next.",
   },
 ];
 
@@ -41,17 +69,21 @@ export default function ApproachPage() {
   return (
     <>
     <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
-      <p className="text-sm font-medium text-sage">How we work</p>
+      <p className="text-sm font-medium text-sage">How We Work</p>
       <h1 className="mt-2 max-w-3xl font-heading text-3xl font-bold text-forest sm:text-4xl">
-        Identify the problem. Then decide what support, if any, is appropriate.
+        Understand the challenges. Build the right solutions.
       </h1>
-      <p className="mt-6 max-w-3xl text-base leading-relaxed text-muted-foreground">
-        The complimentary results review identifies and frames the problem. The
-        paid diagnostic investigates the problem and designs the solution. We
-        do not recommend Scalemaker HR in every situation. We tackle the
-        biggest issues first so you can move forward with confidence—and help
-        that shows up right away.
-      </p>
+      <div className="mt-6 max-w-3xl space-y-5 text-base leading-relaxed text-muted-foreground">
+        <p>
+          Every business is different. We start by understanding what&apos;s working, where challenges are emerging, and what matters most to your organization.
+        </p>
+        <p>
+          We don&apos;t believe every problem requires a consultant, a new system, or an expensive project. Sometimes a little guidance is enough. Other times, a closer look reveals opportunities to strengthen the business for years to come.
+        </p>
+        <p>
+          Our approach is straightforward: identify the priorities, recommend the right level of support, and tackle the biggest issues first.
+        </p>
+      </div>
 
       <div className="mt-12 grid gap-4 md:grid-cols-3">
         {steps.map((step) => (
@@ -59,8 +91,18 @@ export default function ApproachPage() {
             <CardHeader>
               <CardTitle>{step.title}</CardTitle>
             </CardHeader>
-            <CardContent className="text-sm leading-relaxed text-muted-foreground">
-              {step.body}
+            <CardContent className="space-y-3 text-sm leading-relaxed text-muted-foreground">
+              {step.paragraphs.map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
+              {step.includes ? (
+                <ul className="list-disc space-y-2 pl-5">
+                  {step.includes.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              ) : null}
+              {step.closing ? <p>{step.closing}</p> : null}
             </CardContent>
           </Card>
         ))}

@@ -103,9 +103,11 @@ export default function HomePage() {
               <CardHeader>
                 <CardTitle>This is a good fit when</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-2 text-sm leading-relaxed text-muted-foreground">
-                <p>HR currently sits with the owner, an office manager, or several people at once.</p>
-                <p>You are adding employees, locations, or services and the informal approach is starting to break.</p>
+              <CardContent className="space-y-3 text-sm leading-relaxed text-muted-foreground">
+                <ul className="list-disc space-y-2 pl-5">
+                  <li>HR currently sits with the owner, an office manager, or several people at once.</li>
+                  <li>You&apos;re adding employees, locations, or services, and the informal approach is starting to break.</li>
+                </ul>
                 <p>{STEADY_PARTNER}</p>
               </CardContent>
             </Card>
@@ -135,24 +137,21 @@ export default function HomePage() {
           Start with the assessment
         </h2>
         <p className="mt-4 max-w-3xl text-sm leading-relaxed text-muted-foreground sm:text-base">
-          The People &amp; Growth Readiness Assessment is complimentary. After
-          5–7 minutes you receive an overall score, results in six key areas,
-          and recommended next steps. You can then schedule a 30-minute results
-          review if a conversation would be useful.
+          The People &amp; Growth Readiness Assessment is complimentary and takes just 5–7 minutes to complete. Once finished, you&apos;ll receive an overall score, results across six key areas, and recommended next steps. You can also schedule a complimentary 30-minute results review to discuss your findings and explore opportunities for improvement.
         </p>
         <div className="mt-8 grid gap-4 md:grid-cols-3">
           {[
             {
-              title: "Overall readiness score",
-              body: "A People & Growth Readiness Score based on 18 statements across six key areas.",
+              title: "Overall Readiness Score",
+              body: "Your People & Growth Readiness Score is calculated from your responses to 18 statements across six key areas of your business.",
             },
             {
-              title: "Six key areas",
-              body: "Foundation and compliance, leadership, hiring and retention, employee relations, HR systems, and growth readiness.",
+              title: "Six Key Areas",
+              body: "See how your business measures up in six essential areas: foundation and compliance, leadership, hiring and retention, employee relations, HR systems, and growth readiness.",
             },
             {
-              title: "A clear next conversation",
-              body: "Recommended next steps and an invitation to a complimentary 30-minute results review. There is no obligation to purchase services.",
+              title: "Clear Next Steps",
+              body: "Receive practical recommendations based on your results, along with an invitation to a complimentary 30-minute review to discuss your findings and opportunities for improvement. No obligation or sales pressure.",
             },
           ].map((item) => (
             <Card key={item.title}>

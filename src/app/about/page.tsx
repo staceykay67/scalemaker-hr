@@ -35,14 +35,14 @@ export default function AboutPage() {
             manage.
           </p>
           <p>
-            That’s where we come in. We start with the biggest issues first—so
+            That&apos;s where we come in. We start with the biggest issues first, so
             help shows up right away, and we only build what you need next.
           </p>
           <p>{ABOUT_HRIS_PARAGRAPH}</p>
           <p>
             At Scalemaker HR, we help growing businesses build the people,
             processes, technology, and leadership practices they need to scale
-            successfully. Our goal isn’t to create dependence on outside
+            successfully. Our goal isn&apos;t to create dependence on outside
             consultants. We want to leave your organization stronger, your
             managers more capable, your systems more connected, and your
             business prepared for what comes next.
@@ -61,17 +61,19 @@ export default function AboutPage() {
           </h2>
           <div className="mt-6 space-y-5 text-base leading-relaxed text-muted-foreground">
             <p>
-              Stacey brings over 25 years of senior HR leadership in
-              growing, multi-site organizations—building HR from the ground up,
-              leading People Operations, developing HR teams and leaders,
-              implementing HR systems, and leading through the people issues
-              that show up when headcount and locations multiply.
+              Stacey brings more than 25 years of HR experience leading HR
+              functions in growing, multi-site organizations. His work includes
+              building HR departments from the ground up, leading People
+              Operations, developing HR teams and leaders, implementing HR
+              systems, and navigating the people challenges that come when
+              headcount and locations multiply.
             </p>
             <p>
-              He has run these functions across multi-site and multi-state
-              environments with hundreds of employees. That gives him a
-              practical read on what works as organizations grow—and where
-              informal HR begins to break down.
+              He has led HR operations across multiple states and locations,
+              supporting organizations with hundreds of employees. That
+              experience provides a practical understanding of what works as
+              businesses grow—and where informal HR processes begin to break
+              down.
             </p>
             <p>
               Stacey holds a Master of Human Resources and the SPHR and SHRM-SCP
@@ -90,7 +92,7 @@ export default function AboutPage() {
             the company scales.
           </p>
           <p>
-            We want your employees to know what’s expected of them, your
+            We want your employees to know what&apos;s expected of them, your
             managers equipped to lead them, and your HR systems and processes
             built to support the business as it grows.
           </p>
