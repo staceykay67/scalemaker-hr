@@ -14,36 +14,33 @@ export default function HomePage() {
             A people-systems and organizational-effectiveness partner
           </p>
           <h1 className="mt-3 max-w-4xl font-heading text-3xl font-bold leading-tight sm:text-5xl">
-            Has your organization reached the point where its current approach
-            to people and HR is no longer sufficient?
+            Your business is growing. Your HR should grow with it.
           </h1>
-          <p className="mt-4 max-w-3xl text-lg font-medium leading-snug text-white sm:text-xl">
-            {GRADUATE_LINE}
-          </p>
           <p className="mt-4 max-w-2xl text-base leading-relaxed text-white/85 sm:text-lg">
-            Scalemaker HR helps growing businesses build ethical people systems
-            and internal leadership capability so the business, its leaders, and
-            its employees can succeed together. Start with a complimentary 5–7
-            minute assessment.
+            Experienced HR leadership, practical people systems, and technology built for growing businesses. Get the support you need without building a full HR department.
           </p>
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+          <div className="mt-8 grid gap-4 sm:grid-cols-2">
             <Link
               href="/assessment"
-              className={cn(
-                buttonVariants({ variant: "secondary" }),
-                "inline-flex h-12 px-6 text-base font-semibold"
-              )}
+              className="rounded-xl bg-white px-5 py-5 text-forest"
             >
-              Begin the assessment
+              <span className="block font-heading text-lg font-semibold">
+                Explore your HR readiness
+              </span>
+              <span className="mt-2 block text-sm leading-relaxed text-forest/80">
+                Take the free 5–7 minute assessment.
+              </span>
             </Link>
             <Link
-              href="/approach"
-              className={cn(
-                buttonVariants({ variant: "outline" }),
-                "inline-flex h-12 border-white/30 bg-transparent px-6 text-base text-white hover:bg-white/10 hover:text-white"
-              )}
+              href="/contact"
+              className="rounded-xl bg-white px-5 py-5 text-forest"
             >
-              See how it works
+              <span className="block font-heading text-lg font-semibold">
+                Talk with Scalemaker
+              </span>
+              <span className="mt-2 block text-sm leading-relaxed text-forest/80">
+                Discuss your business and what you need.
+              </span>
             </Link>
           </div>
         </div>
@@ -172,6 +169,27 @@ export default function HomePage() {
           )}
         >
           Begin the assessment
+        </Link>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-4 pb-4 sm:px-6">
+        <p className="font-heading text-xl font-medium text-forest sm:text-2xl">
+          {GRADUATE_LINE}
+        </p>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+        <h2 className="max-w-3xl font-heading text-2xl font-bold text-forest sm:text-3xl">
+          Experienced HR leadership. Built for small business.
+        </h2>
+        <p className="mt-4 max-w-3xl text-sm leading-relaxed text-muted-foreground sm:text-base">
+          Founded by Stacey Kay, MHR, SPHR, SHRM-SCP, Scalemaker brings more than 25 years of HR experience to businesses that need practical solutions, not another layer of complexity.
+        </p>
+        <Link
+          href="/about"
+          className="mt-6 inline-flex text-sm font-semibold text-forest underline-offset-4 hover:underline"
+        >
+          About Scalemaker HR
         </Link>
       </section>
 

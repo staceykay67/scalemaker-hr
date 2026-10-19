@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { BookingLink } from "@/components/booking-cta";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CtaBand } from "@/components/cta-band";
@@ -16,9 +15,15 @@ export const metadata: Metadata = {
 type ApproachStep = {
   title: string;
   paragraphs: string[];
-  includes?: string[];
-  closing?: string;
 };
+
+const diagnosticIncludes = [
+  "Interviews with key people",
+  "Review of HR documents, systems, and workflows",
+  "Identification and prioritization of risks and opportunities",
+  "A written 90-day action roadmap",
+  "An executive presentation of findings and recommendations",
+];
 
 const steps: ApproachStep[] = [
   {
@@ -43,16 +48,7 @@ const steps: ApproachStep[] = [
     paragraphs: [
       "When the challenges warrant a more thorough investigation, we may recommend our paid People Systems Diagnostic and Growth Roadmap.",
       "This is where we move beyond identifying potential issues to understanding their causes and designing practical solutions.",
-      "Depending on your organization's needs, the diagnostic includes:",
     ],
-    includes: [
-      "Interviews with key people",
-      "Review of HR documents, systems, and workflows",
-      "Identification and prioritization of risks and opportunities",
-      "A written 90-day action roadmap",
-      "An executive presentation of findings and recommendations",
-    ],
-    closing: "You'll know what needs attention, why it matters, and what to do next.",
   },
 ];
 
@@ -87,7 +83,7 @@ export default function ApproachPage() {
 
       <div className="mt-12 grid gap-4 md:grid-cols-3">
         {steps.map((step) => (
-          <Card key={step.title}>
+          <Card key={step.title} className="h-full">
             <CardHeader>
               <CardTitle>{step.title}</CardTitle>
             </CardHeader>
@@ -95,50 +91,40 @@ export default function ApproachPage() {
               {step.paragraphs.map((paragraph) => (
                 <p key={paragraph}>{paragraph}</p>
               ))}
-              {step.includes ? (
-                <ul className="list-disc space-y-2 pl-5">
-                  {step.includes.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              ) : null}
-              {step.closing ? <p>{step.closing}</p> : null}
             </CardContent>
           </Card>
         ))}
       </div>
 
-      <section className="mt-12 grid gap-8 lg:grid-cols-2">
-        <div>
-          <h2 className="font-heading text-2xl font-bold text-forest">
-            After the diagnostic
-          </h2>
-          <p className="mt-4 text-sm leading-relaxed text-muted-foreground sm:text-base">
-            Follow-on work is scoped to the organization. It may include:
-          </p>
-          <ul className="mt-4 list-disc space-y-2 pl-5 text-sm leading-relaxed text-muted-foreground">
-            {laterWork.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        </div>
-        <Card>
-          <CardHeader>
-            <CardTitle>The results review agenda</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2 text-sm leading-relaxed text-muted-foreground">
-            <p>0–5 minutes: Why you completed the assessment</p>
-            <p>5–12 minutes: Review important results</p>
-            <p>12–20 minutes: Explore sticking points and consequences</p>
-            <p>20–25 minutes: Define desired outcomes</p>
-            <p>25–30 minutes: Recommend the next step</p>
-            <p className="pt-2">
-              Already completed the assessment?{" "}
-              <BookingLink className="text-forest underline-offset-4 hover:underline" />
-              .
-            </p>
-          </CardContent>
-        </Card>
+      <section className="mt-12 max-w-3xl" aria-labelledby="diagnostic-includes">
+        <h2 id="diagnostic-includes" className="font-heading text-2xl font-bold text-forest">
+          What the diagnostic includes
+        </h2>
+        <p className="mt-4 text-sm leading-relaxed text-muted-foreground sm:text-base">
+          Depending on your organization&apos;s needs, the diagnostic includes:
+        </p>
+        <ul className="mt-4 list-disc space-y-2 pl-5 text-sm leading-relaxed text-muted-foreground">
+          {diagnosticIncludes.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+        <p className="mt-4 text-sm leading-relaxed text-muted-foreground sm:text-base">
+          You&apos;ll know what needs attention, why it matters, and what to do next.
+        </p>
+      </section>
+
+      <section className="mt-12 max-w-3xl">
+        <h2 className="font-heading text-2xl font-bold text-forest">
+          After the diagnostic
+        </h2>
+        <p className="mt-4 text-sm leading-relaxed text-muted-foreground sm:text-base">
+          Follow-on work is scoped to the organization. It may include:
+        </p>
+        <ul className="mt-4 list-disc space-y-2 pl-5 text-sm leading-relaxed text-muted-foreground">
+          {laterWork.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
       </section>
 
       <Link
