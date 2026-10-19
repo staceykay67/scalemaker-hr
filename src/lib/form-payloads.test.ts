@@ -21,16 +21,16 @@ const contact = {
 };
 
 describe("contact form payload", () => {
-  it("preselects the HRis pilot topic in the notification", () => {
+  it("labels the stored HRis topic as HRis walk through in the notification", () => {
     const payload = buildContactFormspreePayload({
       name: "Ada Lovelace",
       email: "ada@example.com",
-      message: "We would like to see the pilot.",
+      message: "We would like a walk-through.",
       topic: "hris-pilot",
     });
 
-    assert.equal(payload.topic, "HRis pilot");
-    assert.equal(payload._subject, "Scalemaker HR website contact — HRis pilot");
+    assert.equal(payload.topic, "HRis walk through");
+    assert.equal(payload._subject, "Scalemaker HR website contact — HRis walk through");
   });
 
   it("leaves the topic off a general message", () => {

@@ -1,5 +1,5 @@
 export const HRIS_PILOT_TOPIC = "hris-pilot";
-export const HRIS_PILOT_TOPIC_LABEL = "HRis pilot";
+export const HRIS_PILOT_TOPIC_LABEL = "HRis walk through";
 export const HRIS_PILOT_CONTACT_PATH = `/contact?topic=${HRIS_PILOT_TOPIC}`;
 
 export const HRIS_INTEREST_LABEL =
@@ -15,7 +15,11 @@ export function contactTopicValue(param: string | undefined): string {
 export function contactTopicLabel(value: unknown): string | null {
   if (typeof value !== "string") return null;
   const normalized = value.trim();
-  if (normalized === HRIS_PILOT_TOPIC || normalized === HRIS_PILOT_TOPIC_LABEL) {
+  if (
+    normalized === HRIS_PILOT_TOPIC ||
+    normalized === HRIS_PILOT_TOPIC_LABEL ||
+    normalized === "HRis pilot"
+  ) {
     return HRIS_PILOT_TOPIC_LABEL;
   }
   return null;

@@ -131,8 +131,8 @@ describe("sitemap", () => {
 });
 
 describe("pilot contact link", () => {
-  it("opens the contact form with the HRis pilot topic", () => {
+  it("opens the contact form with the HRis walk-through topic", () => {
     assert.equal(HRIS_PILOT_CONTACT_PATH, "/contact?topic=hris-pilot");
-    assert.equal(HRIS_PILOT_TOPIC_LABEL, "HRis pilot");
+    assert.equal(HRIS_PILOT_TOPIC_LABEL, "HRis walk through");
   });
 });
