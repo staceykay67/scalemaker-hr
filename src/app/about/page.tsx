@@ -61,7 +61,7 @@ export default function AboutPage() {
           </h2>
           <div className="mt-6 space-y-5 text-base leading-relaxed text-muted-foreground">
             <p>
-              Stacey brings more than 20 years of senior HR leadership in
+              Stacey brings over 25 years of senior HR leadership in
               growing, multi-site organizations—building HR from the ground up,
               leading People Operations, developing HR teams and leaders,
               implementing HR systems, and leading through the people issues
