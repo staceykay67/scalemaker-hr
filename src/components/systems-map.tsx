@@ -1,6 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
+import { SubmitConsent } from "@/components/submit-consent";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -118,6 +119,7 @@ export function SystemsMap({
         {systemsIntro.heading}
       </h2>
       <div className="mt-3 space-y-3 text-sm leading-relaxed text-muted-foreground">
+        <p className="font-medium text-foreground">{systemsIntro.aboutTools}</p>
         <p>{systemsIntro.intro}</p>
         <p>{systemsIntro.optional}</p>
         <p>{systemsIntro.privacy}</p>
@@ -355,6 +357,7 @@ export function SystemsMap({
           {submitting ? "Saving…" : systemsIntro.continue}
         </Button>
       </div>
+      <SubmitConsent />
     </section>
   );
 }

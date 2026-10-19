@@ -14,11 +14,13 @@ import {
   toolChip,
 } from "@/lib/systems-data";
 
-/** Visitor-facing bands from the systems copy draft. */
+/**
+ * Visitor-facing bands. Locked cutoffs use three of Piper's names:
+ * Breaking below 45, Stretched from 45 through 74, Connected at 75 and above.
+ */
 export const SYSTEMS_DISPLAY_BANDS = {
-  connectedAt: 80,
-  stretchedAt: 60,
-  fragmentedAt: 40,
+  connectedAt: 75,
+  stretchedAt: 45,
 } as const;
 
 /**
@@ -43,7 +45,7 @@ export const IDK_SUPPRESS_AT = 0.4;
 
 export type SystemsSubId = keyof typeof SYSTEMS_WEIGHTS;
 
-export type SystemsBandId = "connected" | "stretched" | "fragmented" | "breaking";
+export type SystemsBandId = "connected" | "stretched" | "breaking";
 
 export type SystemsRecommendation =
   | "Full move to HRis"
@@ -91,12 +93,6 @@ export const SYSTEMS_BAND_COPY: Record<
     summary:
       "Your tools get the job done, but some information is typed in more than once and lives in more than one place. That's manageable today. It usually gets harder with each new hire or location.",
     call: "On your review call: we'll find where the double work happens and what would remove it.",
-  },
-  fragmented: {
-    name: "Fragmented",
-    summary:
-      "Your HR runs across several tools that don't connect. That's usually where errors and missed steps start: a record updated in one place but not another, or a step that depends on someone remembering it.",
-    call: "On your review call: we'll map how information moves today and decide what to fix first.",
   },
   breaking: {
     name: "Breaking",
@@ -450,7 +446,6 @@ function discoveryItems(answers: SystemsAnswers): { items: string[]; ratio: numb
 export function systemsBandForScore(score: number): SystemsBandId {
   if (score >= SYSTEMS_DISPLAY_BANDS.connectedAt) return "connected";
   if (score >= SYSTEMS_DISPLAY_BANDS.stretchedAt) return "stretched";
-  if (score >= SYSTEMS_DISPLAY_BANDS.fragmentedAt) return "fragmented";
   return "breaking";
 }
 

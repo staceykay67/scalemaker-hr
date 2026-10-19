@@ -21,6 +21,7 @@ import {
   type LikertValue,
 } from "@/lib/assessment-data";
 import { AssessmentRateLimitNotice } from "@/components/assessment-rate-limit-notice";
+import { SubmitConsent } from "@/components/submit-consent";
 import { assessmentLeadBody } from "@/lib/assessment-lead";
 import { HRIS_INTEREST_HELP, HRIS_INTEREST_LABEL } from "@/lib/hris-interest";
 import { isAssessmentRateLimitedResponse } from "@/lib/assessment-rate-limit";
@@ -580,6 +581,7 @@ export function AssessmentWizard() {
             : "Continue"}
         </Button>
       </div>
+      {step === STEPS.length - 1 ? <SubmitConsent /> : null}
     </div>
   );
 }

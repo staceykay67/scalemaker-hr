@@ -112,6 +112,8 @@ describe("sitemap", () => {
     const paths = sitemapEntries().map((entry) => new URL(entry.url).pathname);
     assert.equal(paths.includes("/hris"), true);
     assert.equal(paths.includes("/about"), true);
+    assert.equal(paths.includes("/privacy"), true);
+    assert.equal(paths.includes("/terms"), true);
   });
 });
 

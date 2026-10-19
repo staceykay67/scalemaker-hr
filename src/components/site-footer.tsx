@@ -46,6 +46,16 @@ export function SiteFooter() {
               Contact
             </Link>
           </p>
+          <p>
+            <Link href="/privacy" className="underline-offset-4 hover:underline">
+              Privacy Policy
+            </Link>
+          </p>
+          <p>
+            <Link href="/terms" className="underline-offset-4 hover:underline">
+              Terms
+            </Link>
+          </p>
         </div>
         <ContactDetails
           className="space-y-2 text-sm text-white/85"

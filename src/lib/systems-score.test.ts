@@ -3,7 +3,9 @@ import { describe, it } from "node:test";
 import { emptySystemsAnswers, readSystemsAnswers, type SystemsAnswers } from "@/lib/systems-data";
 import { systemsMapEnabled } from "@/lib/systems-flag";
 import {
+  SYSTEMS_BAND_COPY,
   SYSTEMS_CLOSING,
+  SYSTEMS_DISPLAY_BANDS,
   SYSTEMS_RECOMMENDATION_CUTOFFS,
   SYSTEMS_SUPPRESSED,
   SYSTEMS_WEIGHTS,
@@ -48,10 +50,16 @@ describe("systems score weights and cutoffs", () => {
     assert.equal(recommendationForScore(45), "Partial move to HRis");
     assert.equal(recommendationForScore(74), "Partial move to HRis");
     assert.equal(recommendationForScore(75), "Stay with consultant support");
-    assert.equal(systemsBandForScore(80), "connected");
-    assert.equal(systemsBandForScore(60), "stretched");
-    assert.equal(systemsBandForScore(40), "fragmented");
-    assert.equal(systemsBandForScore(39), "breaking");
+    assert.equal(SYSTEMS_DISPLAY_BANDS.connectedAt, 75);
+    assert.equal(SYSTEMS_DISPLAY_BANDS.stretchedAt, 45);
+    assert.equal(systemsBandForScore(75), "connected");
+    assert.equal(systemsBandForScore(74), "stretched");
+    assert.equal(systemsBandForScore(45), "stretched");
+    assert.equal(systemsBandForScore(44), "breaking");
+    assert.deepEqual(
+      Object.values(SYSTEMS_BAND_COPY).map((band) => band.name),
+      ["Connected", "Stretched", "Breaking"]
+    );
   });
 });
 
@@ -236,16 +244,32 @@ describe("scoreSystems", () => {
 });
 
 describe("systems map flag", () => {
-  it("stays off unless SYSTEMS_MAP_ENABLED is true", () => {
-    const key = "SYSTEMS_MAP_ENABLED";
-    const previous = process.env[key];
-    delete process.env[key];
-    assert.equal(systemsMapEnabled(), false);
-    process.env[key] = "false";
-    assert.equal(systemsMapEnabled(), false);
-    process.env[key] = "true";
+  it("is on outside production and off in production", () => {
+    const flag = "SYSTEMS_MAP_ENABLED";
+    const env = "VERCEL_ENV";
+    const previousFlag = process.env[flag];
+    const previousEnv = process.env[env];
+
+    delete process.env[flag];
+    delete process.env[env];
     assert.equal(systemsMapEnabled(), true);
-    if (previous === undefined) delete process.env[key];
-    else process.env[key] = previous;
+
+    process.env[env] = "preview";
+    assert.equal(systemsMapEnabled(), true);
+
+    process.env[flag] = "false";
+    assert.equal(systemsMapEnabled(), false);
+
+    process.env[flag] = "true";
+    process.env[env] = "production";
+    assert.equal(systemsMapEnabled(), false);
+
+    delete process.env[flag];
+    assert.equal(systemsMapEnabled(), false);
+
+    if (previousFlag === undefined) delete process.env[flag];
+    else process.env[flag] = previousFlag;
+    if (previousEnv === undefined) delete process.env[env];
+    else process.env[env] = previousEnv;
   });
 });

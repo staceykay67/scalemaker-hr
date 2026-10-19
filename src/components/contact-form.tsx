@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { SubmitConsent } from "@/components/submit-consent";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -86,6 +87,7 @@ export function ContactForm({ initialTopic = "" }: { initialTopic?: string }) {
       <Button type="submit" className="h-11 px-5 font-semibold" disabled={status === "sending"}>
         {status === "sending" ? "Sending…" : "Send message"}
       </Button>
+      <SubmitConsent />
     </form>
   );
 }

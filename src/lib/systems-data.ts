@@ -211,6 +211,8 @@ export const ESIGN_TOOLS = ["DocuSign", "Adobe Sign", "Dropbox Sign"];
 
 export const systemsIntro = {
   heading: "Map your HR tools (optional)",
+  aboutTools:
+    "These questions are optional and about your company's tools, not your people.",
   intro:
     "Most HR problems in growing companies don't come from one bad tool. They come from the gaps between tools. Tell us what you use, and we'll show you where things are likely to slip.",
   optional:

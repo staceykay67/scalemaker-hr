@@ -165,6 +165,7 @@ describe("/api/leads assessment rate limit", () => {
       sent.body = JSON.parse(String(init?.body)) as Record<string, string>;
       return new Response(JSON.stringify({ ok: true }), { status: 200 });
     }) as typeof fetch;
+    process.env.VERCEL_ENV = "preview";
     process.env.SYSTEMS_MAP_ENABLED = "true";
 
     const response = await POST(
@@ -203,7 +204,8 @@ describe("/api/leads assessment rate limit", () => {
       sent.body = JSON.parse(String(init?.body)) as Record<string, string>;
       return new Response(JSON.stringify({ ok: true }), { status: 200 });
     }) as typeof fetch;
-    delete process.env.SYSTEMS_MAP_ENABLED;
+    process.env.VERCEL_ENV = "preview";
+    process.env.SYSTEMS_MAP_ENABLED = "false";
 
     const response = await POST(
       leadRequest(ip, {

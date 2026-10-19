@@ -7,6 +7,8 @@ export const PUBLIC_SITEMAP_PATHS = [
   "/hris",
   "/contact",
   "/assessment",
+  "/privacy",
+  "/terms",
 ] as const;
 
 export function sitemapEntries(): Array<{ url: string }> {

@@ -6,6 +6,7 @@ import { AssessmentRateLimitNotice } from "@/components/assessment-rate-limit-no
 import { HrisResultsBlock } from "@/components/hris-results-block";
 import { SystemsMap } from "@/components/systems-map";
 import { SystemsScoreCard } from "@/components/systems-score-card";
+import { SubmitConsent } from "@/components/submit-consent";
 import { BookingCta, BookingSoonerNote } from "@/components/booking-cta";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -551,6 +552,7 @@ export function ResultsView({
             <Button type="submit" className="mt-6 h-11 px-5 font-semibold">
               Submit what matters most
             </Button>
+            <SubmitConsent />
           </form>
         )}
       </section>
