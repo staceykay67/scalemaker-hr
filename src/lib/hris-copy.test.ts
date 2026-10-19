@@ -3,15 +3,14 @@ import { describe, it } from "node:test";
 import {
   GRADUATE_LINE,
   STEADY_PARTNER,
-  hrisAvailableHeading,
-  hrisComingFeatures,
-  hrisComingHeading,
   hrisCopyText,
   hrisFaqs,
+  hrisFeatures,
   hrisHero,
-  hrisPilotFeatures,
-  hrisRelationship,
+  hrisModes,
+  hrisOneTeam,
   hrisResultsBlock,
+  hrisWalkthrough,
 } from "@/lib/hris-copy";
 import {
   HRIS_INTEREST_HELP,
@@ -23,38 +22,53 @@ import { sitemapEntries } from "@/lib/site-sitemap";
 
 describe("HRis page copy", () => {
   it("uses the approved hero and keeps pricing out", () => {
-    assert.equal(hrisHero.eyebrow, "Early access pilot");
-    assert.equal(hrisHero.headline, "HR technology that fits how we work.");
-    assert.equal(hrisHero.primaryCta, "Join the early-access pilot");
-    assert.equal(hrisHero.secondaryCta, "Take the assessment");
-    assert.equal(hrisAvailableHeading, "Available in early access");
-    assert.equal(hrisComingHeading, "Coming");
+    assert.equal(hrisHero.eyebrow, "Scalemaker HRis");
+    assert.equal(hrisHero.headline, "One place to run HR, set up by people who know HR.");
+    assert.equal(hrisHero.primaryCta, "Request a walkthrough");
+    assert.equal(hrisHero.earlyAccess, "Now in early access.");
+    assert.equal(hrisHero.secondaryCta, "Take the free assessment");
+    assert.equal(hrisWalkthrough.earlyAccess, "Now in early access.");
+    assert.match(hrisWalkthrough.note, /free assessment/);
 
     const text = hrisCopyText();
     assert.equal(/\b(price|prices|pricing|cost)\b|\$\d/i.test(text), false);
+    assert.equal(/Available in early access|Coming/.test(text), false);
     assert.equal(
       hrisFaqs.some((item) => /cost|pric/i.test(item.question + item.answer)),
       false
     );
-    assert.equal(hrisFaqs.some((item) => item.question === "Can I leave?"), true);
-    assert.match(hrisRelationship.points[2].body, /export your data and take it with you/);
-    assert.match(text, /People records and roster/);
-    assert.match(text, /E-signature/);
-    assert.deepEqual(
-      hrisComingFeatures.filter((feature) => !feature.body).map((feature) => feature.title),
-      ["Benefits.", "E-Verify.", "Job board posting.", "Background checks.", "E-signature."]
+    assert.equal(
+      hrisFaqs.some((item) => item.question === "Does it replace my payroll provider?"),
+      true
     );
-    assert.equal(hrisPilotFeatures.length, 13);
+    assert.equal(hrisFaqs.some((item) => item.question === "Can I leave?"), true);
+    assert.equal(
+      hrisOneTeam.points[2].body,
+      "Stay as long as we fit. Graduate when you outgrow us. Your data is yours to export anytime."
+    );
+    assert.equal(hrisModes.modes[1].title, "Full file.");
+    assert.match(text, /People records and self-service/);
+    assert.match(text, /Benefits enrollment/);
+    assert.match(text, /E-signature/);
+    assert.equal(hrisFeatures.length, 15);
+    assert.equal(
+      hrisFeatures.every((feature) => feature.body.length > 0),
+      true
+    );
   });
 });
 
 describe("HRis results block", () => {
   it("uses the standard block and skips tailored lines", () => {
     assert.equal(hrisResultsBlock.heading, "Your systems may be part of the strain.");
-    assert.equal(hrisResultsBlock.linkLabel, "Learn about HRis");
+    assert.equal(hrisResultsBlock.linkLabel, "Learn about Scalemaker HRis");
     assert.equal(hrisResultsBlock.linkHref, "/hris");
-    assert.match(hrisResultsBlock.paragraphs[1], /early-access pilot/);
+    assert.equal(
+      hrisResultsBlock.paragraphs[1],
+      "That's why we built Scalemaker HRis (HRIS), our people platform, set up with you as part of the consulting relationship. We'll tell you honestly whether it fits your company, or whether you don't need it."
+    );
     const text = hrisResultsBlock.paragraphs.join(" ");
+    assert.equal(/early-access pilot/i.test(text), false);
     assert.equal(/records and licenses in one place/i.test(text), false);
     assert.equal(/guided onboarding path/i.test(text), false);
   });
@@ -68,7 +82,7 @@ describe("HRis interest checkbox", () => {
     );
     assert.equal(
       HRIS_INTEREST_HELP,
-      "HRis is in an early-access pilot. If you check this, we'll include a short walkthrough on sample data in your results review. Unchecked is fine. It doesn't change your results."
+      "It's now in early access. If you check this, we'll include a short walkthrough on a sample company in your results review. Unchecked is fine. It doesn't change your results."
     );
   });
 });
