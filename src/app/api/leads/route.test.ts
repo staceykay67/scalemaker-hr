@@ -158,6 +158,74 @@ describe("/api/leads assessment rate limit", () => {
     assert.match(sent.body?.message ?? "", /HRis interest: Yes/);
   });
 
+  it("forwards a systems block only when the step is enabled", async () => {
+    const ip = "203.0.113.221";
+    const sent: { body?: Record<string, string> } = {};
+    globalThis.fetch = (async (_input, init) => {
+      sent.body = JSON.parse(String(init?.body)) as Record<string, string>;
+      return new Response(JSON.stringify({ ok: true }), { status: 200 });
+    }) as typeof fetch;
+    process.env.SYSTEMS_MAP_ENABLED = "true";
+
+    const response = await POST(
+      leadRequest(ip, {
+        contact: {
+          firstName: "Jordan",
+          lastName: "Lee",
+          businessName: "Example Co",
+          email: "jordan@example.com",
+        },
+        profile: { states: "Arizona" },
+        likert: { q8: "agree", q21: "agree" },
+        systems: {
+          tools: { payroll: ["ADP"], records: ["BambooHR"] },
+          monthlySpend: "Under $250",
+          adminWho: "Office or operations manager",
+          backup: "Yes",
+          frustrations: ["Hard to use"],
+          hirePlaces: "1",
+          sharing: "Some do",
+          i9: "In an HR or payroll system",
+        },
+      })
+    );
+
+    assert.equal(response.status, 200);
+    assert.match(sent.body?.message ?? "", /Systems map/);
+    assert.match(sent.body?.systemsRecommendation ?? "", /HRis|consultant/);
+    assert.equal(/savings/i.test(sent.body?.message ?? ""), false);
+  });
+
+  it("drops systems answers while the step is off", async () => {
+    const ip = "203.0.113.222";
+    const sent: { body?: Record<string, string> } = {};
+    globalThis.fetch = (async (_input, init) => {
+      sent.body = JSON.parse(String(init?.body)) as Record<string, string>;
+      return new Response(JSON.stringify({ ok: true }), { status: 200 });
+    }) as typeof fetch;
+    delete process.env.SYSTEMS_MAP_ENABLED;
+
+    const response = await POST(
+      leadRequest(ip, {
+        contact: {
+          firstName: "Jordan",
+          lastName: "Lee",
+          businessName: "Example Co",
+          email: "jordan@example.com",
+        },
+        systems: {
+          tools: { payroll: ["ADP"] },
+          monthlySpend: "Under $250",
+        },
+      })
+    );
+
+    assert.equal(response.status, 200);
+    assert.equal((sent.body?.message ?? "").includes("Systems map"), false);
+    assert.equal(sent.body?.systemsScore, undefined);
+    assert.equal(sent.body?.systemsRecommendation, undefined);
+  });
+
   it("reports remaining quota on GET without consuming it", async () => {
     const ip = "203.0.113.203";
     process.env.ASSESSMENT_RATE_LIMIT_MAX = "2";

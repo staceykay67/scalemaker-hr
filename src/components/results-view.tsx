@@ -4,6 +4,8 @@ import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { AssessmentRateLimitNotice } from "@/components/assessment-rate-limit-notice";
 import { HrisResultsBlock } from "@/components/hris-results-block";
+import { SystemsMap } from "@/components/systems-map";
+import { SystemsScoreCard } from "@/components/systems-score-card";
 import { BookingCta, BookingSoonerNote } from "@/components/booking-cta";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -19,9 +21,12 @@ import {
   hasPriorities,
   postAssessmentLead,
   prioritiesFingerprint,
+  systemsFingerprint,
 } from "@/lib/assessment-lead";
 import { formatWhatMatters } from "@/lib/form-payloads";
 import { resultCopy, scoreAssessment } from "@/lib/scoring";
+import { emptySystemsAnswers, systemsIntro } from "@/lib/systems-data";
+import type { SystemsContext } from "@/lib/systems-score";
 import {
   clearProgress,
   clearResults,
@@ -31,7 +36,13 @@ import {
 } from "@/lib/storage";
 import { cn } from "@/lib/utils";
 
-export function ResultsView({ rateLimited = false }: { rateLimited?: boolean }) {
+export function ResultsView({
+  rateLimited = false,
+  systemsMapEnabled = false,
+}: {
+  rateLimited?: boolean;
+  systemsMapEnabled?: boolean;
+}) {
   const [record, setRecord] = useState<AssessmentRecord | null>(null);
   const [ready, setReady] = useState(false);
   const [priorityStatus, setPriorityStatus] = useState<
@@ -39,10 +50,18 @@ export function ResultsView({ rateLimited = false }: { rateLimited?: boolean }) 
   >(rateLimited ? "limited" : "idle");
   const [priorityError, setPriorityError] = useState("");
   const [leadLimited, setLeadLimited] = useState(rateLimited);
+  const [systemsStatus, setSystemsStatus] = useState<"idle" | "sending" | "error" | "limited">(
+    "idle"
+  );
+  const [systemsError, setSystemsError] = useState("");
   const sendingFingerprint = useRef<string | null>(null);
 
   useEffect(() => {
     const loaded = loadResults();
+    if (loaded && !loaded.submissionId) {
+      loaded.submissionId = crypto.randomUUID();
+      saveResults(loaded);
+    }
     setRecord(loaded);
     if (rateLimited) {
       setLeadLimited(true);
@@ -199,6 +218,54 @@ export function ResultsView({ rateLimited = false }: { rateLimited?: boolean }) 
     await savePriorities(record, { requireComplete: true, closeForm: true });
   }
 
+  function systemsContext(current: AssessmentRecord): SystemsContext {
+    return {
+      states: current.profile.states,
+      q8: current.likert.q8,
+      q21: current.likert.q21,
+      risks: current.risks,
+    };
+  }
+
+  async function submitSystems(current: AssessmentRecord) {
+    const answers = current.systems ?? emptySystemsAnswers();
+    const fingerprint = systemsFingerprint(answers);
+    const next: AssessmentRecord = {
+      ...current,
+      systems: answers,
+      systemsSubmittedAt: new Date().toISOString(),
+      systemsFingerprint: fingerprint,
+      systemsDismissed: false,
+    };
+    persist(next);
+    if (current.systemsFingerprint === fingerprint && current.systemsSubmittedAt) {
+      setSystemsStatus("idle");
+      setSystemsError("");
+      return;
+    }
+    if (leadLimited) {
+      setSystemsStatus("limited");
+      return;
+    }
+    setSystemsStatus("sending");
+    setSystemsError("");
+    const result = await postAssessmentLead(next);
+    if (!result.ok) {
+      if (result.rateLimited) {
+        setLeadLimited(true);
+        setSystemsStatus("limited");
+        return;
+      }
+      setSystemsStatus("error");
+      setSystemsError(
+        result.error ||
+          "We saved your Systems Score on this page. We could not email it just now."
+      );
+      return;
+    }
+    setSystemsStatus("idle");
+  }
+
   function onScheduleClick() {
     if (!record) return;
     if (leadLimited || priorityStatus === "limited") return;
@@ -231,6 +298,54 @@ export function ResultsView({ rateLimited = false }: { rateLimited?: boolean }) 
           </p>
         </CardContent>
       </Card>
+
+      {systemsMapEnabled && record.systemsSubmittedAt && record.systems ? (
+        <>
+          {systemsError ? (
+            <p
+              role="alert"
+              className="mt-6 rounded-lg border border-destructive/30 bg-white px-4 py-3 text-sm text-destructive"
+            >
+              {systemsError}
+            </p>
+          ) : null}
+          {systemsStatus === "limited" ? (
+            <AssessmentRateLimitNotice className="mt-6" />
+          ) : null}
+          <SystemsScoreCard
+            answers={record.systems}
+            context={systemsContext(record)}
+            onEdit={() => {
+              setSystemsError("");
+              persist({ ...record, systemsSubmittedAt: null });
+            }}
+          />
+        </>
+      ) : null}
+      {systemsMapEnabled && !record.systemsSubmittedAt && record.systemsDismissed ? (
+        <section className="mt-8 rounded-xl border bg-white p-5">
+          <h2 className="font-heading text-xl font-semibold text-forest">{systemsIntro.heading}</h2>
+          <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{systemsIntro.optional}</p>
+          <Button
+            type="button"
+            variant="outline"
+            className="mt-4 h-11 px-5"
+            onClick={() => persist({ ...record, systemsDismissed: false })}
+          >
+            {systemsIntro.reopen}
+          </Button>
+        </section>
+      ) : null}
+      {systemsMapEnabled && !record.systemsSubmittedAt && !record.systemsDismissed ? (
+        <SystemsMap
+          answers={record.systems ?? emptySystemsAnswers()}
+          onChange={(systems) => persist({ ...record, systems })}
+          onSkip={() => persist({ ...record, systemsDismissed: true })}
+          onSubmit={() => void submitSystems(record)}
+          submitting={systemsStatus === "sending"}
+          error={systemsError}
+        />
+      ) : null}
 
       <HrisResultsBlock />
 

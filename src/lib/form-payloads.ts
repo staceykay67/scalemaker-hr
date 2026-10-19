@@ -10,6 +10,8 @@ import {
 } from "@/lib/assessment-data";
 import { contactTopicLabel, hrisInterestLabel } from "@/lib/hris-interest";
 import { resultCopy, scoreAssessment } from "@/lib/scoring";
+import type { SystemsAnswers } from "@/lib/systems-data";
+import { formatSystemsLead, systemsContextFromLead } from "@/lib/systems-score";
 
 export type ContactPayloadInput = {
   name: string;
@@ -39,6 +41,8 @@ export type AssessmentLeadInput = {
   timeline?: string;
   hrisInterest?: boolean;
   completedAt?: string | null;
+  submissionId?: string | null;
+  systems?: SystemsAnswers | null;
 };
 
 export function formatWhatMatters(
@@ -141,6 +145,23 @@ export function buildAssessmentFormspreePayload(
     return `- ${question.text}: ${likertLabel(value)}`;
   }).filter((line): line is string => Boolean(line));
 
+  const submissionId = compact(input.submissionId ?? undefined);
+  const systemsFields = input.systems
+    ? formatSystemsLead(
+        input.systems,
+        systemsContextFromLead({
+          profile: input.profile,
+          likert: input.likert,
+          risks,
+        })
+      )
+    : null;
+  const systemsSubject = !systemsFields
+    ? null
+    : systemsFields.systemsScore
+      ? `People & Growth Assessment systems map — ${systemsFields.systemsBand} (${systemsFields.systemsScore})`
+      : "People & Growth Assessment systems map — needs review call";
+
   const message = [
     "People & Growth Readiness Assessment lead",
     "",
@@ -155,6 +176,7 @@ export function buildAssessmentFormspreePayload(
     outcomeOther ? `Other outcome detail: ${outcomeOther}` : null,
     timeline ? `Ideal start timeline: ${timeline}` : null,
     input.completedAt ? `Completed at: ${input.completedAt}` : null,
+    submissionId ? `Submission: ${submissionId}` : null,
     "",
     `Score: ${scores.percent}% — ${band.name}`,
     `Points: ${scores.points} / 90`,
@@ -173,16 +195,23 @@ export function buildAssessmentFormspreePayload(
     answerLines.length ? "" : null,
     answerLines.length ? "Key scored answers:" : null,
     ...answerLines,
+    systemsFields ? "" : null,
+    systemsFields ? systemsFields.systemsSummary : null,
   ]
     .filter((line): line is string => line !== null)
     .join("\n");
 
+  const readinessSubject =
+    outcomes || timeline
+      ? `People & Growth Assessment priorities — ${band.name} (${scores.percent}%)`
+      : `People & Growth Assessment — ${band.name} (${scores.percent}%)`;
+
   const payload: Record<string, string> = {
     formType: "assessment",
     _subject:
-      outcomes || timeline
-        ? `People & Growth Assessment priorities — ${band.name} (${scores.percent}%)`
-        : `People & Growth Assessment — ${band.name} (${scores.percent}%)`,
+      systemsSubject && (outcomes || timeline)
+        ? systemsSubject.replace("systems map", "priorities + systems map")
+        : systemsSubject || readinessSubject,
     name,
     firstName: compact(contact.firstName),
     lastName: compact(contact.lastName),
@@ -203,6 +232,14 @@ export function buildAssessmentFormspreePayload(
   };
 
   if (phone) payload.phone = phone;
+  if (submissionId) payload.submissionId = submissionId;
+  if (systemsFields) {
+    if (systemsFields.systemsScore) payload.systemsScore = systemsFields.systemsScore;
+    if (systemsFields.systemsBand) payload.systemsBand = systemsFields.systemsBand;
+    payload.systemsRecommendation = systemsFields.systemsRecommendation;
+    payload.systemsRenewal = systemsFields.systemsRenewal;
+    if (systemsFields.systemsDiscovery) payload.systemsDiscovery = systemsFields.systemsDiscovery;
+  }
 
   return payload;
 }

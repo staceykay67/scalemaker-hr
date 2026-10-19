@@ -16,6 +16,7 @@ import {
   PROFILE_QUESTIONS,
   RISK_OPTIONS,
   SCHEDULE_OPTIONS,
+  QUESTION_HELPERS,
   SCORED_QUESTIONS,
   type LikertValue,
 } from "@/lib/assessment-data";
@@ -163,6 +164,7 @@ export function AssessmentWizard() {
     const completed: AssessmentRecord = {
       ...record,
       completedAt: new Date().toISOString(),
+      submissionId: record.submissionId ?? crypto.randomUUID(),
     };
     saveResults(completed);
     clearProgress();
@@ -315,6 +317,11 @@ export function AssessmentWizard() {
                       <p className="font-medium leading-relaxed">
                         {question.text}
                       </p>
+                      {QUESTION_HELPERS[question.id] ? (
+                        <p className="mt-1 text-sm text-muted-foreground">
+                          {QUESTION_HELPERS[question.id]}
+                        </p>
+                      ) : null}
                       <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2">
                         {LIKERT_OPTIONS.map((option) => {
                           const selected =

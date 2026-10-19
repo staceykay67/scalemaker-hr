@@ -1,4 +1,5 @@
 import type { LikertValue } from "@/lib/assessment-data";
+import type { SystemsAnswers } from "@/lib/systems-data";
 
 export const PROGRESS_KEY = "smhr-assessment-progress-v1";
 export const RESULTS_KEY = "smhr-assessment-results-v1";
@@ -25,6 +26,11 @@ export type AssessmentRecord = {
   completedAt: string | null;
   prioritiesSubmittedAt: string | null;
   prioritiesFingerprint: string | null;
+  submissionId: string | null;
+  systems: SystemsAnswers | null;
+  systemsSubmittedAt: string | null;
+  systemsFingerprint: string | null;
+  systemsDismissed: boolean;
 };
 
 export const emptyRecord = (): AssessmentRecord => ({
@@ -49,6 +55,11 @@ export const emptyRecord = (): AssessmentRecord => ({
   completedAt: null,
   prioritiesSubmittedAt: null,
   prioritiesFingerprint: null,
+  submissionId: null,
+  systems: null,
+  systemsSubmittedAt: null,
+  systemsFingerprint: null,
+  systemsDismissed: false,
 });
 
 function read(key: string): AssessmentRecord | null {

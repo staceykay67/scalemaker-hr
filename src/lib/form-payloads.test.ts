@@ -8,6 +8,7 @@ import {
 import { emptyRecord } from "@/lib/storage";
 import { BOOKING_LABEL, BOOKING_URL } from "@/lib/site-contact";
 import { buildAssessmentFormspreePayload, buildContactFormspreePayload } from "@/lib/form-payloads";
+import { readSystemsAnswers } from "@/lib/systems-data";
 
 const contact = {
   firstName: "Stacey",
@@ -121,6 +122,36 @@ describe("assessment lead payload", () => {
     });
     assert.equal(declined.hrisInterest, "No");
     assert.match(declined.message, /HRis interest: No/);
+  });
+
+  it("leaves HRis interest unchecked unless the visitor opts in", () => {
+    assert.equal(emptyRecord().hrisInterest, false);
+  });
+
+  it("adds a systems block to the same lead email", () => {
+    const payload = buildAssessmentFormspreePayload({
+      contact,
+      hrisInterest: false,
+      profile: { states: "Arizona" },
+      likert: { q8: "agree", q21: "agree" },
+      systems: readSystemsAnswers({
+        tools: { payroll: ["ADP"], records: ["BambooHR"] },
+        monthlySpend: "$250–$999",
+        adminWho: "Office or operations manager",
+        backup: "Yes",
+        frustrations: ["Hard to use"],
+        hirePlaces: "1",
+        sharing: "Some do",
+        i9: "In an HR or payroll system",
+      }),
+    });
+
+    assert.match(payload._subject, /systems map/);
+    assert.match(payload.message, /Systems Score:/);
+    assert.match(payload.message, /Recommendation hypothesis:/);
+    assert.match(payload.message, /HRis interest: No/);
+    assert.equal(/savings/i.test(payload.message), false);
+    assert.equal(payload.hrisInterest, "No");
   });
 });
 
