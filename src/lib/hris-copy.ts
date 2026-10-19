@@ -5,6 +5,26 @@ export const GRADUATE_LINE = "Stay as long as we fit. Graduate when you outgrow 
 
 export const HRIS_EARLY_ACCESS = "Now in early access.";
 
+export const AUDIENCE_PHRASE = "small businesses nationwide, up to about 200 employees";
+
+export const ONE_TEAM_BAND = {
+  heading: "One team for your people systems.",
+  body: "We design how HR should work in your company, then set it up in Scalemaker HRis (HRIS), our early-access HR platform, so it keeps running the same way as you grow.",
+  linkLabel: "Learn about Scalemaker HRis",
+  linkHref: "/hris",
+};
+
+export const ABOUT_HRIS_PARAGRAPH =
+  "We also build Scalemaker HRis (HRIS), our people platform. We design how HR should work in your company, then set it up there so it keeps running the same way as you grow.";
+
+export const ABOUT_LOCATION =
+  "Scalemaker HR LLC is an Arizona-based company serving small businesses nationwide, up to about 200 employees. We work remotely.";
+
+export const APPROACH_HRIS_STEP = "Scalemaker HRis set up and run with you (early access).";
+
+export const HRIS_RESULTS_LINE =
+  "Where it helps, we set up Scalemaker HRis (HRIS), the HR platform we use with clients, now in early access. If your current tools work, we'll help you keep them.";
+
 export const hrisHero = {
   eyebrow: "Scalemaker HRis",
   headline: "One place to run HR, set up by people who know HR.",
@@ -169,11 +189,7 @@ export const hrisFaqs = [
 ];
 
 export const hrisResultsBlock = {
-  heading: "Your systems may be part of the strain.",
-  paragraphs: [
-    "Some of your answers point to how your people information and processes are handled: records, onboarding, or doing things the same way across managers and locations. Fixing the process comes first. Once it's right, it should be easy to keep right.",
-    "That's why we built Scalemaker HRis (HRIS), our people platform, set up with you as part of the consulting relationship. We'll tell you honestly whether it fits your company, or whether you don't need it.",
-  ],
+  line: HRIS_RESULTS_LINE,
   linkLabel: "Learn about Scalemaker HRis",
   linkHref: "/hris",
 };
@@ -192,5 +208,11 @@ export function hrisCopyText(): string {
     hrisResultsBlock,
     STEADY_PARTNER,
     GRADUATE_LINE,
+    AUDIENCE_PHRASE,
+    ONE_TEAM_BAND,
+    ABOUT_HRIS_PARAGRAPH,
+    ABOUT_LOCATION,
+    APPROACH_HRIS_STEP,
+    HRIS_RESULTS_LINE,
   });
 }

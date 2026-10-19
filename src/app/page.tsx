@@ -2,7 +2,7 @@ import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CtaBand } from "@/components/cta-band";
-import { GRADUATE_LINE, STEADY_PARTNER } from "@/lib/hris-copy";
+import { AUDIENCE_PHRASE, GRADUATE_LINE, ONE_TEAM_BAND, STEADY_PARTNER } from "@/lib/hris-copy";
 import { cn } from "@/lib/utils";
 
 export default function HomePage() {
@@ -95,12 +95,9 @@ export default function HomePage() {
           </h2>
           <div className="mt-8 grid gap-6 lg:grid-cols-2">
             <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
-              We work with growing businesses—typically around 10 to 150
-              employees—whose owners, executives, and operations leaders need a
-              clearer picture of their people systems. We also work with
-              organizations approaching 200 employees when they need strategic
-              HR leadership, organizational-effectiveness support, a defined
-              project, or help developing an internal HR resource.
+              We work with {AUDIENCE_PHRASE}. HR often sits with the owner, an
+              office manager, or several people at once, and still runs on
+              spreadsheets, paper, and memory.
             </p>
             <Card>
               <CardHeader>
@@ -113,6 +110,23 @@ export default function HomePage() {
               </CardContent>
             </Card>
           </div>
+        </div>
+      </section>
+
+      <section className="border-y bg-secondary/40">
+        <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+          <h2 className="max-w-3xl font-heading text-2xl font-bold text-forest sm:text-3xl">
+            {ONE_TEAM_BAND.heading}
+          </h2>
+          <p className="mt-4 max-w-3xl text-sm leading-relaxed text-muted-foreground sm:text-base">
+            {ONE_TEAM_BAND.body}
+          </p>
+          <Link
+            href={ONE_TEAM_BAND.linkHref}
+            className="mt-6 inline-flex text-sm font-semibold text-forest underline-offset-4 hover:underline"
+          >
+            {ONE_TEAM_BAND.linkLabel}
+          </Link>
         </div>
       </section>
 

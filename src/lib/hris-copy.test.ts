@@ -1,7 +1,12 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
+  ABOUT_HRIS_PARAGRAPH,
+  ABOUT_LOCATION,
+  APPROACH_HRIS_STEP,
+  AUDIENCE_PHRASE,
   GRADUATE_LINE,
+  ONE_TEAM_BAND,
   STEADY_PARTNER,
   hrisCopyText,
   hrisFaqs,
@@ -59,18 +64,15 @@ describe("HRis page copy", () => {
 });
 
 describe("HRis results block", () => {
-  it("uses the standard block and skips tailored lines", () => {
-    assert.equal(hrisResultsBlock.heading, "Your systems may be part of the strain.");
+  it("uses one neutral line and the learn-more link", () => {
+    assert.equal(
+      hrisResultsBlock.line,
+      "Where it helps, we set up Scalemaker HRis (HRIS), the HR platform we use with clients, now in early access. If your current tools work, we'll help you keep them."
+    );
     assert.equal(hrisResultsBlock.linkLabel, "Learn about Scalemaker HRis");
     assert.equal(hrisResultsBlock.linkHref, "/hris");
-    assert.equal(
-      hrisResultsBlock.paragraphs[1],
-      "That's why we built Scalemaker HRis (HRIS), our people platform, set up with you as part of the consulting relationship. We'll tell you honestly whether it fits your company, or whether you don't need it."
-    );
-    const text = hrisResultsBlock.paragraphs.join(" ");
-    assert.equal(/early-access pilot/i.test(text), false);
-    assert.equal(/records and licenses in one place/i.test(text), false);
-    assert.equal(/guided onboarding path/i.test(text), false);
+    assert.equal(/early-access pilot/i.test(hrisResultsBlock.line), false);
+    assert.equal(/\n/.test(hrisResultsBlock.line), false);
   });
 });
 
@@ -92,6 +94,16 @@ describe("positioning lines", () => {
     assert.equal(GRADUATE_LINE, "Stay as long as we fit. Graduate when you outgrow us.");
     assert.match(STEADY_PARTNER, /steady HR partner for years/);
     assert.equal(/outsourced HR department/i.test(STEADY_PARTNER), false);
+  });
+
+  it("uses the national audience phrase and the one-team band", () => {
+    assert.equal(AUDIENCE_PHRASE, "small businesses nationwide, up to about 200 employees");
+    assert.match(ABOUT_LOCATION, new RegExp(AUDIENCE_PHRASE));
+    assert.match(ONE_TEAM_BAND.body, /Scalemaker HRis \(HRIS\)/);
+    assert.equal(ONE_TEAM_BAND.linkHref, "/hris");
+    assert.match(ABOUT_HRIS_PARAGRAPH, /Scalemaker HRis \(HRIS\)/);
+    assert.equal(APPROACH_HRIS_STEP, "Scalemaker HRis set up and run with you (early access).");
+    assert.equal(/\$\d|\bpricing\b/i.test(hrisCopyText()), false);
   });
 });
 

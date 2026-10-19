@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { CtaBand } from "@/components/cta-band";
+import { ABOUT_HRIS_PARAGRAPH, ABOUT_LOCATION, GRADUATE_LINE } from "@/lib/hris-copy";
 import { CREDENTIALS_LINE } from "@/lib/site-contact";
 
 export const metadata: Metadata = {
@@ -37,6 +38,7 @@ export default function AboutPage() {
             That’s where we come in. We start with the biggest issues first—so
             help shows up right away, and we only build what you need next.
           </p>
+          <p>{ABOUT_HRIS_PARAGRAPH}</p>
           <p>
             At Scalemaker HR, we help growing businesses build the people,
             processes, technology, and leadership practices they need to scale
@@ -97,10 +99,12 @@ export default function AboutPage() {
         <p className="mt-12 max-w-3xl font-heading text-2xl font-bold text-forest sm:text-3xl">
           Building better organizations for what comes next.
         </p>
+        <p className="mt-4 max-w-3xl font-heading text-lg font-medium text-forest">
+          {GRADUATE_LINE}
+        </p>
 
         <p className="mt-8 max-w-3xl text-sm leading-relaxed text-muted-foreground">
-          Scalemaker HR LLC is an Arizona-based company serving growing
-          businesses.
+          {ABOUT_LOCATION}
         </p>
       </div>
       <CtaBand

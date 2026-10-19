@@ -4,12 +4,13 @@ import { BookingLink } from "@/components/booking-cta";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CtaBand } from "@/components/cta-band";
+import { APPROACH_HRIS_STEP } from "@/lib/hris-copy";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Approach",
   description:
-    "Assessment, complimentary results review, and paid diagnostic work—without turning Scalemaker HR into a permanent outsourced HR department.",
+    "Assessment, complimentary results review, and a paid diagnostic when that is the right next step.",
 };
 
 const steps = [
@@ -33,6 +34,7 @@ const laterWork = [
   "Periodic HR advisory support",
   "Fractional HR leadership",
   "Internal HR hiring and transition support",
+  APPROACH_HRIS_STEP,
 ];
 
 export default function ApproachPage() {
