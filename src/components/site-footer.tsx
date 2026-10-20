@@ -32,6 +32,11 @@ export function SiteFooter() {
             </Link>
           </p>
           <p>
+            <Link href="/hris" className="underline-offset-4 hover:underline">
+              Scalemaker HRis
+            </Link>
+          </p>
+          <p>
             <Link href="/assessment" className="underline-offset-4 hover:underline">
               People &amp; Growth Readiness Assessment
             </Link>
@@ -39,6 +44,16 @@ export function SiteFooter() {
           <p>
             <Link href="/contact" className="underline-offset-4 hover:underline">
               Contact
+            </Link>
+          </p>
+          <p>
+            <Link href="/privacy" className="underline-offset-4 hover:underline">
+              Privacy Policy
+            </Link>
+          </p>
+          <p>
+            <Link href="/terms" className="underline-offset-4 hover:underline">
+              Terms
             </Link>
           </p>
         </div>

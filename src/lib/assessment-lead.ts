@@ -1,4 +1,5 @@
 import { isAssessmentRateLimitedResponse } from "@/lib/assessment-rate-limit";
+import type { SystemsAnswers } from "@/lib/systems-data";
 import type { AssessmentRecord } from "@/lib/storage";
 
 export type PriorityFields = Pick<
@@ -35,8 +36,15 @@ export function assessmentLeadBody(record: AssessmentRecord) {
     outcomes: record.outcomes,
     outcomeOther: record.outcomeOther,
     timeline: record.timeline,
+    hrisInterest: record.hrisInterest === true,
     completedAt: record.completedAt,
+    submissionId: record.submissionId,
+    systems: record.systemsSubmittedAt ? record.systems : null,
   };
+}
+
+export function systemsFingerprint(answers: SystemsAnswers): string {
+  return JSON.stringify(answers);
 }
 
 export function alreadySentPriorities(record: AssessmentRecord): boolean {

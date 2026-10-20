@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ContactDetails } from "@/components/contact-details";
 import { ContactForm } from "@/components/contact-form";
 import { CtaBand } from "@/components/cta-band";
+import { contactTopicValue } from "@/lib/hris-interest";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -9,7 +10,14 @@ export const metadata: Metadata = {
     "Contact Scalemaker HR to discuss assessment results or whether a conversation would be useful.",
 };
 
-export default function ContactPage() {
+export default async function ContactPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ topic?: string }>;
+}) {
+  const params = await searchParams;
+  const initialTopic = contactTopicValue(params.topic);
+
   return (
     <>
     <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
@@ -18,13 +26,11 @@ export default function ContactPage() {
         Start a conversation
       </h1>
       <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground">
-        Send a message if you want to discuss your assessment results or
-        whether a conversation would be useful. The fastest way to make that
-        conversation useful is to complete the assessment first.
+        Have a question about your HR challenges, our services, or Scalemaker HRis? Tell us a little about your business and what you need. We&apos;re happy to start with a conversation.
       </p>
 
       <div className="mt-10 grid gap-10 lg:grid-cols-[1.2fr_0.8fr]">
-        <ContactForm />
+        <ContactForm key={initialTopic || "blank"} initialTopic={initialTopic} />
         <ContactDetails
           className="space-y-3 text-sm leading-relaxed text-muted-foreground"
           headingClassName="font-medium text-foreground"

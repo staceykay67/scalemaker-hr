@@ -8,7 +8,10 @@ import {
   SCORED_QUESTIONS,
   type LikertValue,
 } from "@/lib/assessment-data";
+import { contactTopicLabel, hrisInterestLabel } from "@/lib/hris-interest";
 import { resultCopy, scoreAssessment } from "@/lib/scoring";
+import type { SystemsAnswers } from "@/lib/systems-data";
+import { formatSystemsLead, systemsContextFromLead } from "@/lib/systems-score";
 
 export type ContactPayloadInput = {
   name: string;
@@ -16,6 +19,7 @@ export type ContactPayloadInput = {
   phone?: string;
   business?: string;
   message: string;
+  topic?: string;
 };
 
 export type AssessmentLeadInput = {
@@ -35,7 +39,10 @@ export type AssessmentLeadInput = {
   outcomes?: string[];
   outcomeOther?: string;
   timeline?: string;
+  hrisInterest?: boolean;
   completedAt?: string | null;
+  submissionId?: string | null;
+  systems?: SystemsAnswers | null;
 };
 
 export function formatWhatMatters(
@@ -78,14 +85,19 @@ export function buildContactFormspreePayload(
   const phone = compact(input.phone);
   const business = compact(input.business);
   const message = compact(input.message);
+  const topic = contactTopicLabel(input.topic);
 
   const payload: Record<string, string> = {
     formType: "contact",
-    _subject: "Scalemaker HR website contact",
+    _subject: topic
+      ? `Scalemaker HR website contact — ${topic}`
+      : "Scalemaker HR website contact",
     name,
     email,
     message,
   };
+
+  if (topic) payload.topic = topic;
 
   if (phone) payload.phone = phone;
   if (business) payload.business = business;
@@ -108,6 +120,7 @@ export function buildAssessmentFormspreePayload(
   const outcomeOther = compact(input.outcomeOther);
   const outcomes = formatWhatMatters(input.outcomes, outcomeOther);
   const timeline = compact(input.timeline);
+  const hrisInterest = hrisInterestLabel(input.hrisInterest);
   const scores = scoreAssessment(likert, risks);
   const band = resultCopy(scores.tier);
   const categoryScores = scores.categories
@@ -132,6 +145,23 @@ export function buildAssessmentFormspreePayload(
     return `- ${question.text}: ${likertLabel(value)}`;
   }).filter((line): line is string => Boolean(line));
 
+  const submissionId = compact(input.submissionId ?? undefined);
+  const systemsFields = input.systems
+    ? formatSystemsLead(
+        input.systems,
+        systemsContextFromLead({
+          profile: input.profile,
+          likert: input.likert,
+          risks,
+        })
+      )
+    : null;
+  const systemsSubject = !systemsFields
+    ? null
+    : systemsFields.systemsScore
+      ? `People & Growth Assessment systems map — ${systemsFields.systemsBand} (${systemsFields.systemsScore})`
+      : "People & Growth Assessment systems map — needs review call";
+
   const message = [
     "People & Growth Readiness Assessment lead",
     "",
@@ -140,11 +170,13 @@ export function buildAssessmentFormspreePayload(
     phone ? `Phone: ${phone}` : null,
     businessName ? `Business: ${businessName}` : null,
     schedule ? `Wants to discuss results: ${schedule}` : null,
+    `HRis interest: ${hrisInterest}`,
     issue ? `Current HR issue: ${issue}` : null,
     outcomes ? `What matters most: ${outcomes}` : null,
     outcomeOther ? `Other outcome detail: ${outcomeOther}` : null,
     timeline ? `Ideal start timeline: ${timeline}` : null,
     input.completedAt ? `Completed at: ${input.completedAt}` : null,
+    submissionId ? `Submission: ${submissionId}` : null,
     "",
     `Score: ${scores.percent}% — ${band.name}`,
     `Points: ${scores.points} / 90`,
@@ -163,16 +195,23 @@ export function buildAssessmentFormspreePayload(
     answerLines.length ? "" : null,
     answerLines.length ? "Key scored answers:" : null,
     ...answerLines,
+    systemsFields ? "" : null,
+    systemsFields ? systemsFields.systemsSummary : null,
   ]
     .filter((line): line is string => line !== null)
     .join("\n");
 
+  const readinessSubject =
+    outcomes || timeline
+      ? `People & Growth Assessment priorities — ${band.name} (${scores.percent}%)`
+      : `People & Growth Assessment — ${band.name} (${scores.percent}%)`;
+
   const payload: Record<string, string> = {
     formType: "assessment",
     _subject:
-      outcomes || timeline
-        ? `People & Growth Assessment priorities — ${band.name} (${scores.percent}%)`
-        : `People & Growth Assessment — ${band.name} (${scores.percent}%)`,
+      systemsSubject && (outcomes || timeline)
+        ? systemsSubject.replace("systems map", "priorities + systems map")
+        : systemsSubject || readinessSubject,
     name,
     firstName: compact(contact.firstName),
     lastName: compact(contact.lastName),
@@ -183,6 +222,7 @@ export function buildAssessmentFormspreePayload(
     outcomes,
     outcomeOther,
     timeline,
+    hrisInterest,
     scorePercent: String(scores.percent),
     scoreBand: band.name,
     categoryScores: categoryScores || "not yet scored",
@@ -192,6 +232,14 @@ export function buildAssessmentFormspreePayload(
   };
 
   if (phone) payload.phone = phone;
+  if (submissionId) payload.submissionId = submissionId;
+  if (systemsFields) {
+    if (systemsFields.systemsScore) payload.systemsScore = systemsFields.systemsScore;
+    if (systemsFields.systemsBand) payload.systemsBand = systemsFields.systemsBand;
+    payload.systemsRecommendation = systemsFields.systemsRecommendation;
+    payload.systemsRenewal = systemsFields.systemsRenewal;
+    if (systemsFields.systemsDiscovery) payload.systemsDiscovery = systemsFields.systemsDiscovery;
+  }
 
   return payload;
 }

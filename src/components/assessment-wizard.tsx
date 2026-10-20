@@ -16,11 +16,14 @@ import {
   PROFILE_QUESTIONS,
   RISK_OPTIONS,
   SCHEDULE_OPTIONS,
+  QUESTION_HELPERS,
   SCORED_QUESTIONS,
   type LikertValue,
 } from "@/lib/assessment-data";
 import { AssessmentRateLimitNotice } from "@/components/assessment-rate-limit-notice";
+import { SubmitConsent } from "@/components/submit-consent";
 import { assessmentLeadBody } from "@/lib/assessment-lead";
+import { HRIS_INTEREST_HELP, HRIS_INTEREST_LABEL } from "@/lib/hris-interest";
 import { isAssessmentRateLimitedResponse } from "@/lib/assessment-rate-limit";
 import {
   clearProgress,
@@ -162,6 +165,7 @@ export function AssessmentWizard() {
     const completed: AssessmentRecord = {
       ...record,
       completedAt: new Date().toISOString(),
+      submissionId: record.submissionId ?? crypto.randomUUID(),
     };
     saveResults(completed);
     clearProgress();
@@ -314,6 +318,11 @@ export function AssessmentWizard() {
                       <p className="font-medium leading-relaxed">
                         {question.text}
                       </p>
+                      {QUESTION_HELPERS[question.id] ? (
+                        <p className="mt-1 text-sm text-muted-foreground">
+                          {QUESTION_HELPERS[question.id]}
+                        </p>
+                      ) : null}
                       <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2">
                         {LIKERT_OPTIONS.map((option) => {
                           const selected =
@@ -519,6 +528,28 @@ export function AssessmentWizard() {
                 </label>
               ))}
             </fieldset>
+            <div
+              className="flex cursor-pointer items-start gap-3 rounded-lg border bg-white p-3"
+              onClick={() => update({ hrisInterest: !record.hrisInterest })}
+            >
+              <Checkbox
+                checked={record.hrisInterest}
+                onCheckedChange={(value) => update({ hrisInterest: value === true })}
+                onClick={(event) => event.stopPropagation()}
+                aria-label={HRIS_INTEREST_LABEL}
+                aria-describedby="hris-interest-help"
+                className="mt-0.5"
+              />
+              <span className="text-sm">
+                <span className="font-medium">{HRIS_INTEREST_LABEL}</span>
+                <span
+                  id="hris-interest-help"
+                  className="mt-1 block text-xs leading-relaxed text-muted-foreground"
+                >
+                  {HRIS_INTEREST_HELP}
+                </span>
+              </span>
+            </div>
           </div>
         )}
       </div>
@@ -550,6 +581,7 @@ export function AssessmentWizard() {
             : "Continue"}
         </Button>
       </div>
+      {step === STEPS.length - 1 ? <SubmitConsent /> : null}
     </div>
   );
 }

@@ -107,6 +107,87 @@ describe("/api/leads assessment rate limit", () => {
     assert.equal(formspreeCalls, 1);
   });
 
+  it("tags an HRis walk-through and rejects a note over 300 characters", async () => {
+    const ip = "203.0.113.240";
+    const sent: { body?: Record<string, string> } = {};
+    globalThis.fetch = (async (_input, init) => {
+      sent.body = JSON.parse(String(init?.body)) as Record<string, string>;
+      return new Response(JSON.stringify({ ok: true }), { status: 200 });
+    }) as typeof fetch;
+
+    const tagged = await contactPost(
+      new NextRequest("http://localhost/api/contact", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          "x-forwarded-for": ip,
+        },
+        body: JSON.stringify({
+          name: "Jordan Lee",
+          email: "jordan@example.com",
+          business: "Northwind",
+          message: "",
+          topic: "hris-pilot",
+        }),
+      })
+    );
+    assert.equal(tagged.status, 200);
+    assert.equal(sent.body?._subject, "Scalemaker HR website contact — HRis walk through");
+    assert.equal(sent.body?.topic, "HRis walk through");
+    assert.equal(sent.body?.business, "Northwind");
+    assert.equal(sent.body?.message, "");
+
+    const plain = await contactPost(
+      new NextRequest("http://localhost/api/contact", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          "x-forwarded-for": `${ip}-plain`,
+        },
+        body: JSON.stringify({
+          name: "Jordan Lee",
+          email: "jordan@example.com",
+          message: "Hello",
+        }),
+      })
+    );
+    assert.equal(plain.status, 200);
+    assert.equal(sent.body?._subject, "Scalemaker HR website contact");
+    assert.equal(sent.body?.topic, undefined);
+
+    const atLimit = await contactPost(
+      new NextRequest("http://localhost/api/contact", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          "x-forwarded-for": `${ip}-limit`,
+        },
+        body: JSON.stringify({
+          name: "Jordan Lee",
+          email: "jordan@example.com",
+          message: "a".repeat(300),
+        }),
+      })
+    );
+    assert.equal(atLimit.status, 200);
+
+    const tooLong = await contactPost(
+      new NextRequest("http://localhost/api/contact", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          "x-forwarded-for": `${ip}-long`,
+        },
+        body: JSON.stringify({
+          name: "Jordan Lee",
+          email: "jordan@example.com",
+          message: "a".repeat(301),
+        }),
+      })
+    );
+    assert.equal(tooLong.status, 400);
+  });
+
   it("does not apply the assessment limit to /api/contact", async () => {
     const ip = "203.0.113.201";
     process.env.ASSESSMENT_RATE_LIMIT_MAX = "1";
@@ -132,6 +213,100 @@ describe("/api/leads assessment rate limit", () => {
     );
     assert.equal(invalid.status, 400);
     assert.equal((await POST(leadRequest(ip))).status, 200);
+  });
+
+  it("forwards HRis interest on the assessment lead", async () => {
+    const ip = "203.0.113.210";
+    const sent: { body?: Record<string, string> } = {};
+    globalThis.fetch = (async (_input, init) => {
+      sent.body = JSON.parse(String(init?.body)) as Record<string, string>;
+      return new Response(JSON.stringify({ ok: true }), { status: 200 });
+    }) as typeof fetch;
+
+    const response = await POST(
+      leadRequest(ip, {
+        contact: {
+          firstName: "Jordan",
+          lastName: "Lee",
+          businessName: "Example Co",
+          email: "jordan@example.com",
+        },
+        hrisInterest: true,
+      })
+    );
+    assert.equal(response.status, 200);
+    assert.equal(sent.body?.hrisInterest, "Yes");
+    assert.match(sent.body?.message ?? "", /HRis interest: Yes/);
+  });
+
+  it("forwards a systems block only when the step is enabled", async () => {
+    const ip = "203.0.113.221";
+    const sent: { body?: Record<string, string> } = {};
+    globalThis.fetch = (async (_input, init) => {
+      sent.body = JSON.parse(String(init?.body)) as Record<string, string>;
+      return new Response(JSON.stringify({ ok: true }), { status: 200 });
+    }) as typeof fetch;
+    process.env.VERCEL_ENV = "preview";
+    process.env.SYSTEMS_MAP_ENABLED = "true";
+
+    const response = await POST(
+      leadRequest(ip, {
+        contact: {
+          firstName: "Jordan",
+          lastName: "Lee",
+          businessName: "Example Co",
+          email: "jordan@example.com",
+        },
+        profile: { states: "Arizona" },
+        likert: { q8: "agree", q21: "agree" },
+        systems: {
+          tools: { payroll: ["ADP"], records: ["BambooHR"] },
+          monthlySpend: "Under $250",
+          adminWho: "Office or operations manager",
+          backup: "Yes",
+          frustrations: ["Hard to use"],
+          hirePlaces: "1",
+          sharing: "Some do",
+          i9: "In an HR or payroll system",
+        },
+      })
+    );
+
+    assert.equal(response.status, 200);
+    assert.match(sent.body?.message ?? "", /Systems map/);
+    assert.match(sent.body?.systemsRecommendation ?? "", /HRis|consultant/);
+    assert.equal(/savings/i.test(sent.body?.message ?? ""), false);
+  });
+
+  it("drops systems answers while the step is off", async () => {
+    const ip = "203.0.113.222";
+    const sent: { body?: Record<string, string> } = {};
+    globalThis.fetch = (async (_input, init) => {
+      sent.body = JSON.parse(String(init?.body)) as Record<string, string>;
+      return new Response(JSON.stringify({ ok: true }), { status: 200 });
+    }) as typeof fetch;
+    process.env.VERCEL_ENV = "preview";
+    process.env.SYSTEMS_MAP_ENABLED = "false";
+
+    const response = await POST(
+      leadRequest(ip, {
+        contact: {
+          firstName: "Jordan",
+          lastName: "Lee",
+          businessName: "Example Co",
+          email: "jordan@example.com",
+        },
+        systems: {
+          tools: { payroll: ["ADP"] },
+          monthlySpend: "Under $250",
+        },
+      })
+    );
+
+    assert.equal(response.status, 200);
+    assert.equal((sent.body?.message ?? "").includes("Systems map"), false);
+    assert.equal(sent.body?.systemsScore, undefined);
+    assert.equal(sent.body?.systemsRecommendation, undefined);
   });
 
   it("reports remaining quota on GET without consuming it", async () => {

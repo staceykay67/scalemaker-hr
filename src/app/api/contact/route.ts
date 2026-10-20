@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { buildContactFormspreePayload } from "@/lib/form-payloads";
 import { getFormspreeEndpoint, submitToFormspree } from "@/lib/formspree";
+import { CONTACT_HELP_MAX } from "@/lib/hris-interest";
 
 export async function POST(request: NextRequest) {
   try {
@@ -9,10 +10,18 @@ export async function POST(request: NextRequest) {
     const email = String(body?.email ?? "").trim();
     const message = String(body?.message ?? "").trim();
     const phone = String(body?.phone ?? "").trim();
-    const business = String(body?.business ?? "").trim();
+    const business = String(body?.business ?? body?.company ?? "").trim();
+    const topic = String(body?.topic ?? "").trim();
 
-    if (!name || !email || !message) {
+    if (!name || !email) {
       return NextResponse.json({ ok: false, error: "Missing required fields." }, { status: 400 });
+    }
+
+    if (message.length > CONTACT_HELP_MAX) {
+      return NextResponse.json(
+        { ok: false, error: "Please keep your note to 300 characters." },
+        { status: 400 }
+      );
     }
 
     const endpoint = getFormspreeEndpoint("contact");
@@ -29,7 +38,7 @@ export async function POST(request: NextRequest) {
 
     const result = await submitToFormspree(
       endpoint,
-      buildContactFormspreePayload({ name, email, phone, business, message })
+      buildContactFormspreePayload({ name, email, phone, business, message, topic })
     );
 
     if (!result.ok) {

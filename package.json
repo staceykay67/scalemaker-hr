@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start --port 43127",
     "lint": "next lint",
-    "test": "npx --yes tsx --test src/lib/form-payloads.test.ts src/lib/assessment-rate-limit.test.ts src/app/api/leads/route.test.ts"
+    "test": "npx --yes tsx --test src/lib/form-payloads.test.ts src/lib/assessment-rate-limit.test.ts src/lib/hris-copy.test.ts src/lib/legal-copy.test.ts src/lib/systems-score.test.ts src/app/api/leads/route.test.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",

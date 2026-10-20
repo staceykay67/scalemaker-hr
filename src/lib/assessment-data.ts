@@ -1,5 +1,9 @@
 import { BOOKING_LABEL } from "@/lib/site-contact";
 
+export const QUESTION_HELPERS: Record<string, string> = {
+  q20: "Payroll, time, benefits, records, hiring.",
+};
+
 export const LIKERT_OPTIONS = [
   { value: "strongly_disagree", label: "Strongly disagree", points: 1 },
   { value: "disagree", label: "Disagree", points: 2 },

@@ -9,7 +9,10 @@ import {
   peekAssessmentRateLimit,
 } from "@/lib/assessment-rate-limit";
 import { buildAssessmentFormspreePayload } from "@/lib/form-payloads";
+import { readHrisInterest } from "@/lib/hris-interest";
 import { getFormspreeEndpoint, submitToFormspree } from "@/lib/formspree";
+import { readSystemsAnswers } from "@/lib/systems-data";
+import { systemsMapEnabled } from "@/lib/systems-flag";
 
 function rateLimitedResponse(decision: Awaited<ReturnType<typeof consumeAssessmentRateLimit>>) {
   return NextResponse.json(assessmentRateLimitedPayload(decision), {
@@ -89,7 +92,11 @@ export async function POST(request: NextRequest) {
         outcomeOther:
           typeof body?.outcomeOther === "string" ? body.outcomeOther : "",
         timeline: typeof body?.timeline === "string" ? body.timeline : "",
+        hrisInterest: readHrisInterest(body?.hrisInterest),
         completedAt: body?.completedAt ?? null,
+        submissionId:
+          typeof body?.submissionId === "string" ? body.submissionId.slice(0, 80) : null,
+        systems: systemsMapEnabled() ? readSystemsAnswers(body?.systems) : null,
       })
     );
 
