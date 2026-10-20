@@ -9,7 +9,12 @@ import {
   type LikertValue,
 } from "@/lib/assessment-data";
 import { contactTopicLabel, hrisInterestLabel } from "@/lib/hris-interest";
-import { resultCopy, scoreAssessment } from "@/lib/scoring";
+import {
+  coverageSummary,
+  resultCopy,
+  scoreAssessment,
+  type AssessmentScores,
+} from "@/lib/scoring";
 import type { SystemsAnswers } from "@/lib/systems-data";
 import { formatSystemsLead, systemsContextFromLead } from "@/lib/systems-score";
 
@@ -73,6 +78,15 @@ function scheduleLabel(value: string | undefined): string {
   );
 }
 
+function formatCategoryScore(category: AssessmentScores["categories"][number]): string {
+  if (!category.enough || category.displayPercent === null) {
+    return `${category.name}: Not enough information`;
+  }
+  return category.note
+    ? `${category.name}: ${category.displayPercent}% (${category.note})`
+    : `${category.name}: ${category.displayPercent}%`;
+}
+
 function riskLabel(id: string): string {
   return RISK_OPTIONS.find((option) => option.id === id)?.label ?? id;
 }
@@ -122,10 +136,20 @@ export function buildAssessmentFormspreePayload(
   const timeline = compact(input.timeline);
   const hrisInterest = hrisInterestLabel(input.hrisInterest);
   const scores = scoreAssessment(likert, risks);
-  const band = resultCopy(scores.tier);
+  const band = scores.tier ? resultCopy(scores.tier) : null;
   const categoryScores = scores.categories
-    .map((category) => `${category.name}: ${category.percent}%`)
+    .map((category) => formatCategoryScore(category))
     .join("; ");
+  const exploring = scores.areasWorthExploring
+    .map((category) => formatCategoryScore(category))
+    .join("; ");
+  const dontKnowList = scores.dontKnowStatements
+    .map((item) => `${item.id}: ${item.text}`)
+    .join("; ");
+  const scoreLine = band
+    ? `Score: ${scores.displayPercent}% — ${band.name}`
+    : "Score: withheld — not enough information for an overall score";
+  const scoreLabel = band ? `${band.name} (${scores.displayPercent}%)` : "not enough information";
 
   const profileLines = PROFILE_QUESTIONS.map((question) => {
     const answer = compact(input.profile?.[question.id]);
@@ -178,8 +202,18 @@ export function buildAssessmentFormspreePayload(
     input.completedAt ? `Completed at: ${input.completedAt}` : null,
     submissionId ? `Submission: ${submissionId}` : null,
     "",
-    `Score: ${scores.percent}% — ${band.name}`,
-    `Points: ${scores.points} / 90`,
+    scoreLine,
+    `Scoring version: ${scores.scoringVersion}`,
+    scores.percent === null
+      ? "Unrounded score: withheld"
+      : `Unrounded score: ${scores.percent}`,
+    `Points: ${scores.points} on ${scores.scoredCount} scored statements`,
+    `Scored count: ${scores.scoredCount}`,
+    `Don't know count: ${scores.dontKnowCount}`,
+    `Don't know statements: ${dontKnowList || "none"}`,
+    `Limited information: ${scores.limitedInformation ? "Yes" : "No"}`,
+    `Coverage: ${coverageSummary(scores)}`,
+    `Areas worth exploring: ${exploring || "withheld"}`,
     `Category scores: ${categoryScores || "not yet scored"}`,
     `Critical attention flag: ${scores.criticalAttention ? "Yes" : "No"}`,
     `Business impact flag: ${scores.businessImpact ? "Yes" : "No"}`,
@@ -203,8 +237,8 @@ export function buildAssessmentFormspreePayload(
 
   const readinessSubject =
     outcomes || timeline
-      ? `People & Growth Assessment priorities — ${band.name} (${scores.percent}%)`
-      : `People & Growth Assessment — ${band.name} (${scores.percent}%)`;
+      ? `People & Growth Assessment priorities — ${scoreLabel}`
+      : `People & Growth Assessment — ${scoreLabel}`;
 
   const payload: Record<string, string> = {
     formType: "assessment",
@@ -223,8 +257,16 @@ export function buildAssessmentFormspreePayload(
     outcomeOther,
     timeline,
     hrisInterest,
-    scorePercent: String(scores.percent),
-    scoreBand: band.name,
+    scoringVersion: scores.scoringVersion,
+    scoredCount: String(scores.scoredCount),
+    dontKnowCount: String(scores.dontKnowCount),
+    dontKnowList: dontKnowList || "none",
+    limitedInformation: scores.limitedInformation ? "Yes" : "No",
+    coverage: coverageSummary(scores),
+    areasWorthExploring: exploring || "withheld",
+    scorePercent: scores.displayPercent === null ? "withheld" : String(scores.displayPercent),
+    scoreUnrounded: scores.percent === null ? "withheld" : String(scores.percent),
+    scoreBand: band?.name ?? "withheld",
     categoryScores: categoryScores || "not yet scored",
     criticalAttention: scores.criticalAttention ? "Yes" : "No",
     businessImpact: scores.businessImpact ? "Yes" : "No",

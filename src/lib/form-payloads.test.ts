@@ -108,6 +108,11 @@ describe("assessment lead payload", () => {
     assert.equal(payload.message.includes("What matters most:"), false);
     assert.equal(payload.hrisInterest, "No");
     assert.match(payload.message, /HRis interest: No/);
+    assert.equal(payload.scoringVersion, "v2");
+    assert.match(payload.message, /Scoring version: v2/);
+    assert.match(payload.message, /Don't know count:/);
+    assert.match(payload.message, /Limited information:/);
+    assert.match(payload.message, /Coverage:/);
   });
 
   it("includes HRis interest in the lead payload", () => {

@@ -89,6 +89,7 @@ export const PRIVACY_POLICY: LegalPageCopy = {
       list: [
         { text: "To reply to you." },
         { text: "To score your assessment and show your results." },
+        { text: "To email you a copy of your results if you choose Email results." },
         { text: "To prepare for your results call and, if you ask for one, a proposal." },
         { text: "To keep our site running and safe." },
       ],
@@ -118,6 +119,10 @@ export const PRIVACY_POLICY: LegalPageCopy = {
           text: "receives your form answers, emails them to us, and keeps a copy in its dashboard.",
         },
         {
+          lead: "Resend",
+          text: "emails a copy of your assessment results to the address you gave us, if you choose Email results.",
+        },
+        {
           lead: "Vercel",
           text: "hosts our site. Like most hosts, its logs record basic tech info such as IP addresses.",
         },
@@ -142,7 +147,7 @@ export const PRIVACY_POLICY: LegalPageCopy = {
     {
       heading: "How long we keep it",
       paragraphs: [
-        "We keep it only as long as we need it to help you. Then we delete it from our email, our files and Formspree, no later than 24 months after we last talk.",
+        "We keep it only as long as we need it to help you. Then we delete it from our email, our files, Formspree and Resend, no later than 24 months after we last talk.",
         "The spam counter keeps your IP address for up to 24 hours. Host and form-tool logs follow those companies' own schedules.",
         "If you become a client, your client agreement takes over from there.",
       ],

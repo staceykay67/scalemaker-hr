@@ -10,7 +10,7 @@ export const LIKERT_OPTIONS = [
   { value: "neither", label: "Neither agree nor disagree", points: 3 },
   { value: "agree", label: "Agree", points: 4 },
   { value: "strongly_agree", label: "Strongly agree", points: 5 },
-  { value: "unsure", label: "Unsure", points: 3 },
+  { value: "unsure", label: "Don't know / not enough information", points: 0 },
 ] as const;
 
 export type LikertValue = (typeof LIKERT_OPTIONS)[number]["value"];

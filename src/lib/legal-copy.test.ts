@@ -18,6 +18,8 @@ describe("legal pages", () => {
     assert.equal(TERMS_LIABILITY_CAP.includes("for any site issue"), false);
     assert.equal(legalPlainText(TERMS_OF_USE).includes("for any site issue"), false);
     assert.match(legalPlainText(PRIVACY_POLICY), /Formspree/);
+    assert.match(legalPlainText(PRIVACY_POLICY), /Resend/);
+    assert.match(legalPlainText(PRIVACY_POLICY), /if you choose Email results/);
     assert.equal(/Certified Consultant/i.test(legalPlainText(PRIVACY_POLICY)), false);
     assert.equal(/Certified Consultant/i.test(legalPlainText(TERMS_OF_USE)), false);
   });
