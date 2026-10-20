@@ -302,7 +302,8 @@ export function AssessmentWizard() {
                   </p>
                   <p>
                     Rate each statement from strongly disagree to strongly agree.
-                    Choose Unsure if you do not have enough information.
+                    Choose Don&apos;t know / not enough information if you do not
+                    have enough information.
                   </p>
                 </CardContent>
               </Card>

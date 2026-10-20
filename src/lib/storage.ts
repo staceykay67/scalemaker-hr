@@ -31,6 +31,8 @@ export type AssessmentRecord = {
   systemsSubmittedAt: string | null;
   systemsFingerprint: string | null;
   systemsDismissed: boolean;
+  resultsEmailStatus: "idle" | "sent" | "failed";
+  resultsEmailAttempts: number;
 };
 
 export const emptyRecord = (): AssessmentRecord => ({
@@ -60,6 +62,8 @@ export const emptyRecord = (): AssessmentRecord => ({
   systemsSubmittedAt: null,
   systemsFingerprint: null,
   systemsDismissed: false,
+  resultsEmailStatus: "idle",
+  resultsEmailAttempts: 0,
 });
 
 function read(key: string): AssessmentRecord | null {

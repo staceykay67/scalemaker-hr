@@ -25,7 +25,14 @@ import {
   systemsFingerprint,
 } from "@/lib/assessment-lead";
 import { formatWhatMatters } from "@/lib/form-payloads";
-import { resultCopy, scoreAssessment } from "@/lib/scoring";
+import { EmailResultsButton } from "@/components/email-results-button";
+import {
+  INSUFFICIENT_OVERALL_MESSAGE,
+  RESULTS_CAVEAT,
+  limitedInformationNote,
+  resultCopy,
+  scoreAssessment,
+} from "@/lib/scoring";
 import { emptySystemsAnswers, systemsIntro } from "@/lib/systems-data";
 import type { SystemsContext } from "@/lib/systems-score";
 import {
@@ -109,7 +116,7 @@ export function ResultsView({
     );
   }
 
-  const copy = resultCopy(scores.tier);
+  const copy = scores.tier ? resultCopy(scores.tier) : null;
   const firstName = record.contact.firstName.trim() || "there";
 
   function persist(next: AssessmentRecord) {
@@ -290,13 +297,43 @@ export function ResultsView({
 
       <Card className="mt-8">
         <CardContent className="space-y-3 pt-2">
-          <p className="text-sm font-medium text-sage">{copy.name}</p>
-          <p className="font-heading text-5xl font-bold text-forest">
-            {scores.percent}%
-          </p>
-          <p className="text-sm text-muted-foreground">
-            Overall People &amp; Growth Readiness Score
-          </p>
+          {scores.overallAvailable && copy && scores.displayPercent !== null ? (
+            <>
+              <p className="text-sm font-medium text-sage">{copy.name}</p>
+              <p className="font-heading text-5xl font-bold text-forest">
+                {scores.displayPercent}%
+              </p>
+              <p className="text-sm text-muted-foreground">
+                Overall People &amp; Growth Readiness Score
+              </p>
+              <p className="text-sm leading-relaxed text-muted-foreground">{RESULTS_CAVEAT}</p>
+            </>
+          ) : (
+            <>
+              <p className="text-sm font-medium text-sage">Not enough information</p>
+              <p className="text-sm leading-relaxed text-foreground">
+                {INSUFFICIENT_OVERALL_MESSAGE}
+              </p>
+              <p className="text-sm text-muted-foreground">
+                Scored statements: {scores.scoredCount} of 18.
+              </p>
+              <ul className="list-disc space-y-1 pl-5 text-sm text-muted-foreground">
+                {scores.categories
+                  .filter((category) => !category.enough)
+                  .map((category) => (
+                    <li key={category.id}>
+                      {category.name}: {category.scoredCount} of 3 statements scored
+                    </li>
+                  ))}
+              </ul>
+            </>
+          )}
+          {scores.limitedInformation ? (
+            <p className="rounded-lg border border-sage/40 bg-secondary/40 px-3 py-2 text-sm leading-relaxed">
+              {limitedInformationNote(scores.dontKnowCount, scores.scoredCount)}
+            </p>
+          ) : null}
+          <EmailResultsButton record={record} onPersist={persist} />
         </CardContent>
       </Card>
 
@@ -406,9 +443,11 @@ export function ResultsView({
         </Card>
       )}
 
-      <div className="mt-8 space-y-4 text-sm leading-relaxed whitespace-pre-line text-foreground">
-        {copy.summary}
-      </div>
+      {copy ? (
+        <div className="mt-8 space-y-4 text-sm leading-relaxed whitespace-pre-line text-foreground">
+          {copy.summary}
+        </div>
+      ) : null}
 
       <section className="mt-10">
         <h2 className="font-heading text-xl font-semibold text-forest">
@@ -420,13 +459,20 @@ export function ResultsView({
               <div className="mb-1 flex items-baseline justify-between gap-3">
                 <p className="text-sm font-medium">{category.name}</p>
                 <p className="text-sm tabular-nums text-muted-foreground">
-                  {category.percent}%
+                  {category.enough && category.displayPercent !== null
+                    ? `${category.displayPercent}%`
+                    : "Not enough information"}
                 </p>
               </div>
+              {category.note && category.enough ? (
+                <p className="mb-1 text-xs text-muted-foreground">{category.note}</p>
+              ) : null}
               <div className="h-2 overflow-hidden rounded-full bg-secondary">
                 <div
                   className="h-full rounded-full bg-sage"
-                  style={{ width: `${category.percent}%` }}
+                  style={{
+                    width: `${category.enough && category.displayPercent !== null ? category.displayPercent : 0}%`,
+                  }}
                 />
               </div>
             </div>
@@ -434,6 +480,28 @@ export function ResultsView({
         </div>
       </section>
 
+      {scores.areasWorthExploring.length > 0 ? (
+        <section className="mt-10">
+          <h2 className="font-heading text-xl font-semibold text-forest">
+            Areas worth exploring
+          </h2>
+          <ul className="mt-4 space-y-3">
+            {scores.areasWorthExploring.map((category) => (
+              <li key={category.id} className="rounded-lg border bg-white px-4 py-3 text-sm">
+                <span className="font-medium">{category.name}</span>
+                {category.displayPercent !== null ? (
+                  <span className="text-muted-foreground"> · {category.displayPercent}%</span>
+                ) : null}
+                {category.note ? (
+                  <span className="mt-1 block text-muted-foreground">{category.note}</span>
+                ) : null}
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
+
+      {copy ? (
       <section className="mt-10">
         <h2 className="font-heading text-xl font-semibold text-forest">
           Recommended next steps
@@ -450,6 +518,7 @@ export function ResultsView({
           {copy.support}
         </p>
       </section>
+      ) : null}
 
       <section className="mt-10">
         <h2 className="font-heading text-xl font-semibold text-forest">

@@ -273,3 +273,27 @@ describe("systems map flag", () => {
     else process.env[env] = previousEnv;
   });
 });
+
+describe("systems score and don't-know assessment answers", () => {
+  it("treats an old unsure answer as unknown rather than a low score", () => {
+    const base = answers({
+      tools: { payroll: ["ADP"], records: ["BambooHR"] },
+      monthlySpend: "Under $250",
+      adminWho: "Office or operations manager",
+      backup: "Yes",
+      frustrations: ["Hard to use"],
+      hirePlaces: "1",
+      sharing: "Yes, mostly",
+      i9: "In an HR or payroll system",
+    });
+    const blank = scoreSystems(base, { states: "Arizona", risks: ["none"] });
+    const unsure = scoreSystems(base, {
+      states: "Arizona",
+      q8: "unsure",
+      q21: "unsure",
+      risks: ["none"],
+    });
+    assert.equal(unsure.score, blank.score);
+    assert.equal(unsure.band, blank.band);
+  });
+});

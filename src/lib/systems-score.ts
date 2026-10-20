@@ -1,5 +1,5 @@
 import type { LikertValue } from "@/lib/assessment-data";
-import { likertPoints } from "@/lib/scoring";
+import { isDontKnowAnswer, likertPoints } from "@/lib/scoring";
 import {
   DONT_KNOW,
   ESIGN_TOOLS,
@@ -345,7 +345,7 @@ function complianceScore(answers: SystemsAnswers, context: SystemsContext): numb
   if (documentsLackTrail(answers)) score -= 20;
   const states = countOperatingStates(context.states);
   if (states !== null && states >= 2) score -= 15;
-  if (context.q8 && likertPoints(context.q8) <= 2) score -= 15;
+  if (context.q8 && !isDontKnowAnswer(context.q8) && likertPoints(context.q8) <= 2) score -= 15;
   const risks = new Set(context.risks ?? []);
   for (const id of ["licenses", "wage", "policies"]) {
     if (risks.has(id)) score -= 10;
@@ -375,7 +375,7 @@ function costScore(answers: SystemsAnswers): number {
 }
 
 function q21Score(value: LikertValue | undefined): number {
-  if (!value) return 50;
+  if (!value || isDontKnowAnswer(value)) return 50;
   return clamp(((likertPoints(value) - 1) / 4) * 100);
 }
 
