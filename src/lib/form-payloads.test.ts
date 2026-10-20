@@ -37,11 +37,14 @@ describe("contact form payload", () => {
     const payload = buildContactFormspreePayload({
       name: "Ada Lovelace",
       email: "ada@example.com",
-      message: "Hello.",
+      message: "",
+      business: "Northwind",
       topic: "",
     });
 
     assert.equal(payload.topic, undefined);
+    assert.equal(payload.message, "");
+    assert.equal(payload.business, "Northwind");
     assert.equal(payload._subject, "Scalemaker HR website contact");
   });
 });

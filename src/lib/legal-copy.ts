@@ -65,7 +65,7 @@ export const PRIVACY_POLICY: LegalPageCopy = {
         },
         {
           lead: "Your interest in our services.",
-          text: "For example, if you tick the box saying you'd like to hear about Scalemaker HRis, or pick a topic on our contact form.",
+          text: "For example, if you tick the box saying you'd like to hear about Scalemaker HRis, or tell us what you need on our contact form.",
         },
         {
           lead: "Optional HR tools questions.",

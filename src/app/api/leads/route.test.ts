@@ -107,6 +107,87 @@ describe("/api/leads assessment rate limit", () => {
     assert.equal(formspreeCalls, 1);
   });
 
+  it("tags an HRis walk-through and rejects a note over 300 characters", async () => {
+    const ip = "203.0.113.240";
+    const sent: { body?: Record<string, string> } = {};
+    globalThis.fetch = (async (_input, init) => {
+      sent.body = JSON.parse(String(init?.body)) as Record<string, string>;
+      return new Response(JSON.stringify({ ok: true }), { status: 200 });
+    }) as typeof fetch;
+
+    const tagged = await contactPost(
+      new NextRequest("http://localhost/api/contact", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          "x-forwarded-for": ip,
+        },
+        body: JSON.stringify({
+          name: "Jordan Lee",
+          email: "jordan@example.com",
+          business: "Northwind",
+          message: "",
+          topic: "hris-pilot",
+        }),
+      })
+    );
+    assert.equal(tagged.status, 200);
+    assert.equal(sent.body?._subject, "Scalemaker HR website contact — HRis walk through");
+    assert.equal(sent.body?.topic, "HRis walk through");
+    assert.equal(sent.body?.business, "Northwind");
+    assert.equal(sent.body?.message, "");
+
+    const plain = await contactPost(
+      new NextRequest("http://localhost/api/contact", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          "x-forwarded-for": `${ip}-plain`,
+        },
+        body: JSON.stringify({
+          name: "Jordan Lee",
+          email: "jordan@example.com",
+          message: "Hello",
+        }),
+      })
+    );
+    assert.equal(plain.status, 200);
+    assert.equal(sent.body?._subject, "Scalemaker HR website contact");
+    assert.equal(sent.body?.topic, undefined);
+
+    const atLimit = await contactPost(
+      new NextRequest("http://localhost/api/contact", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          "x-forwarded-for": `${ip}-limit`,
+        },
+        body: JSON.stringify({
+          name: "Jordan Lee",
+          email: "jordan@example.com",
+          message: "a".repeat(300),
+        }),
+      })
+    );
+    assert.equal(atLimit.status, 200);
+
+    const tooLong = await contactPost(
+      new NextRequest("http://localhost/api/contact", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          "x-forwarded-for": `${ip}-long`,
+        },
+        body: JSON.stringify({
+          name: "Jordan Lee",
+          email: "jordan@example.com",
+          message: "a".repeat(301),
+        }),
+      })
+    );
+    assert.equal(tooLong.status, 400);
+  });
+
   it("does not apply the assessment limit to /api/contact", async () => {
     const ip = "203.0.113.201";
     process.env.ASSESSMENT_RATE_LIMIT_MAX = "1";

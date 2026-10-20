@@ -1,6 +1,9 @@
 export const HRIS_PILOT_TOPIC = "hris-pilot";
 export const HRIS_PILOT_TOPIC_LABEL = "HRis walk through";
 export const HRIS_PILOT_CONTACT_PATH = `/contact?topic=${HRIS_PILOT_TOPIC}`;
+export const CONTACT_HELP_MAX = 300;
+export const CONTACT_HELP_PLACEHOLDER =
+  "Tell us a little about what you're looking for—HR advice, people systems, Scalemaker HRis, or something else.";
 
 export const HRIS_INTEREST_LABEL =
   "I'm also interested in seeing Scalemaker HRis, your HR platform.";
