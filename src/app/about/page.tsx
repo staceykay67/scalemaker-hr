@@ -117,7 +117,7 @@ export default function AboutPage() {
                 Founder
               </p>
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                Stacey founded Scalemaker HR and brings more than 25 years of HR experience leading HR functions in growing, multi-site organizations. He holds a Master of Human Resources and the SPHR and SHRM-SCP certifications.*
+                Stacey founded Scalemaker HR and brings more than 25 years of HR experience leading HR functions in growing, multi-site organizations. Stacey holds a Master of Human Resources and the SPHR and SHRM-SCP certifications.*
               </p>
             </div>
           </div>
