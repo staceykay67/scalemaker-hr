@@ -12,6 +12,7 @@ export async function POST(request: NextRequest) {
     const phone = String(body?.phone ?? "").trim();
     const business = String(body?.business ?? body?.company ?? "").trim();
     const topic = String(body?.topic ?? "").trim();
+    const interest = String(body?.interest ?? "").trim();
 
     if (!name || !email) {
       return NextResponse.json({ ok: false, error: "Missing required fields." }, { status: 400 });
@@ -38,7 +39,7 @@ export async function POST(request: NextRequest) {
 
     const result = await submitToFormspree(
       endpoint,
-      buildContactFormspreePayload({ name, email, phone, business, message, topic })
+      buildContactFormspreePayload({ name, email, phone, business, message, topic, interest })
     );
 
     if (!result.ok) {

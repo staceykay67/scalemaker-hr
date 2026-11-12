@@ -25,7 +25,7 @@ import {
   systemsFingerprint,
 } from "@/lib/assessment-lead";
 import { formatWhatMatters } from "@/lib/form-payloads";
-import { EmailResultsButton } from "@/components/email-results-button";
+import { AutoEmailResults } from "@/components/auto-email-results";
 import {
   INSUFFICIENT_OVERALL_MESSAGE,
   RESULTS_CAVEAT,
@@ -333,7 +333,9 @@ export function ResultsView({
               {limitedInformationNote(scores.dontKnowCount, scores.scoredCount)}
             </p>
           ) : null}
-          <EmailResultsButton record={record} onPersist={persist} />
+          <div className="mt-4">
+            <AutoEmailResults record={record} onPersist={persist} />
+          </div>
         </CardContent>
       </Card>
 
@@ -609,6 +611,26 @@ export function ResultsView({
                   </option>
                 ))}
               </select>
+            </label>
+            <label className="mt-6 block space-y-2 text-sm font-medium">
+              Which are you interested in exploring? (optional)
+              <select
+                className="mt-2 h-11 w-full rounded-lg border border-input bg-white px-3 text-sm font-normal"
+                value={record.interest}
+                onChange={(event) => {
+                  persist({ ...record, interest: event.target.value });
+                  setPriorityStatus("idle");
+                  setPriorityError("");
+                }}
+              >
+                <option value="">Select an option</option>
+                <option value="consulting">Consulting</option>
+                <option value="hris">Scalemaker HRis</option>
+                <option value="both">Both</option>
+              </select>
+              <span className="block text-xs font-normal text-muted-foreground">
+                Not sure yet? Leave it blank. We&apos;ll talk it through.
+              </span>
             </label>
             {priorityError && (
               <p

@@ -25,6 +25,7 @@ export type ContactPayloadInput = {
   business?: string;
   message: string;
   topic?: string;
+  interest?: string;
 };
 
 export type AssessmentLeadInput = {
@@ -44,6 +45,7 @@ export type AssessmentLeadInput = {
   outcomes?: string[];
   outcomeOther?: string;
   timeline?: string;
+  interest?: string;
   hrisInterest?: boolean;
   completedAt?: string | null;
   submissionId?: string | null;
@@ -100,6 +102,8 @@ export function buildContactFormspreePayload(
   const business = compact(input.business);
   const message = compact(input.message);
   const topic = contactTopicLabel(input.topic);
+  const interest = compact(input.interest);
+  const interestLabel = interest === "consulting" ? "Consulting" : interest === "hris" ? "Scalemaker HRis" : interest === "both" ? "Both" : "";
 
   const payload: Record<string, string> = {
     formType: "contact",
@@ -112,6 +116,7 @@ export function buildContactFormspreePayload(
   };
 
   if (topic) payload.topic = topic;
+  if (interestLabel) payload.interest = interestLabel;
 
   if (phone) payload.phone = phone;
   if (business) payload.business = business;
@@ -134,6 +139,7 @@ export function buildAssessmentFormspreePayload(
   const outcomeOther = compact(input.outcomeOther);
   const outcomes = formatWhatMatters(input.outcomes, outcomeOther);
   const timeline = compact(input.timeline);
+  const interest = compact(input.interest);
   const hrisInterest = hrisInterestLabel(input.hrisInterest);
   const scores = scoreAssessment(likert, risks);
   const band = scores.tier ? resultCopy(scores.tier) : null;
@@ -199,6 +205,7 @@ export function buildAssessmentFormspreePayload(
     outcomes ? `What matters most: ${outcomes}` : null,
     outcomeOther ? `Other outcome detail: ${outcomeOther}` : null,
     timeline ? `Ideal start timeline: ${timeline}` : null,
+    interest ? `Interest: ${interest}` : null,
     input.completedAt ? `Completed at: ${input.completedAt}` : null,
     submissionId ? `Submission: ${submissionId}` : null,
     "",
@@ -256,6 +263,7 @@ export function buildAssessmentFormspreePayload(
     outcomes,
     outcomeOther,
     timeline,
+    interest,
     hrisInterest,
     scoringVersion: scores.scoringVersion,
     scoredCount: String(scores.scoredCount),
