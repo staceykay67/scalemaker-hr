@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "See it for yourself",
-  description: "A short recorded walkthrough of Scalemaker HRis, using a sample company.",
+  description: "See it for yourself. Scalemaker HRis, using a sample company.",
 };
 
 // Video URL or file path - update this constant when the recording is ready
@@ -18,9 +18,6 @@ export default function HrisDemoPage() {
       <h1 className="mt-2 max-w-3xl font-heading text-3xl font-bold text-forest sm:text-4xl">
         See it for yourself
       </h1>
-      <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground">
-        A short recorded walkthrough of Scalemaker HRis, using a sample company.
-      </p>
 
       {/* Video player region - ready for video, empty for now */}
       <div className="mt-10 max-w-4xl">

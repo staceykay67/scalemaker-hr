@@ -152,7 +152,9 @@ export function HrisContent() {
         <h2 id="hris-walkthrough" className="font-heading text-2xl font-bold text-forest">
           {hrisWalkthrough.heading}
         </h2>
-        <p className="mt-4 text-base leading-relaxed text-muted-foreground">{hrisWalkthrough.body}</p>
+        {hrisWalkthrough.body && (
+          <p className="mt-4 text-base leading-relaxed text-muted-foreground">{hrisWalkthrough.body}</p>
+        )}
         <div className="mt-6">
           <PilotLink />
         </div>
