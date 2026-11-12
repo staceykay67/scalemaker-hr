@@ -33,7 +33,7 @@ function FeatureList({ features }: { features: HrisFeature[] }) {
 function PilotLink({ className }: { className?: string }) {
   return (
     <Link
-      href={HRIS_PILOT_CONTACT_PATH}
+      href="/hris/demo"
       className={cn(buttonVariants(), "inline-flex h-11 px-5 font-semibold", className)}
     >
       {hrisHero.primaryCta}
@@ -42,13 +42,13 @@ function PilotLink({ className }: { className?: string }) {
 }
 
 function AssessmentNote({ note }: { note: string }) {
-  const [noteBefore, noteAfter] = note.split("free assessment");
+  const [noteBefore, noteAfter] = note.split("complimentary assessment");
 
   return (
     <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
       {noteBefore}
       <Link href="/assessment" className="font-medium text-forest underline-offset-4 hover:underline">
-        free assessment
+        complimentary assessment
       </Link>
       {noteAfter}
     </p>

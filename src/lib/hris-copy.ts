@@ -168,7 +168,7 @@ export const hrisAudience = {
 
 export const hrisWalkthrough = {
   heading: "See it for yourself",
-  body: "We'll walk you through Scalemaker HRis using a sample company, and talk through whether it fits how you work. No pressure, and an honest answer either way.",
+  body: "Watch a short recorded walkthrough of Scalemaker HRis, using a sample company.",
   earlyAccess: HRIS_EARLY_ACCESS,
   note: "Not sure you need a platform yet? Start with the complimentary assessment. We'll tell you if Scalemaker HRis fits, and if it doesn't.",
 };
