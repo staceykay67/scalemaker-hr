@@ -1,5 +1,5 @@
 export const STEADY_PARTNER =
-  "We partner with small businesses that want to get HR right, build stronger teams, and grow with confidence. Whether we're your HR partner for years or help you prepare for the next stage of growth, our commitment is the same: practical solutions, dependable support, and people systems built to last.";
+  "We work with established small businesses that want a steady HR partner for years, and with growing ones we help scale and then hand off when their needs outgrow our focus. Either way, the goal is the same: people systems that work without depending on us.";
 
 export const GRADUATE_LINE = "Stay as long as we fit. Graduate when you outgrow us.";
 
@@ -7,32 +7,34 @@ export const HRIS_EARLY_ACCESS = "Now in early access.";
 
 export const AUDIENCE_PHRASE = "small businesses nationwide, up to about 200 employees";
 
+export const TEAM_LOCATION = "Our team is based in Arizona and Utah.";
+
 export const ONE_TEAM_BAND = {
-  heading: "One team for your people systems.",
-  body: "We build practical HR processes around the way your business works, then bring them together in Scalemaker HRis, our early-access HR platform. You get experienced HR leadership, the tools to support it, and systems designed to grow with your business.",
-  linkLabel: "Learn about Scalemaker HRis",
-  linkHref: "/hris",
+  heading: "Consulting, Scalemaker HRis, or both.",
+  body: "Choose the support that fits. Each one works on its own, and they work well together.",
+  linkLabel: "Compare the options",
+  linkHref: "/services",
 };
 
 export const ABOUT_HRIS_PARAGRAPH =
-  "Our consulting work is supported by Scalemaker HRis, the HR platform built specifically for growing businesses. We bring your people processes and technology together in one system, designed around how your business actually operates.";
+  "We also built Scalemaker HRis (HRIS), an HR platform designed specifically for growing businesses. Clients can choose our consulting, the platform, or both. Either way, we bring your people processes and technology together around how your business actually operates.";
 
 export const ABOUT_LOCATION =
-  "Scalemaker HR LLC is based in Arizona and serves businesses nationwide with up to approximately 200 employees, providing experienced HR leadership and practical people systems through a remote-first model.";
+  "Scalemaker HR LLC is an Arizona company. Our team is based in Arizona and Utah and serves small businesses nationwide with up to approximately 200 employees, providing experienced HR leadership and practical people systems through a remote-first model.";
 
 export const APPROACH_HRIS_STEP = "Scalemaker HRis set up and run with you (early access).";
 
 export const HRIS_RESULTS_LINE =
-  "Where it helps, we set up Scalemaker HRis (HRIS), the HR platform we use with clients, now in early access. If your current tools work, we'll help you keep them.";
+  "Scalemaker HRis is our HR platform for small businesses. Use it on its own or alongside our consulting. If your current tools work, we'll help you keep them.";
 
 export const hrisHero = {
   eyebrow: "Scalemaker HRis",
   headline: "One place to run HR, set up by people who know HR.",
   subhead:
-    "Scalemaker HRis (HRIS) is our people platform for small businesses with up to about 200 employees. Records, time, hiring, onboarding, payroll hand-off, benefits and more, all in one place, set up with you by a senior HR partner from Scalemaker HR.",
-  primaryCta: "Request a walkthrough",
+    "Scalemaker HRis (HRIS) is our people platform for small businesses with up to about 200 employees. Records, time, hiring, onboarding, payroll exports, benefits elections and more, all in one place, set up with you by the Scalemaker HR team.",
+  primaryCta: "See it for yourself",
   earlyAccess: HRIS_EARLY_ACCESS,
-  secondaryCta: "Take the free assessment",
+  secondaryCta: "Begin the assessment",
 };
 
 export const hrisTwiceAYear = {
@@ -44,10 +46,10 @@ export const hrisTwiceAYear = {
 };
 
 export const hrisOneTeam = {
-  heading: "One team: your HR system and your senior HR partner",
+  heading: "Use it on its own, or with our consulting",
   paragraphs: [
     "Most growing companies don't have a technology problem. They have a scattered problem. Payroll is in one place, hiring is in another, records are in a binder, and the details live in the owner's head.",
-    "Software alone doesn't fix that. Someone still has to decide how your company should run, set it up that way, and make sure the steps actually happen. That's what we do at Scalemaker HR.",
+    "Scalemaker HRis brings it together. Use it on its own, or add Scalemaker HR consulting when you want help deciding how your company should run. Consulting is available without the platform, too.",
   ],
   points: [
     {
@@ -55,8 +57,8 @@ export const hrisOneTeam = {
       body: "Your structure, locations, roles and records, configured the way your company actually works.",
     },
     {
-      title: "It runs the way we designed it.",
-      body: "The steps we build together repeat the same way as you add people and locations.",
+      title: "It runs the same way every time.",
+      body: "The steps you set up repeat the same way as you add people and locations.",
     },
     {
       title: "You stay in control.",
@@ -75,7 +77,7 @@ export const hrisFeaturesHeading = "Everything in one place";
 export const hrisFeatures: HrisFeature[] = [
   {
     title: "People records and self-service",
-    body: "One home for every employee: job, pay and manager history, departments and documents. Employees update their own details, so records stay current without chasing anyone.",
+    body: "One home for every employee: job, pay and manager history, departments and documents. Employees update their own contact details, so records stay accurate without chasing anyone.",
   },
   {
     title: "Org chart",
@@ -99,19 +101,19 @@ export const hrisFeatures: HrisFeature[] = [
   },
   {
     title: "Onboarding",
-    body: "From offer to first day. New hires complete their paperwork, including I-9 and W-4, and get a checklist for their first weeks. Managers get theirs too.",
+    body: "From offer to first day. New hires get a checklist for their first weeks, and managers get theirs too. On the Full file, new hires also complete their I-9 and W-4 in the app.",
   },
   {
-    title: "Payroll hand-off",
-    body: "Hours, pay changes, new hires and bank or direct deposit details flow to your payroll provider in a pay-run file. Nobody types the same information twice. You keep the payroll provider you already use.",
+    title: "Payroll exports",
+    body: "Hours, pay changes and new hires go into a payroll file laid out for your provider, plus direct deposit details on the Full file. CSV payroll exports now, API connections to payroll vendors coming. HRis doesn't run payroll, so you keep the payroll provider you already use.",
   },
   {
-    title: "Benefits enrollment",
-    body: "Employees choose their plans and add dependents in one guided flow. Elections go to your carriers automatically or by a change file.",
+    title: "Benefits elections",
+    body: "Employees record their plan elections and dependents in one place, and change files are ready to send to your carriers.",
   },
   {
     title: "E-signature",
-    body: "Offers, policies, acknowledgements and forms are signed right in the app.",
+    body: "On the Full file, offers, policies, acknowledgements and forms are signed right in the app. On Lite, employees acknowledge with their typed name.",
   },
   {
     title: "Documents and handbook",
@@ -130,25 +132,30 @@ export const hrisFeatures: HrisFeature[] = [
     body: "A guided checklist so every departure is handled the same way, with nothing missed.",
   },
   {
-    title: "HR advisor",
-    body: "An AI assistant that answers HR questions in plain language, guides you to the right place, and prepares changes for you to review and confirm. Nothing changes until you say so.",
+    title: "Your own AI as a guide",
+    body: "A downloadable, role-specific guide your people can use with the AI app they already have. There's no AI chat inside HRis. The guide reminds people not to share passwords or personal details.",
   },
 ];
 
 export const hrisModes = {
-  heading: "Two ways to run it: Soft file and Full file",
+  heading: "Two ways to run it: Lite file and Full file",
   modes: [
     {
-      title: "Soft file.",
+      title: "Lite file.",
       body: "Your roster and day-to-day people records, without sensitive personal data like Social Security numbers, birth dates or bank details. It's a good fit for companies that want structure and visibility without holding sensitive files.",
     },
     {
       title: "Full file.",
-      body: "Everything in Soft, plus the sensitive details that complete an employee's file: I-9 and W-4 forms and direct deposit information. That's what lets onboarding, payroll and benefits connect without anyone re-keying data.",
+      body: "Everything in Lite, plus the sensitive details that complete an employee's file: I-9 and W-4 forms and direct deposit information. That lets new-hire details carry into your payroll and benefits files without anyone re-keying them.",
     },
   ],
   closing:
-    "You choose the one that fits. You can start with Soft and move to Full when you're ready.",
+    "You choose the one that fits. You can start with Lite and move to Full when you're ready.",
+};
+
+export const hrisLawChangeNotes = {
+  heading: "Law-change notes, for HRis clients too",
+  body: "Every Scalemaker HRis client receives our law-change awareness notes, including clients who don't use our consulting. We watch for enacted employment-law changes and send awareness notes for you to review with your own counsel. You also get our library of generic federal-baseline policies, used as a starting point and updated when we identify relevant federal changes. These are not a substitute for legal advice; your counsel should review them for your state and situation.",
 };
 
 export const hrisAudience = {
@@ -163,23 +170,36 @@ export const hrisWalkthrough = {
   heading: "See it for yourself",
   body: "We'll walk you through Scalemaker HRis using a sample company, and talk through whether it fits how you work. No pressure, and an honest answer either way.",
   earlyAccess: HRIS_EARLY_ACCESS,
-  note: "Not sure you need a platform yet? Start with the free assessment. We'll tell you if Scalemaker HRis fits, and if it doesn't.",
+  note: "Not sure you need a platform yet? Start with the complimentary assessment. We'll tell you if Scalemaker HRis fits, and if it doesn't.",
 };
+
+export const CERT_FOOTNOTE = "PHR® and SPHR® are marks of HR Certification Institute (HRCI). SHRM-CP® and SHRM-SCP® are marks of SHRM. Scalemaker HR is not affiliated with or endorsed by HRCI or SHRM.";
 
 export const hrisFaqs = [
   {
+    question: "Can I use Scalemaker HRis without consulting?",
+    answer:
+      "Yes. Scalemaker HRis is available on its own, and our consulting is available without the platform. You can also use both, and add either one later.",
+  },
+  {
     question: "Do I need an HR person to use it?",
     answer:
-      "No. We set it up with you and stay involved. It's designed for owners and office managers who wear the HR hat.",
+      "No. We set it up with you. It's designed for owners and office managers who wear the HR hat.",
   },
   {
     question: "Does it replace my payroll provider?",
     answer:
-      "No. Scalemaker HRis sends what payroll needs to the provider you already use, so you keep the payroll you trust.",
+      "No. HRis doesn't run payroll. CSV payroll exports now, API connections to payroll vendors coming. You keep the payroll provider you already use.",
   },
   {
-    question: "Is it a replacement for consulting?",
-    answer: "No. It's how the systems we build together keep running after the project is done.",
+    question: "What if I want HR guidance, too?",
+    answer:
+      "Add Scalemaker HR consulting. When you add Scalemaker HR consulting, your HR professional is certified by HRCI or SHRM.*",
+  },
+  {
+    question: "Do HRis-only clients get law-change notes?",
+    answer:
+      "Yes. Every client receives our monthly law-change awareness notes to review with their own counsel. They're a starting point, not legal advice.",
   },
   {
     question: "Can I leave?",

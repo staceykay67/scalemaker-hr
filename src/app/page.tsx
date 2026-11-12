@@ -2,7 +2,7 @@ import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CtaBand } from "@/components/cta-band";
-import { AUDIENCE_PHRASE, GRADUATE_LINE, ONE_TEAM_BAND, STEADY_PARTNER } from "@/lib/hris-copy";
+import { AUDIENCE_PHRASE, GRADUATE_LINE, ONE_TEAM_BAND, STEADY_PARTNER, TEAM_LOCATION } from "@/lib/hris-copy";
 import { cn } from "@/lib/utils";
 
 export default function HomePage() {
@@ -90,12 +90,12 @@ export default function HomePage() {
           <h2 className="font-heading text-2xl font-bold text-forest sm:text-3xl">
             Who Scalemaker HR helps
           </h2>
-          <div className="mt-8 grid gap-6 lg:grid-cols-2">
-            <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
-              We work with {AUDIENCE_PHRASE}. HR often sits with the owner, an
-              office manager, or several people at once, and still runs on
-              spreadsheets, paper, and memory.
-            </p>
+          <p className="mt-4 max-w-3xl text-sm leading-relaxed text-muted-foreground sm:text-base">
+            We work with {AUDIENCE_PHRASE}. {TEAM_LOCATION} HR often sits with the owner, an
+            office manager, or several people at once, and still runs on
+            spreadsheets, paper, and memory.
+          </p>
+          <div className="mt-8">
             <Card>
               <CardHeader>
                 <CardTitle>This is a good fit when</CardTitle>
@@ -105,9 +105,11 @@ export default function HomePage() {
                   <li>HR currently sits with the owner, an office manager, or several people at once.</li>
                   <li>You&apos;re adding employees, locations, or services, and the informal approach is starting to break.</li>
                 </ul>
-                <p>{STEADY_PARTNER}</p>
               </CardContent>
             </Card>
+            <p className="mt-4 max-w-3xl text-sm leading-relaxed text-muted-foreground">
+              {STEADY_PARTNER}
+            </p>
           </div>
         </div>
       </section>
@@ -119,6 +121,59 @@ export default function HomePage() {
           </h2>
           <p className="mt-4 max-w-3xl text-sm leading-relaxed text-muted-foreground sm:text-base">
             {ONE_TEAM_BAND.body}
+          </p>
+          <div className="mt-8 grid gap-4 md:grid-cols-3">
+            <Card>
+              <CardHeader>
+                <CardTitle>Consulting</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 text-sm leading-relaxed text-muted-foreground">
+                <p>
+                  Experienced HR guidance, from a focused project or periodic advice up to fractional HR leadership.
+                </p>
+                <Link
+                  href="/services#consulting"
+                  className="inline-flex text-sm font-semibold text-forest underline-offset-4 hover:underline"
+                >
+                  See consulting
+                </Link>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle>Scalemaker HRis</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 text-sm leading-relaxed text-muted-foreground">
+                <p>
+                  Scalemaker HRis (HRIS), our HR platform for small businesses: records, time, hiring, onboarding and more in one place, set up with you. Available on its own.
+                </p>
+                <Link
+                  href="/services#hris"
+                  className="inline-flex text-sm font-semibold text-forest underline-offset-4 hover:underline"
+                >
+                  See Scalemaker HRis
+                </Link>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle>Both</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 text-sm leading-relaxed text-muted-foreground">
+                <p>
+                  Consulting and Scalemaker HRis together, so the practices we build with you run the same way every day.
+                </p>
+                <Link
+                  href="/services#both"
+                  className="inline-flex text-sm font-semibold text-forest underline-offset-4 hover:underline"
+                >
+                  See both
+                </Link>
+              </CardContent>
+            </Card>
+          </div>
+          <p className="mt-6 max-w-3xl text-sm leading-relaxed text-muted-foreground">
+            Every client also gets law-change awareness notes to review with their own counsel, and our library of generic federal-baseline policies to use as a starting point.
           </p>
           <Link
             href={ONE_TEAM_BAND.linkHref}
@@ -133,9 +188,9 @@ export default function HomePage() {
         <h2 className="font-heading text-2xl font-bold text-forest sm:text-3xl">
           Start with the assessment
         </h2>
-        <p className="mt-4 max-w-3xl text-sm leading-relaxed text-muted-foreground sm:text-base">
-          The People &amp; Growth Readiness Assessment is complimentary and takes just 5–7 minutes to complete. Once finished, you&apos;ll receive an overall score, results across six key areas, and recommended next steps. You can also schedule a complimentary 30-minute results review to discuss your findings and explore opportunities for improvement.
-        </p>
+          <p className="mt-4 max-w-3xl text-sm leading-relaxed text-muted-foreground sm:text-base">
+            The People &amp; Growth Readiness Assessment is complimentary and takes just 5–7 minutes to complete. Once finished, you&apos;ll receive an overall score, results across six key areas, and recommended next steps, on screen and by email. You can also schedule a complimentary 30-minute results review to discuss your findings and explore opportunities for improvement.
+          </p>
         <div className="mt-8 grid gap-4 md:grid-cols-3">
           {[
             {
@@ -183,7 +238,7 @@ export default function HomePage() {
           Experienced HR leadership. Built for small business.
         </h2>
         <p className="mt-4 max-w-3xl text-sm leading-relaxed text-muted-foreground sm:text-base">
-          Founded by Stacey Kay, MHR, SPHR, SHRM-SCP, Scalemaker brings more than 25 years of HR experience to businesses that need practical solutions, not another layer of complexity.
+          Scalemaker HR was founded by Stacey Kay, MHR, SPHR, SHRM-SCP,* who brings more than 25 years of HR experience to businesses that need practical solutions, not another layer of complexity.
         </p>
         <Link
           href="/about"
@@ -195,7 +250,7 @@ export default function HomePage() {
 
       <CtaBand
         title="Building better organizations for what comes next."
-        body="Stacey Kay, MHR, SPHR, SHRM-SCP, works with growing businesses to strengthen people systems and leadership capability so the organization can operate and grow with less strain on the owner."
+        body={`${GRADUATE_LINE}\n\nStacey Kay, MHR, SPHR, SHRM-SCP,* works with growing businesses to strengthen people systems and leadership capability so the organization can operate and grow with less strain on the owner.`}
       />
     </div>
   );

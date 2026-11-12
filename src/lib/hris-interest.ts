@@ -12,7 +12,8 @@ export const HRIS_INTEREST_HELP =
   "It's now in early access. If you check this, we'll include a short walkthrough on a sample company in your results review. Unchecked is fine. It doesn't change your results.";
 
 export function contactTopicValue(param: string | undefined): string {
-  return param === HRIS_PILOT_TOPIC ? HRIS_PILOT_TOPIC : "";
+  if (param === HRIS_PILOT_TOPIC || param === "hris") return HRIS_PILOT_TOPIC;
+  return "";
 }
 
 export function contactTopicLabel(value: unknown): string | null {

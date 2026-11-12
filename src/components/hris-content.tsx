@@ -2,11 +2,13 @@ import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { HRIS_PILOT_CONTACT_PATH } from "@/lib/hris-interest";
 import {
+  CERT_FOOTNOTE,
   hrisAudience,
   hrisFaqs,
   hrisFeatures,
   hrisFeaturesHeading,
   hrisHero,
+  hrisLawChangeNotes,
   hrisModes,
   hrisOneTeam,
   hrisTwiceAYear,
@@ -63,10 +65,7 @@ export function HrisContent() {
         </h1>
         <p className="mt-4 text-base leading-relaxed text-muted-foreground">{hrisHero.subhead}</p>
         <div className="mt-6 flex flex-col items-start gap-3 sm:flex-row">
-          <div>
-            <PilotLink />
-            <p className="mt-2 text-sm text-muted-foreground">{hrisHero.earlyAccess}</p>
-          </div>
+          <PilotLink />
           <Link
             href="/assessment"
             className={cn(
@@ -129,6 +128,15 @@ export function HrisContent() {
         </div>
       </section>
 
+      <section className="mt-14 max-w-3xl" aria-labelledby="hris-law-change">
+        <h2 id="hris-law-change" className="font-heading text-2xl font-bold text-forest">
+          {hrisLawChangeNotes.heading}
+        </h2>
+        <p className="mt-4 text-base leading-relaxed text-muted-foreground">
+          {hrisLawChangeNotes.body}
+        </p>
+      </section>
+
       <section className="mt-14 max-w-3xl" aria-labelledby="hris-audience">
         <h2 id="hris-audience" className="font-heading text-2xl font-bold text-forest">
           {hrisAudience.heading}
@@ -147,7 +155,6 @@ export function HrisContent() {
         <p className="mt-4 text-base leading-relaxed text-muted-foreground">{hrisWalkthrough.body}</p>
         <div className="mt-6">
           <PilotLink />
-          <p className="mt-2 text-sm text-muted-foreground">{hrisWalkthrough.earlyAccess}</p>
         </div>
         <AssessmentNote note={hrisWalkthrough.note} />
       </section>
@@ -164,6 +171,9 @@ export function HrisContent() {
             </div>
           ))}
         </div>
+        <p className="mt-8 text-xs text-muted-foreground">
+          *{CERT_FOOTNOTE}
+        </p>
       </section>
     </div>
   );

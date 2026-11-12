@@ -42,7 +42,7 @@ export const SYSTEMS_CATEGORIES: SystemsCategory[] = [
       { label: "Paylocity" },
       { label: "Paycor" },
       { label: "Rippling" },
-      { label: "PEO (any)" },
+      { label: "Outsourced HR or payroll provider" },
       { label: "Bookkeeper/CPA runs it" },
     ],
   },
@@ -64,7 +64,7 @@ export const SYSTEMS_CATEGORIES: SystemsCategory[] = [
     chips: [
       { label: "Broker portal", paid: true },
       { label: "Carrier websites", paid: true },
-      { label: "PEO", paid: true },
+      { label: "Outsourced HR or payroll provider", paid: true },
       { label: "Payroll's benefits module", paid: true },
       { label: "Employee Navigator", paid: true },
     ],
@@ -142,7 +142,7 @@ export const ADMIN_OPTIONS = [
   "Office or operations manager",
   "One HR person",
   "Several people share it",
-  "Payroll provider or PEO",
+  "Outsourced HR or payroll provider",
   "Outside consultant or bookkeeper",
   DONT_KNOW,
 ] as const;
@@ -187,7 +187,7 @@ export type RenewalRowId = (typeof RENEWAL_ROW_IDS)[number];
 export const RENEWAL_ROWS: { id: RenewalRowId; label: string }[] = [
   { id: "payroll", label: "Payroll" },
   { id: "hris", label: "HR system" },
-  { id: "benefits", label: "Benefits broker or PEO" },
+  { id: "benefits", label: "Benefits broker or outsourced HR provider" },
 ];
 
 export const RENEWAL_MONTHS = [
