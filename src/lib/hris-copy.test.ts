@@ -29,11 +29,11 @@ describe("HRis page copy", () => {
   it("uses the approved hero and keeps pricing out", () => {
     assert.equal(hrisHero.eyebrow, "Scalemaker HRis");
     assert.equal(hrisHero.headline, "One place to run HR, set up by people who know HR.");
-    assert.equal(hrisHero.primaryCta, "Request a walkthrough");
+    assert.equal(hrisHero.primaryCta, "See it for yourself");
     assert.equal(hrisHero.earlyAccess, "Now in early access.");
-    assert.equal(hrisHero.secondaryCta, "Take the free assessment");
+    assert.equal(hrisHero.secondaryCta, "Begin the assessment");
     assert.equal(hrisWalkthrough.earlyAccess, "Now in early access.");
-    assert.match(hrisWalkthrough.note, /free assessment/);
+    assert.match(hrisWalkthrough.note, /complimentary assessment/);
 
     const text = hrisCopyText();
     assert.equal(/\b(price|prices|pricing|cost)\b|\$\d/i.test(text), false);
@@ -67,7 +67,7 @@ describe("HRis results block", () => {
   it("uses one neutral line and the learn-more link", () => {
     assert.equal(
       hrisResultsBlock.line,
-      "Where it helps, we set up Scalemaker HRis (HRIS), the HR platform we use with clients, now in early access. If your current tools work, we'll help you keep them."
+      "Scalemaker HRis is our HR platform for small businesses. Use it on its own or alongside our consulting. If your current tools work, we'll help you keep them."
     );
     assert.equal(hrisResultsBlock.linkLabel, "Learn about Scalemaker HRis");
     assert.equal(hrisResultsBlock.linkHref, "/hris");
@@ -94,7 +94,7 @@ describe("positioning lines", () => {
     assert.equal(GRADUATE_LINE, "Stay as long as we fit. Graduate when you outgrow us.");
     assert.equal(
       STEADY_PARTNER,
-      "We partner with small businesses that want to get HR right, build stronger teams, and grow with confidence. Whether we're your HR partner for years or help you prepare for the next stage of growth, our commitment is the same: practical solutions, dependable support, and people systems built to last."
+      "We work with established small businesses that want a steady HR partner for years, and with growing ones we help scale and then hand off when their needs outgrow our focus. Either way, the goal is the same: people systems that work without depending on us."
     );
     assert.equal(/outsourced HR department/i.test(STEADY_PARTNER), false);
   });
@@ -103,17 +103,17 @@ describe("positioning lines", () => {
     assert.equal(AUDIENCE_PHRASE, "small businesses nationwide, up to about 200 employees");
     assert.equal(
       ABOUT_LOCATION,
-      "Scalemaker HR LLC is based in Arizona and serves businesses nationwide with up to approximately 200 employees, providing experienced HR leadership and practical people systems through a remote-first model."
+      "Scalemaker HR LLC is an Arizona company. Our team is based in Arizona and Utah and serves small businesses nationwide with up to approximately 200 employees, providing experienced HR leadership and practical people systems through a remote-first model."
     );
     assert.equal(
       ONE_TEAM_BAND.body,
-      "We build practical HR processes around the way your business works, then bring them together in Scalemaker HRis, our early-access HR platform. You get experienced HR leadership, the tools to support it, and systems designed to grow with your business."
+      "Choose the support that fits. Each one works on its own, and they work well together."
     );
-    assert.equal(ONE_TEAM_BAND.heading, "One team for your people systems.");
-    assert.equal(ONE_TEAM_BAND.linkHref, "/hris");
+    assert.equal(ONE_TEAM_BAND.heading, "Consulting, Scalemaker HRis, or both.");
+    assert.equal(ONE_TEAM_BAND.linkHref, "/services");
     assert.equal(
       ABOUT_HRIS_PARAGRAPH,
-      "Our consulting work is supported by Scalemaker HRis, the HR platform built specifically for growing businesses. We bring your people processes and technology together in one system, designed around how your business actually operates."
+      "We also built Scalemaker HRis (HRIS), an HR platform designed specifically for growing businesses. Clients can choose our consulting, the platform, or both. Either way, we bring your people processes and technology together around how your business actually operates."
     );
     assert.equal(APPROACH_HRIS_STEP, "Scalemaker HRis set up and run with you (early access).");
     assert.equal(/\$\d|\bpricing\b/i.test(hrisCopyText()), false);
