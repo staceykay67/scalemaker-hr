@@ -53,7 +53,7 @@ describe("HRis page copy", () => {
     );
     assert.equal(hrisModes.modes[1].title, "Full file.");
     assert.match(text, /People records and self-service/);
-    assert.match(text, /Benefits enrollment/);
+    assert.match(text, /Benefits elections/);
     assert.match(text, /E-signature/);
     assert.equal(hrisFeatures.length, 15);
     assert.equal(
