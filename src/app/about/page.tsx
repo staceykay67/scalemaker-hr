@@ -77,26 +77,51 @@ export default function AboutPage() {
             </p>
             <p>
               Stacey holds a Master of Human Resources and the SPHR and SHRM-SCP
-              certifications.
+              certifications.*
+            </p>
+            <p className="font-heading text-lg font-semibold text-forest">
+              That experience shapes how we work today.
+            </p>
+            <p>
+              Growing businesses rarely need more HR noise. They need practical
+              processes, capable managers, and systems that make work easier as
+              the company scales.
+            </p>
+            <p>
+              We want your employees to know what&apos;s expected of them, your
+              managers equipped to lead them, and your HR systems and processes
+              built to support the business as it grows.
             </p>
           </div>
         </section>
 
-        <div className="mt-12 max-w-3xl space-y-5 text-base leading-relaxed text-muted-foreground">
-          <p className="font-heading text-lg font-semibold text-forest">
-            That experience shapes how we work today.
+        <section
+          className="mt-12 max-w-3xl"
+          aria-labelledby="team-heading"
+        >
+          <h2
+            id="team-heading"
+            className="font-heading text-2xl font-bold text-forest"
+          >
+            Our team
+          </h2>
+          <p className="mt-4 text-base leading-relaxed text-muted-foreground">
+            Scalemaker HR consulting is delivered by certified HR professionals. Every consultant we assign holds at least a PHR or SHRM-CP certification.* Certifications belong to each person, and we list them with each team member below.
           </p>
-          <p>
-            Growing businesses rarely need more HR noise. They need practical
-            processes, capable managers, and systems that make work easier as
-            the company scales.
-          </p>
-          <p>
-            We want your employees to know what&apos;s expected of them, your
-            managers equipped to lead them, and your HR systems and processes
-            built to support the business as it grows.
-          </p>
-        </div>
+          <div className="mt-6">
+            <div className="rounded-xl border bg-white p-6">
+              <p className="font-heading text-lg font-semibold text-forest">
+                {CREDENTIALS_LINE}
+              </p>
+              <p className="mt-1 text-sm font-medium text-muted-foreground">
+                Founder
+              </p>
+              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                Stacey founded Scalemaker HR and brings more than 25 years of HR experience leading HR functions in growing, multi-site organizations. He holds a Master of Human Resources and the SPHR and SHRM-SCP certifications.*
+              </p>
+            </div>
+          </div>
+        </section>
 
         <p className="mt-12 max-w-3xl font-heading text-2xl font-bold text-forest sm:text-3xl">
           Building better organizations for what comes next.

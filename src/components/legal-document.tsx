@@ -33,10 +33,6 @@ export function LegalDocument({ page }: { page: LegalPageCopy }) {
       <h1 className="mt-2 font-heading text-3xl font-bold text-forest sm:text-4xl">
         {page.title}
       </h1>
-      <div className="mt-6 rounded-xl border border-sage/40 bg-sage/10 px-4 py-3 text-sm leading-relaxed text-forest">
-        <p className="font-semibold">{LEGAL_BANNER_TITLE}</p>
-        <p className="mt-1">{LEGAL_BANNER_BODY}</p>
-      </div>
       <p className="mt-6 text-sm leading-relaxed text-muted-foreground">
         <span className="font-semibold text-foreground">Effective date:</span> {page.effective}
       </p>
