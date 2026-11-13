@@ -176,7 +176,7 @@ export const SCORED_QUESTIONS: {
   {
     id: "q16",
     categoryId: "performance",
-    text: "Employees receive clear expectations, useful feedback and meaningful performance conversations.",
+    text: "Employees receive clear expectations and meaningful performance conversations, and we regularly gather employee feedback to gauge engagement.",
   },
   {
     id: "q17",
@@ -196,7 +196,7 @@ export const SCORED_QUESTIONS: {
   {
     id: "q20",
     categoryId: "systems",
-    text: "Our payroll, benefits, scheduling and employee-information systems support the needs of the business.",
+    text: "Our payroll, benefits, scheduling, employee-information and reporting systems give leaders clear visibility and support the needs of the business.",
   },
   {
     id: "q21",
