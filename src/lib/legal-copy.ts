@@ -46,7 +46,7 @@ export const PRIVACY_POLICY: LegalPageCopy = {
   title: "Your privacy at Scalemaker HR",
   description:
     "How Scalemaker HR collects, uses, and protects information on this website.",
-  effective: "[GO-LIVE DATE]",
+  effective: "November 12, 2026",
   who: WHO,
   intro: [
     "We help small businesses build people systems they can trust. That starts with how we treat your information. Here's what we collect, why, and what you can do about it, in plain words.",
@@ -195,7 +195,7 @@ export const TERMS_OF_USE: LegalPageCopy = {
   eyebrow: "Terms",
   title: "Using the Scalemaker HR website",
   description: "The ground rules for using the Scalemaker HR website.",
-  effective: "[GO-LIVE DATE]",
+  effective: "November 12, 2026",
   who: WHO,
   intro: [
     "These are the ground rules for using our site. We've kept them short and plain. By using this site, you agree to them.",

@@ -11,9 +11,9 @@ import {
 } from "@/lib/legal-copy";
 
 describe("legal pages", () => {
-  it("uses placeholder effective date and removes interim wording", () => {
-    assert.equal(PRIVACY_POLICY.effective, "[GO-LIVE DATE]");
-    assert.equal(TERMS_OF_USE.effective, "[GO-LIVE DATE]");
+  it("uses go-live effective date and removes interim wording", () => {
+    assert.equal(PRIVACY_POLICY.effective, "November 12, 2026");
+    assert.equal(TERMS_OF_USE.effective, "November 12, 2026");
     assert.match(TERMS_LIABILITY_CAP, /for any issue with our site/);
     assert.equal(TERMS_LIABILITY_CAP.includes("for any site issue"), false);
     assert.equal(legalPlainText(TERMS_OF_USE).includes("for any site issue"), false);
