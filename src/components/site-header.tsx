@@ -9,9 +9,10 @@ import { cn } from "@/lib/utils";
 
 const links = [
   { href: "/", label: "Home" },
-  { href: "/about", label: "About" },
+  { href: "/services", label: "Services" },
   { href: "/approach", label: "Approach" },
   { href: "/hris", label: "Scalemaker HRis" },
+  { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
 ];
 

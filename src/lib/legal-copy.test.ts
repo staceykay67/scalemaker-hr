@@ -11,17 +11,20 @@ import {
 } from "@/lib/legal-copy";
 
 describe("legal pages", () => {
-  it("keeps the interim counsel banner and the liability wording", () => {
-    assert.equal(PRIVACY_POLICY.effective, "November 13, 2026");
-    assert.equal(TERMS_OF_USE.effective, "November 13, 2026");
+  it("uses go-live effective date and removes interim wording", () => {
+    assert.equal(PRIVACY_POLICY.effective, "November 12, 2026");
+    assert.equal(TERMS_OF_USE.effective, "November 12, 2026");
     assert.match(TERMS_LIABILITY_CAP, /for any issue with our site/);
     assert.equal(TERMS_LIABILITY_CAP.includes("for any site issue"), false);
     assert.equal(legalPlainText(TERMS_OF_USE).includes("for any site issue"), false);
     assert.match(legalPlainText(PRIVACY_POLICY), /Formspree/);
     assert.match(legalPlainText(PRIVACY_POLICY), /Resend/);
-    assert.match(legalPlainText(PRIVACY_POLICY), /if you choose Email results/);
+    assert.equal(/if you choose Email results/i.test(legalPlainText(PRIVACY_POLICY)), false);
+    assert.match(legalPlainText(PRIVACY_POLICY), /automatic/);
     assert.equal(/Certified Consultant/i.test(legalPlainText(PRIVACY_POLICY)), false);
     assert.equal(/Certified Consultant/i.test(legalPlainText(TERMS_OF_USE)), false);
+    assert.equal(/interim|attorney's review|We're checking/i.test(legalPlainText(PRIVACY_POLICY)), false);
+    assert.equal(/interim|attorney's review|We're checking/i.test(legalPlainText(TERMS_OF_USE)), false);
   });
 
   it("uses the submit consent and the systems-step sentence", () => {

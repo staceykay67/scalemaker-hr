@@ -471,7 +471,10 @@ export function AssessmentWizard() {
                 }
               />
             </Field>
-            <Field label="Work email">
+            <Field
+              label="Work email"
+              helper="We'll show your results on the next screen and email a copy to this address."
+            >
               <Input
                 type="email"
                 className="h-11"
@@ -589,15 +592,20 @@ export function AssessmentWizard() {
 
 function Field({
   label,
+  helper,
   children,
 }: {
   label: string;
+  helper?: string;
   children: React.ReactNode;
 }) {
   return (
     <div className="space-y-2">
       <Label className="text-sm leading-snug">{label}</Label>
       {children}
+      {helper && (
+        <p className="text-xs text-muted-foreground">{helper}</p>
+      )}
     </div>
   );
 }

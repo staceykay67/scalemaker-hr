@@ -27,6 +27,11 @@ export function SiteFooter() {
             </Link>
           </p>
           <p>
+            <Link href="/services" className="underline-offset-4 hover:underline">
+              Services
+            </Link>
+          </p>
+          <p>
             <Link href="/approach" className="underline-offset-4 hover:underline">
               Approach
             </Link>
@@ -73,6 +78,9 @@ export function SiteFooter() {
             This website and assessment provide general educational information.
             They are not legal advice, a compliance certification, or a
             substitute for review by qualified legal counsel.
+          </p>
+          <p>
+            *PHR® and SPHR® are marks of HR Certification Institute (HRCI). SHRM-CP® and SHRM-SCP® are marks of SHRM. Scalemaker HR is not affiliated with or endorsed by HRCI or SHRM.
           </p>
         </div>
       </div>

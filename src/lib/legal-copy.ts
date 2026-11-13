@@ -46,7 +46,7 @@ export const PRIVACY_POLICY: LegalPageCopy = {
   title: "Your privacy at Scalemaker HR",
   description:
     "How Scalemaker HR collects, uses, and protects information on this website.",
-  effective: "November 13, 2026",
+  effective: "November 12, 2026",
   who: WHO,
   intro: [
     "We help small businesses build people systems they can trust. That starts with how we treat your information. Here's what we collect, why, and what you can do about it, in plain words.",
@@ -65,7 +65,7 @@ export const PRIVACY_POLICY: LegalPageCopy = {
         },
         {
           lead: "Your interest in our services.",
-          text: "For example, if you tick the box saying you'd like to hear about Scalemaker HRis, or tell us what you need on our contact form.",
+          text: "For example, whether you're interested in consulting, Scalemaker HRis (HRIS), or both; whether you'd like to see Scalemaker HRis in your results review; and what you tell us you need on our contact form.",
         },
         {
           lead: "Optional HR tools questions.",
@@ -89,7 +89,7 @@ export const PRIVACY_POLICY: LegalPageCopy = {
       list: [
         { text: "To reply to you." },
         { text: "To score your assessment and show your results." },
-        { text: "To email you a copy of your results if you choose Email results." },
+        { text: "To email a copy of your assessment results to the email address you enter. This happens automatically when you complete the assessment. If you complete the optional HR tools questions, we may also email your Systems Score to that address." },
         { text: "To prepare for your results call and, if you ask for one, a proposal." },
         { text: "To keep our site running and safe." },
       ],
@@ -120,7 +120,7 @@ export const PRIVACY_POLICY: LegalPageCopy = {
         },
         {
           lead: "Resend",
-          text: "emails a copy of your assessment results to the address you gave us, if you choose Email results.",
+          text: "sends the automatic email with your assessment results to the address you enter.",
         },
         {
           lead: "Vercel",
@@ -163,7 +163,8 @@ export const PRIVACY_POLICY: LegalPageCopy = {
       heading: "Your choices",
       paragraphs: [
         "Want to see, fix or delete what you sent us? Want us to stop reaching out? Just email us. We'll help, no matter where you live.",
-        "Some states, like California, give their residents extra privacy rights. We're checking with our attorney on whether those laws cover a business our size. If they apply, we'll honor them. And we'll never treat you differently for asking.",
+        "If you entered an email address by mistake, or someone entered yours, let us know and we'll delete it.",
+        "Some states, like California, give their residents extra privacy rights. If those laws apply to us, we'll honor them. And we'll never treat you differently for asking.",
       ],
     },
     {
@@ -173,15 +174,15 @@ export const PRIVACY_POLICY: LegalPageCopy = {
       ],
     },
     {
-      heading: "Scalemaker HRis",
+      heading: "Scalemaker HRis and client work",
       paragraphs: [
-        "This page covers our website only. Scalemaker HRis, our HR software, and our client work will have their own privacy policy and data agreement.",
+        "This page covers our website only. Scalemaker HRis, our HR software, and our client work are covered by their own privacy terms and data agreement.",
       ],
     },
     {
       heading: "When this page changes",
       paragraphs: [
-        "We'll post any updates here with a new date. This interim version will be replaced after our attorney's review.",
+        "We'll post any updates here with a new date.",
       ],
     },
   ],
@@ -194,7 +195,7 @@ export const TERMS_OF_USE: LegalPageCopy = {
   eyebrow: "Terms",
   title: "Using the Scalemaker HR website",
   description: "The ground rules for using the Scalemaker HR website.",
-  effective: "November 13, 2026",
+  effective: "November 12, 2026",
   who: WHO,
   intro: [
     "These are the ground rules for using our site. We've kept them short and plain. By using this site, you agree to them.",
@@ -234,7 +235,7 @@ export const TERMS_OF_USE: LegalPageCopy = {
     {
       heading: "What's yours",
       paragraphs: [
-        "What you send us stays yours. You're letting us use it to show your results, reply to you, and prepare for any call or proposal you ask for, as our Privacy Policy explains.",
+        "What you send us stays yours. You're letting us use it to show and email your results, reply to you, and prepare for any call or proposal you ask for, as our Privacy Policy explains.",
         "Please only send what you have the right to share. If you send us feedback, we may use it.",
       ],
     },
@@ -275,7 +276,7 @@ export const TERMS_OF_USE: LegalPageCopy = {
     {
       heading: "When these terms change",
       paragraphs: [
-        "We may update our site or these terms. When we do, we'll post the new date here. This interim version will be replaced after our attorney's review.",
+        "We may update our site or these terms. When we do, we'll post the new date here.",
       ],
     },
   ],

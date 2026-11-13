@@ -7,7 +7,7 @@ import { contactTopicValue } from "@/lib/hris-interest";
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Contact Scalemaker HR to discuss assessment results or whether a conversation would be useful.",
+    "Tell us about your business and whether you're interested in consulting, Scalemaker HRis, or both.",
 };
 
 export default async function ContactPage({
@@ -26,7 +26,7 @@ export default async function ContactPage({
         Start a conversation
       </h1>
       <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground">
-        Have a question about your HR challenges, our services, or Scalemaker HRis? Tell us a little about your business and what you need. We&apos;re happy to start with a conversation.
+        Have a question about your HR challenges, our consulting, or Scalemaker HRis (HRIS), our HR platform? Tell us a little about your business and what you need. We&apos;re happy to start with a conversation.
       </p>
 
       <div className="mt-10 grid gap-10 lg:grid-cols-[1.2fr_0.8fr]">

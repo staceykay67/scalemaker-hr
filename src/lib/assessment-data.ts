@@ -70,7 +70,7 @@ export const PROFILE_QUESTIONS = [
       "Office manager or operations manager",
       "Internal HR employee",
       "Operations leader",
-      "Payroll provider or PEO",
+      "Outsourced HR or payroll provider",
       "Outside HR consultant",
       "Responsibilities are divided among several people",
       "No one has clear responsibility",
