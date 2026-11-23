@@ -117,7 +117,7 @@ export default function ServicesPage() {
           </p>
           <div className="mt-6 space-y-3 text-sm leading-relaxed text-muted-foreground">
             <ul className="list-disc space-y-2 pl-5">
-              <li><strong>Two file levels.</strong> Lite keeps your roster and day-to-day records without sensitive personal data. Full adds the sensitive details that complete an employee&apos;s file.</li>
+              <li><strong>Two ways to run it.</strong> Basic covers the everyday people, time, and pay records for a small team. Lite is everything in Basic, plus hiring, documents, and people tools for a growing team.</li>
               <li><strong>Built for everyone who uses it.</strong> Built for the employee who uses it twice a year, not the administrator who uses it twice a day.</li>
               <li><strong>Works with your payroll.</strong> HRis doesn&apos;t run payroll. CSV payroll exports now, API connections to payroll vendors coming.</li>
               <li><strong>Your data is yours.</strong> Export it anytime.</li>

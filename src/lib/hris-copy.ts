@@ -101,19 +101,19 @@ export const hrisFeatures: HrisFeature[] = [
   },
   {
     title: "Onboarding",
-    body: "From offer to first day. New hires get a checklist for their first weeks, and managers get theirs too. On the Full file, new hires also complete their I-9 and W-4 in the app.",
+    body: "From offer to first day. New hires get a checklist for their first weeks, and managers get theirs too.",
   },
   {
     title: "Payroll exports",
-    body: "Hours, pay changes and new hires go into a payroll file laid out for your provider, plus direct deposit details on the Full file. CSV payroll exports now, API connections to payroll vendors coming. HRis doesn't run payroll, so you keep the payroll provider you already use.",
+    body: "Hours, pay changes and new hires go into a payroll file laid out for your provider. CSV payroll exports now, API connections to payroll vendors coming. HRis doesn't run payroll, so you keep the payroll provider you already use.",
   },
   {
     title: "Benefits elections",
     body: "Employees record their plan elections and dependents in one place, and change files are ready to send to your carriers.",
   },
   {
-    title: "E-signature",
-    body: "On the Full file, offers, policies, acknowledgements and forms are signed right in the app. On Lite, employees acknowledge with their typed name.",
+    title: "Acknowledgements",
+    body: "Employees acknowledge handbooks and policies with their typed name.",
   },
   {
     title: "Documents and handbook",
@@ -137,20 +137,22 @@ export const hrisFeatures: HrisFeature[] = [
   },
 ];
 
+export const BASIC_TIER_BODY =
+  "Basic covers the everyday people, time, and pay records for a small team. That includes your roster with pay and job history, jobs, org chart, directory, company setup and roles, the employee home called My Desk, time clock and PTO, core shift scheduling, announcements, standard reports, payroll CSV export, and handbook and I-9 reminders.";
+
 export const hrisModes = {
-  heading: "Two ways to run it: Lite file and Full file",
+  heading: "Two ways to run it: Basic and Lite",
   modes: [
     {
-      title: "Lite file.",
-      body: "Your roster and day-to-day people records, without sensitive personal data like Social Security numbers, birth dates or bank details. It's a good fit for companies that want structure and visibility without holding sensitive files.",
+      title: "Basic.",
+      body: BASIC_TIER_BODY,
     },
     {
-      title: "Full file.",
-      body: "Everything in Lite, plus the sensitive details that complete an employee's file: I-9 and W-4 forms and direct deposit information. That lets new-hire details carry into your payroll and benefits files without anyone re-keying them.",
+      title: "Lite.",
+      body: "Lite is everything in Basic, plus hiring, documents, and people tools for a growing team. That includes a hiring pipeline with typed-name offers, document storage and Employee Resources, typed-name handbook sign-off, Ask HR, performance tools, custom reports and compliance tools, and a benefits tab for plan names.",
     },
   ],
-  closing:
-    "You choose the one that fits. You can start with Lite and move to Full when you're ready.",
+  closing: "You choose the one that fits.",
 };
 
 export const hrisLawChangeNotes = {

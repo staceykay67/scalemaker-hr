@@ -51,10 +51,11 @@ describe("HRis page copy", () => {
       hrisOneTeam.points[2].body,
       "Stay as long as we fit. Graduate when you outgrow us. Your data is yours to export anytime."
     );
-    assert.equal(hrisModes.modes[1].title, "Full file.");
+    assert.equal(hrisModes.modes[0].title, "Basic.");
+    assert.equal(hrisModes.modes[1].title, "Lite.");
     assert.match(text, /People records and self-service/);
     assert.match(text, /Benefits elections/);
-    assert.match(text, /E-signature/);
+    assert.match(text, /Acknowledgements/);
     assert.equal(hrisFeatures.length, 15);
     assert.equal(
       hrisFeatures.every((feature) => feature.body.length > 0),
