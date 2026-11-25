@@ -12,7 +12,7 @@ Pages:
 
 There is no industry-specific landing page. The main site uses growing-business language.
 
-The assessment follows the company’s Free Assessment spec: business-profile questions, 18 scored statements in six categories, risk and impact questions, lead capture, scored results, critical-attention and business-impact flags, and a complimentary results-review invitation.
+The assessment follows the company’s complimentary assessment spec: business-profile questions, 18 scored statements in six categories, risk and impact questions, lead capture, scored results, critical-attention and business-impact flags, and a complimentary results-review invitation.
 
 ## What visitors can do
 
