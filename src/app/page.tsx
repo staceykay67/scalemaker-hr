@@ -28,7 +28,7 @@ export default function HomePage() {
                 Explore your HR readiness
               </span>
               <span className="mt-2 block text-sm leading-relaxed text-forest/80">
-                Take the free 5–7 minute assessment.
+                Take the complimentary 5–7 minute assessment.
               </span>
             </Link>
             <Link
